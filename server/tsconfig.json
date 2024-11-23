@@ -1,4 +1,5 @@
 {
+  "include": ["./src/**/*"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
@@ -11,7 +12,7 @@
     // "disableReferencedProjectLoad": true,             /* Reduce the number of projects loaded automatically by TypeScript. */
 
     /* Language and Environment */
-    "target": "ESNext" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "target": "ESNext",
     // "lib": [],                                        /* Specify a set of bundled library declaration files that describe the target runtime environment. */
     // "jsx": "preserve",                                /* Specify what JSX code is generated. */
     // "experimentalDecorators": true,                   /* Enable experimental support for legacy experimental decorators. */
@@ -26,12 +27,12 @@
 
     /* Modules */
     "module": "CommonJS" /* Specify what module code is generated. */,
-    "rootDir": "." /* Specify the root folder within your source files. */,
-    // "moduleResolution": "NodeNext" /* Specify how TypeScript looks up a file from a given module specifier. */,
-    "baseUrl": "." /* Specify the base directory to resolve non-relative module names. */,
-    "paths": {
-      "@/*": ["./*"]
-    } /* Specify a set of entries that re-map imports to additional lookup locations. */,
+    "rootDir": "./src/" /* Specify the root folder within your source files. */,
+    "moduleResolution": "Node10" /* Specify how TypeScript looks up a file from a given module specifier. */,
+    // "baseUrl": "." /* Specify the base directory to resolve non-relative module names. */,
+    // "paths": {
+    //   "@/*": ["./src/*", "./dist/*"]
+    // } /* Specify a set of entries that re-map imports to additional lookup locations. */,
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
     // "types": [],                                      /* Specify type package names to be included without being referenced in a source file. */
@@ -48,8 +49,8 @@
     // "noResolve": true,                                /* Disallow 'import's, 'require's or '<reference>'s from expanding the number of files TypeScript should add to a project. */
 
     /* JavaScript Support */
-    "allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
-    "checkJs": true /* Enable error reporting in type-checked JavaScript files. */,
+    // "allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
+    // "checkJs": true /* Enable error reporting in type-checked JavaScript files. */,
     // "maxNodeModuleJsDepth": 1,                        /* Specify the maximum folder depth used for checking JavaScript files from 'node_modules'. Only applicable with 'allowJs'. */
 
     /* Emit */

@@ -1,0 +1,21 @@
+---
+import Logo from "../components/Logo.astro";
+import RegisterForm from "../components/register/RegisterForm.vue";
+import MainLayout from "../layouts/MainLayout.astro";
+---
+
+<MainLayout
+  title="Openbook | Register"
+  description="Register to join a community of manga enjoyers and talented manga artists."
+>
+  <main
+    class="flex h-fit min-h-screen w-full flex-col items-center justify-center gap-10 p-8"
+  >
+    <Logo />
+    <p class="text-balance text-center text-xl">
+      Join a community of manga enjoyers and writers.
+    </p>
+    <RegisterForm client:load />
+    <a href="/login" class="underline underline-offset-2 text-sm">I already have an account!</a>
+  </main>
+</MainLayout>

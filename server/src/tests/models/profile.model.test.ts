@@ -1,10 +1,10 @@
-import { Following } from "@/models/following.model";
-import { Profile } from "@/models/profile.model";
-import { User } from "@/models/user.model";
-import { setupTestUserProfiles } from "@/utils/user-test-utils";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { Following } from "../../models/following.model";
+import { Profile } from "../../models/profile.model";
+import { User } from "../../models/user.model";
+import { setupTestUserProfiles } from "../../utils/user-test-utils";
 
 describe("profile model", async () => {
   let mongoDb: MongoMemoryServer;

@@ -5,12 +5,12 @@ import { coverageConfigDefaults, defineConfig } from "vitest/config";
 export default defineConfig({
   resolve: {
     alias: {
-      "@": resolve(__dirname, "./"),
+      "@": resolve(__dirname, "./src/"),
     },
   },
   test: {
     reporters: process.env.MODE == "CI" ? ["github-actions", "verbose"] : "verbose",
-    setupFiles: ["./tests/vitest-setup.ts"],
+    setupFiles: ["./src/tests/vitest-setup.ts"],
     coverage: {
       provider: "istanbul",
       reporter: process.env.MODE == "CI" ? ["lcovonly", "text"] : "text",

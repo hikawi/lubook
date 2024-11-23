@@ -1,4 +1,3 @@
-import bcrypt from "bcryptjs";
 import mongoose, { Document } from "mongoose";
 
 /*
@@ -25,13 +24,15 @@ const UserSchema = new mongoose.Schema<IUser>({
   username: {
     type: String,
     required: true,
-    match: /^[\w]{2,32}$/,
+    match: /^[a-zA-Z][a-zA-Z0-9_-]{1,31}$/,
     index: true,
     unique: true,
   },
   password: {
     type: String,
     required: true,
+    minLength: 60,
+    maxLength: 60,
   },
   email: {
     type: String,
@@ -61,12 +62,6 @@ const UserSchema = new mongoose.Schema<IUser>({
 });
 
 UserSchema.index({ username: 1 }, { unique: true, collation: { locale: "en", strength: 2 } });
-
-// Add a hashing for the password saving.
-UserSchema.pre("save", async function (this: IUser, next: any) {
-  this.password = bcrypt.hashSync(this.password);
-  next();
-});
 
 export { UserSchema };
 export const User = mongoose.model("User", UserSchema);

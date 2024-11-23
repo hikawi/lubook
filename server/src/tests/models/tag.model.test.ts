@@ -1,7 +1,7 @@
-import { Tag } from "@/models/tag.model";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { Tag } from "../../models/tag.model";
 
 describe("tag model", async () => {
   let mongoDb: MongoMemoryServer;

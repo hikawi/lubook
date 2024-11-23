@@ -1,7 +1,8 @@
-import { Profile } from "@/models/profile.model";
-import { User } from "@/models/user.model";
+import { hash } from "bcryptjs";
 import mongoose from "mongoose";
 import { expect } from "vitest";
+import { Profile } from "../models/profile.model";
+import { User } from "../models/user.model";
 
 export async function setupTestUserProfiles() {
   // Make sure mongoose is connected.
@@ -10,17 +11,17 @@ export async function setupTestUserProfiles() {
   const testUsers = [
     {
       username: "strawberry",
-      password: "1234",
+      password: await hash("1234", 10),
       email: "strawberry@fruits.com",
     },
     {
       username: "blueberry",
-      password: "1234",
+      password: await hash("1234", 10),
       email: "blueberry@fruits.com",
     },
     {
       username: "blackberry",
-      password: "1234",
+      password: await hash("1234", 10),
       email: "blackberry@fruits.com",
     },
   ];

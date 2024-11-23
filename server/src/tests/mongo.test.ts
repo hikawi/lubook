@@ -1,5 +1,5 @@
-import { connectMongo, disconnectMongo } from "@/db";
 import { describe, expect, it } from "vitest";
+import { connectMongo, disconnectMongo } from "../db";
 
 describe("real mongo connection", () => {
   it("should connect and disconnect", async () => {
