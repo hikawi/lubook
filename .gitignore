@@ -1,0 +1,8 @@
+node_modules
+dist
+coverage
+
+# Environments
+.env
+.env.local
+.env.production
