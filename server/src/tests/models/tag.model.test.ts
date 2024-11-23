@@ -1,14 +1,11 @@
-import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { connectMongo, disconnectMongo } from "../../db";
 import { Tag } from "../../models/tag.model";
 
 describe("tag model", async () => {
-  let mongoDb: MongoMemoryServer;
-
   beforeAll(async () => {
-    mongoDb = await MongoMemoryServer.create();
-    await mongoose.connect(mongoDb.getUri());
+    await connectMongo();
   });
 
   beforeEach(async () => {
@@ -18,6 +15,10 @@ describe("tag model", async () => {
   afterEach(async () => {
     await mongoose.connection.collection("Tag").dropIndexes();
     await mongoose.connection.dropDatabase();
+  });
+
+  afterAll(async () => {
+    await disconnectMongo();
   });
 
   it("should have empty table", async () => {
@@ -36,10 +37,5 @@ describe("tag model", async () => {
     await Tag.create({ name: "Tag    " });
     expect(await Tag.countDocuments()).toBe(1);
     expect(await Tag.find({ name: "tag" })).toBeDefined();
-  });
-
-  afterAll(async () => {
-    await mongoose.disconnect();
-    await mongoDb.stop();
   });
 });

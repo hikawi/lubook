@@ -1,15 +1,12 @@
-import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { connectMongo, disconnectMongo } from "../../db";
 import { User } from "../../models/user.model";
 import { setupTestUserProfiles } from "../../utils/user-test-utils";
 
 describe("user model", async () => {
-  let mongoDb: MongoMemoryServer;
-
   beforeAll(async () => {
-    mongoDb = await MongoMemoryServer.create();
-    await mongoose.connect(mongoDb.getUri());
+    await connectMongo();
   });
 
   beforeEach(async () => {
@@ -21,8 +18,7 @@ describe("user model", async () => {
   });
 
   afterAll(async () => {
-    await mongoose.disconnect();
-    await mongoDb.stop();
+    await disconnectMongo();
   });
 
   it("should not rehash if user doesn't change password", async () => {
