@@ -1,8 +1,8 @@
 <div align="center">
 
-# Openbook
+# Lubook
 
-### A simple free-to-use manga sharing full stack application.
+### A simple free-to-use manga sharing full stack application
 
 ![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/hikawi/openbook)
 ![Backend](https://img.shields.io/github/actions/workflow/status/hikawi/openbook/backend.yml)

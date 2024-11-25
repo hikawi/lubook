@@ -1,2 +1,1 @@
-process.env.MODE = "test";
-process.env.PORT = "8765";
+process.env.MODE = "dev";
