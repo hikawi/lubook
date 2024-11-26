@@ -3,7 +3,7 @@ import { RequestHandler } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { sign } from "jsonwebtoken";
 import { z } from "zod";
-import { createUser, existsUser, findUser } from "../queries/user.query";
+import { createUser, existsUser, findUser } from "../db/queries/user.query";
 
 /**
  * POST /login: Attempts to login a user.
@@ -18,6 +18,7 @@ import { createUser, existsUser, findUser } from "../queries/user.query";
  *   + 404 (Not Found): The request was good, but that account does not exist.
  */
 export const login: RequestHandler = expressAsyncHandler(async (req, res) => {
+  console.log("login route called");
   type LoginBody = { profile: string; password: string };
   let result: z.SafeParseReturnType<LoginBody, LoginBody>;
 
@@ -47,19 +48,24 @@ export const login: RequestHandler = expressAsyncHandler(async (req, res) => {
   // Check if that account exists.
   const profile = result.data.profile;
   const user = await findUser({ username: profile, email: profile });
-  if (user == null) {
+  if (user.length == 0) {
     res.status(404);
     throw new Error("No account exists");
   }
 
   // Check if passwords match.
-  if (!compareSync(result.data.password, user.password)) {
+  if (!compareSync(result.data.password, user[0].password)) {
     res.status(401);
     throw new Error("Incorrect password");
   }
 
-  // Login success.
-  const token = sign({ id: user.id }, process.env.JWT_TOKEN!);
+  // Login success. Adds username and email to payload, meaning that if either
+  // of those 2 fields change, the token shall be invalid.
+  const token = sign(
+    { id: user[0].id, username: user[0].username, email: user[0].email },
+    process.env.JWT_TOKEN!,
+    { expiresIn: "24h" }
+  );
   res.status(200).json({ token });
 });
 
@@ -106,12 +112,6 @@ export const register: RequestHandler = expressAsyncHandler(
 
     // Create the user.
     const user = await createUser({ ...result.data });
-    res.status(201).json({
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      password: user.password,
-      name: user.name,
-    });
+    res.status(201).json(user);
   }
 );

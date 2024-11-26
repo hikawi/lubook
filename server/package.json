@@ -7,7 +7,7 @@
     "test": "vitest run --coverage",
     "clean": "rimraf dist",
     "build": "tsc",
-    "start": "node dist/app.js",
+    "start": "MODE=prod node dist/app.js",
     "serve": "pnpm clean; pnpm build; pnpm start;"
   },
   "keywords": [],
@@ -35,6 +35,7 @@
     "@vitest/coverage-istanbul": "^2.1.5",
     "dotenv-types": "^1.0.0",
     "drizzle-kit": "^0.28.1",
+    "pg-mem": "^3.0.3",
     "rimraf": "^6.0.1",
     "supertest": "^7.0.0",
     "tsx": "^4.19.2",
