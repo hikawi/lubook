@@ -9,5 +9,6 @@ export default defineConfig({
       reportOnFailure: Boolean(process.env.CI),
     },
     fileParallelism: false,
+    reporters: process.env.CI ? "github-actions" : "verbose",
   },
 });

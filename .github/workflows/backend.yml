@@ -14,12 +14,18 @@ jobs:
     services:
       db:
         image: postgres:17
-        ports:
-          - "5433:5432"
         env:
-          POSTGRES_USER: prisma
-          POSTGRES_PASSWORD: prisma
-          POSTGRES_DB: tests
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     name: Run backend tests
     steps:
       - name: Checkout
@@ -42,13 +48,26 @@ jobs:
       - name: Install dependencies
         working-directory: ./server
         run: pnpm i
+      - name: Migrate schema
+        working-directory: ./server
+        run: pnpm drizzle-kit push
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DATABASE: test
       - name: Test with coverage
         working-directory: ./server
         run: pnpm test
         env:
           MODE: CI
-          DATABASE_URL: postgresql://prisma:prisma@localhost:5432/tests?schema=public
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DATABASE: test
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         with:

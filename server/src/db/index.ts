@@ -5,7 +5,14 @@ import { follows } from "./schema/follow";
 import { tags } from "./schema/tag";
 import { roles, users } from "./schema/user";
 
-const pool = new Pool({ max: 5, connectionString: process.env.DATABASE_URL });
+const pool = new Pool({
+  max: 5,
+  host: process.env.POSTGRES_HOST || "localhost",
+  user: process.env.POSTGRES_USER || "postgres",
+  password: process.env.POSTGRES_PASSWORD,
+  database: process.env.POSTGRES_DATABASE || "postgres",
+  port: Number(process.env.POSTGRES_PORT || 5432),
+});
 const db = drizzle({
   client: pool,
   schema: { users, roles, follows, tags, blockTags },
