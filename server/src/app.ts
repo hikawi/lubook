@@ -3,13 +3,19 @@ import express from "express";
 import { readFileSync } from "fs";
 import http from "http";
 import https from "https";
+import { expectAccountExists } from "./db/utils";
+import { auth } from "./middlewares";
 import { accountsRouter } from "./routes/accounts.route";
 
 // The server-side entrypoint.
 const app: express.Express = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.get("/auth", auth);
 app.use(accountsRouter);
+
+expectAccountExists(1234, 12345);
 
 // Error handling
 app.use((err: Error, req: any, res: any, next: any) => {
@@ -20,8 +26,8 @@ app.use((err: Error, req: any, res: any, next: any) => {
 // Otherwise, just whip up a server for testing.
 if (process.env.MODE == "prod") {
   const options = {
-    key: readFileSync(process.env.SSL_KEY!),
-    cert: readFileSync(process.env.SSL_CERT!),
+    key: readFileSync(process.env.SSL_KEY || ""),
+    cert: readFileSync(process.env.SSL_CERT || ""),
   };
 
   // Server for listening.

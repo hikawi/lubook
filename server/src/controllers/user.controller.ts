@@ -18,11 +18,10 @@ import { createUser, existsUser, findUser } from "../db/queries/user.query";
  *   + 404 (Not Found): The request was good, but that account does not exist.
  */
 export const login: RequestHandler = expressAsyncHandler(async (req, res) => {
-  console.log("login route called");
   type LoginBody = { profile: string; password: string };
   let result: z.SafeParseReturnType<LoginBody, LoginBody>;
 
-  if (/^[a-zA-Z][a-zA-Z0-9-_]{1,31}/.test(req.body.profile)) {
+  if (/^[a-zA-Z][a-zA-Z0-9-_]{1,31}$/.test(req.body.profile)) {
     // Okay, not an email.
     const schema = z.object({
       profile: z.string().regex(/^[a-zA-Z][a-zA-Z0-9-_]{1,31}$/),
@@ -63,7 +62,7 @@ export const login: RequestHandler = expressAsyncHandler(async (req, res) => {
   // of those 2 fields change, the token shall be invalid.
   const token = sign(
     { id: user[0].id, username: user[0].username, email: user[0].email },
-    process.env.JWT_TOKEN!,
+    process.env.JWT_SECRET!,
     { expiresIn: "24h" }
   );
   res.status(200).json({ token });

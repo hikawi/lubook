@@ -7,7 +7,7 @@
     "test": "vitest run --coverage",
     "clean": "rimraf dist",
     "build": "tsc",
-    "start": "MODE=prod node dist/app.js",
+    "start": "node dist/app.js",
     "serve": "pnpm clean; pnpm build; pnpm start;"
   },
   "keywords": [],

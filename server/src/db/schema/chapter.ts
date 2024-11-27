@@ -8,7 +8,7 @@ export const chapters = pg.pgTable(
       .serial("manga_id")
       .notNull()
       .references(() => mangas.id),
-    number: pg.integer().notNull(),
+    number: pg.integer().notNull().unique(),
     name: pg.text().notNull(),
     description: pg.text(),
     uploadDate: pg.timestamp("upload_date").defaultNow().notNull(),

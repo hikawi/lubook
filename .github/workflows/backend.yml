@@ -47,7 +47,7 @@ jobs:
         run: pnpm test
         env:
           MODE: CI
-          MONGO_URL: ${{ secrets.MONGO_URL }}
+          DATABASE_URL: postgresql://prisma:prisma@localhost:5432/tests?schema=public
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4

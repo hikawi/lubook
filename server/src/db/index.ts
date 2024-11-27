@@ -11,9 +11,15 @@ const db = drizzle({
   schema: { users, roles, follows, tags, blockTags },
 });
 
-export { db, pool };
+async function disconnect() {
+  try {
+    await pool.end();
+  } catch (ignored) {}
+}
+
+export { db, disconnect, pool };
 
 process.on("SIGTERM", async () => {
-  await pool.end();
+  await disconnect();
   process.exit(0);
 });
