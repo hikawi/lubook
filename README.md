@@ -6,7 +6,7 @@
 
 ![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/hikawi/openbook)
 ![Backend](https://img.shields.io/github/actions/workflow/status/hikawi/openbook/backend.yml)
-![Backend Coverage](https://img.shields.io/codecov/c/github/hikawi/openbook?label=backend%20coverage)
+![Backend Coverage](https://img.shields.io/codecov/c/github/hikawi/lubook?label=backend%20coverage)
 
 </div>
 
@@ -16,28 +16,26 @@ This is **not** a production commercial application. This was created just becau
 
 I don't have any problems with piracy for personal usage, but this situation is within an educational environment, as a project for a Software Engineering course, which is the reason why I find it to be wrong. I have brought up this issues with the group, as an artist myself, I would not be comfortable working on such a project, it is mind boggling how completely normal they feel about stealing works, so I gave up on persuading them and created my own version of said project. I made this project to prove that this can be done, without the need to steal other people's works.
 
-The architectural design is courtesy of the group manager as he decided on the MERN (Mongo, Express, React, Node) stack. Except that, this uses Astro's file-based routing for API routes, and does not depend on Express servers. The design is courtesy of me, so no credits needed.
+## Tech choices
 
-## Structure
+The backend was originally designed by the group leader to follow the MERN stack (namely MongoDB, ExpressJS, ReactJS, and NodeJS). I was also going to go with the same thing, but that wouldn't be very educational (I lied, I just wanted to try SQL). The roadblocks on the way to setup a SQL server is crazy difficult for a first-timer.
 
-This is a **monorepo**, which means both the *backend* and the *frontend* is bundled here.
+Eventually, I think it's OK to settle on PostgreSQL, ExpressJS, VueJS and NodeJS. Which is mainly, still similar enough, even though I use TypeScript instead of JavaScript. The biggest change here is that Postgres isn't that straightforward to setup tests with, since memory pg servers are too limited and drizzle has problems working with them.
 
-Backend uses:
+## Problems
 
-- `bcryptjs`: Hashing passwords.
-- `mongoose`, `mongodb`: The relational noSQL database.
-- `vitest`, `mongodb-memory-server`: For testing database calls.
-- `express`, `express-async-handler`: For setting up the backend calls.
-- `zod`: For validating inputs.
+<details>
+<summary>What about testing data?</summary>
 
-Frontend uses:
+When I started testing frontend side of the project, I quickly ran into a problem I don't know how I haven't thought of before. Because I'm not taking anyone's artworks or writings, that means **I have to do everything**, including the writing and painting myself.
 
-- `astro`, `vercel`: Server-side renderer.
-- `vue`: UI Library.
-- `vitest`, `@vitest/browser`, `mongodb-memory-server`, `playwright`, `@testing-library/vue`: For testing UI.
-- `nanostores`: For state management.
+I have a few ideas and renditions for a few short mangas, but drawing it would be another story (haha, pun). As much as I would like to add my own original stories since I also love writing, that would take too much time, so I'll find a way to compensate for it without outright infringing on peoples' copyright.
 
-### Backend
+</details>
+
+## Backend (Express API Routes + PostgreSQL)
+
+In the case that you're reading this while the project is still live, here's a [link](https://api.lubook.club/).
 
 The backend has documentations on all routes. But I was kinda deep in SCP lore, the comments do reflect that.
 
@@ -56,3 +54,16 @@ Object Class (how contained is the action? is it within small regions of collect
 - **Euclid**: Some fields of the database are changed.
 - **Keter**: Multiple collections were affected deeply.
 - **Apollyon**: The entire database was affected deeply.
+
+## Frontend (VueJS)
+
+The frontend uses a simple Astro + Vue server, hosted on Vercel (free plan, of course) with server-side rendering features.
+
+<details>
+<summary>What is Astro?</summary>
+
+AstroJS is a library-agnostic SSR framework. It's heavily content-driven, if your site has a lot of static contents, Astro is one of the best choices. If your page has very dynamic interactivity, for example, games, then Astro isn't for you.
+
+The benefit of Astro is the ability to use ANY (popular enough) UI libraries with it, including React, Vue, Svelte, Solid and Alpine.
+
+</details>
