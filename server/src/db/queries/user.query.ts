@@ -33,6 +33,16 @@ export async function findUser(query: { username?: string; email?: string }) {
 }
 
 /**
+ * Searches a user by their ID.
+ *
+ * @param id the ID
+ * @returns the user list
+ */
+export async function findUserById(id: number) {
+  return db.select().from(users).where(eq(users.id, id)).limit(1);
+}
+
+/**
  * Checks if a user exists.
  * @param query The query having a username or an email.
  * @returns True if the user exists, false otherwise.

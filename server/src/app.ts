@@ -1,21 +1,22 @@
+import cors from "cors";
 import "dotenv/config";
 import express from "express";
 import { readFileSync } from "fs";
 import http from "http";
 import https from "https";
-import { expectAccountExists } from "./db/utils";
 import { auth } from "./middlewares";
 import { accountsRouter } from "./routes/accounts.route";
+import { blocksRouter } from "./routes/blocks.route";
 
 // The server-side entrypoint.
 const app: express.Express = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
-app.get("/auth", auth);
-app.use(accountsRouter);
-
-expectAccountExists(1234, 12345);
+app.use("/", accountsRouter);
+app.use("/block", blocksRouter);
+app.use("/auth", auth);
 
 // Error handling
 app.use((err: Error, req: any, res: any, next: any) => {

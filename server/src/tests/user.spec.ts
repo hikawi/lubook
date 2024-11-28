@@ -1,6 +1,6 @@
 import { hashSync } from "bcryptjs";
 import supertest from "supertest";
-import { afterAll, afterEach, describe, expect, it } from "vitest";
+import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import app from "../app";
 import { db, disconnect } from "../db";
 import { users } from "../db/schema/user";
@@ -98,5 +98,33 @@ describe("users", () => {
     });
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty("token");
+  });
+
+  it("should deny auth after token expired", async () => {
+    vi.useFakeTimers();
+
+    await db.insert(users).values({
+      username: "luna",
+      email: "luna@example.com",
+      password: hashSync("1234", 12),
+      role: "user",
+    });
+
+    const res = await supertest(app).post("/login").send({
+      profile: "luna",
+      password: "1234",
+    });
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty("token");
+    const token = res.body.token;
+
+    vi.advanceTimersByTime(24 * 60 * 61 * 1000); // The default is 24h key.
+    const res2 = await supertest(app)
+      .head("/auth")
+      .set("Authentication", `Bearer ${token}`)
+      .send();
+    expect(res2.statusCode).toBe(401);
+
+    vi.useRealTimers();
   });
 });

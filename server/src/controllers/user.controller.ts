@@ -17,56 +17,55 @@ import { createUser, existsUser, findUser } from "../db/queries/user.query";
  *   + 401 (Unauthorized): The account exists, but passwords don't match.
  *   + 404 (Not Found): The request was good, but that account does not exist.
  */
-export const login: RequestHandler = expressAsyncHandler(async (req, res) => {
-  type LoginBody = { profile: string; password: string };
-  let result: z.SafeParseReturnType<LoginBody, LoginBody>;
+export const loginHandler: RequestHandler = expressAsyncHandler(
+  async (req, res) => {
+    type LoginBody = { profile: string; password: string };
+    let result: z.SafeParseReturnType<LoginBody, LoginBody>;
 
-  if (/^[a-zA-Z][a-zA-Z0-9-_]{1,31}$/.test(req.body.profile)) {
-    // Okay, not an email.
-    const schema = z.object({
-      profile: z.string().regex(/^[a-zA-Z][a-zA-Z0-9-_]{1,31}$/),
-      password: z.string().min(1, "Can't be empty"),
+    if (/^[a-zA-Z][a-zA-Z0-9-_]{1,31}$/.test(req.body.profile)) {
+      // Okay, not an email.
+      const schema = z.object({
+        profile: z.string().regex(/^[a-zA-Z][a-zA-Z0-9-_]{1,31}$/),
+        password: z.string().min(1, "Can't be empty"),
+      });
+      result = schema.safeParse(req.body);
+    } else {
+      // Welp it's an email.
+      const schema = z.object({
+        profile: z.string().email(),
+        password: z.string().min(1, "Can't be empty"),
+      });
+      result = schema.safeParse(req.body);
+    }
+
+    // Throw errors.
+    if (result.error) {
+      res.status(400);
+      const err = result.error.errors[0];
+      throw new Error(`${err.path}: ${err.message}`);
+    }
+
+    // Check if that account exists.
+    const profile = result.data.profile;
+    const user = await findUser({ username: profile, email: profile });
+    if (user.length == 0) {
+      res.status(404);
+      throw new Error("No account exists");
+    }
+
+    // Check if passwords match.
+    if (!compareSync(result.data.password, user[0].password)) {
+      res.status(401);
+      throw new Error("Incorrect password");
+    }
+
+    // Login success. Sign with the static data id.
+    const token = sign({ id: user[0].id }, process.env.JWT_SECRET!, {
+      expiresIn: "24h",
     });
-    result = schema.safeParse(req.body);
-  } else {
-    // Welp it's an email.
-    const schema = z.object({
-      profile: z.string().email(),
-      password: z.string().min(1, "Can't be empty"),
-    });
-    result = schema.safeParse(req.body);
+    res.status(200).json({ token });
   }
-
-  // Throw errors.
-  if (result.error) {
-    res.status(400);
-    const err = result.error.errors[0];
-    throw new Error(`${err.path}: ${err.message}`);
-  }
-
-  // Check if that account exists.
-  const profile = result.data.profile;
-  const user = await findUser({ username: profile, email: profile });
-  if (user.length == 0) {
-    res.status(404);
-    throw new Error("No account exists");
-  }
-
-  // Check if passwords match.
-  if (!compareSync(result.data.password, user[0].password)) {
-    res.status(401);
-    throw new Error("Incorrect password");
-  }
-
-  // Login success. Adds username and email to payload, meaning that if either
-  // of those 2 fields change, the token shall be invalid.
-  const token = sign(
-    { id: user[0].id, username: user[0].username, email: user[0].email },
-    process.env.JWT_SECRET!,
-    { expiresIn: "24h" }
-  );
-  res.status(200).json({ token });
-});
+);
 
 /**
  * POST /register: Attempts to register a user.
@@ -79,7 +78,7 @@ export const login: RequestHandler = expressAsyncHandler(async (req, res) => {
  *   + 400 (Bad Request): If the body request is malformed.
  *   + 409 (Conflict): If the account already existed.
  */
-export const register: RequestHandler = expressAsyncHandler(
+export const registerHandler: RequestHandler = expressAsyncHandler(
   async (req, res) => {
     const schema = z.object({
       name: z.string().optional(),
