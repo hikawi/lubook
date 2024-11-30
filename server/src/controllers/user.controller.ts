@@ -10,7 +10,7 @@ import { createUser, existsUser, findUser } from "../db/queries/user.query";
  *
  * - Clearance Level: 0 (Unclassified)
  * - Object Class: Safe
- * - Accepts: { profile, password }.
+ * - Accepts: { username, password }.
  * - Returns:
  *   + 200 (Success): Logged in was success, returns a new web token.
  *   + 400 (Bad Request): The request was bad.
@@ -19,24 +19,11 @@ import { createUser, existsUser, findUser } from "../db/queries/user.query";
  */
 export const loginHandler: RequestHandler = expressAsyncHandler(
   async (req, res) => {
-    type LoginBody = { profile: string; password: string };
-    let result: z.SafeParseReturnType<LoginBody, LoginBody>;
-
-    if (/^[a-zA-Z][a-zA-Z0-9-_]{1,31}$/.test(req.body.profile)) {
-      // Okay, not an email.
-      const schema = z.object({
-        profile: z.string().regex(/^[a-zA-Z][a-zA-Z0-9-_]{1,31}$/),
-        password: z.string().min(1, "Can't be empty"),
-      });
-      result = schema.safeParse(req.body);
-    } else {
-      // Welp it's an email.
-      const schema = z.object({
-        profile: z.string().email(),
-        password: z.string().min(1, "Can't be empty"),
-      });
-      result = schema.safeParse(req.body);
-    }
+    const schema = z.object({
+      username: z.string().regex(/^[A-Za-z-_]{2,32}$/),
+      password: z.string().min(1, "Can't be empty"),
+    });
+    const result = schema.safeParse(req.body);
 
     // Throw errors.
     if (result.error) {
@@ -46,8 +33,7 @@ export const loginHandler: RequestHandler = expressAsyncHandler(
     }
 
     // Check if that account exists.
-    const profile = result.data.profile;
-    const user = await findUser({ username: profile, email: profile });
+    const user = await findUser(result.data.username);
     if (user.length == 0) {
       res.status(404);
       throw new Error("No account exists");
@@ -86,8 +72,7 @@ export const registerHandler: RequestHandler = expressAsyncHandler(
         .string()
         .min(2, "Must have at least 2 characters.")
         .max(32, "Must have at most 32 characters.")
-        .regex(/^[a-zA-Z][a-zA-Z0-9-_]{1,31}$/),
-      email: z.string().email("Must be in correct format"),
+        .regex(/^[A-Za-z-_]{2,32}$/),
       password: z.string().min(1, "Password can't be empty"),
     });
 
@@ -99,11 +84,8 @@ export const registerHandler: RequestHandler = expressAsyncHandler(
       throw new Error(`${err.path}: ${err.message}`);
     }
 
-    // That means the parse was a success.
-    const { username, email } = result.data;
-
     // Checks if the user exists.
-    if (await existsUser({ username, email })) {
+    if (await existsUser(result.data.username)) {
       res.status(409);
       throw new Error("There's already a user with that email or username");
     }

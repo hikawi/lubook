@@ -19,31 +19,26 @@ export async function setupTestUsers() {
       .values([
         {
           username: "strawberry",
-          email: "strawberry@example.com",
           password: hashSync("strawberry", 12),
           role: "user",
         },
         {
           username: "blackberry",
-          email: "blackberry@example.com",
           password: hashSync("blackberry", 12),
           role: "user",
         },
         {
           username: "blueberry",
-          email: "blueberry@example.com",
           password: hashSync("blueberry", 12),
           role: "user",
         },
         {
           username: "kiwi",
-          email: "kiwi@example.com",
           password: hashSync("kiwi", 12),
           role: "moderator",
         },
         {
           username: "watermelon",
-          email: "watermelon@example.com",
           password: hashSync("watermelon", 12),
           role: "admin",
         },

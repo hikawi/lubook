@@ -1,11 +1,11 @@
 import supertest from "supertest";
-import { afterEach, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
 import app from "../app";
 import { db } from "../db";
 import { blockUser } from "../db/queries/block.query";
 import { findUser } from "../db/queries/user.query";
 import { blockUsers } from "../db/schema/block";
-import { setupTestUsers } from "./utils";
+import { clearDatabase, setupTestUsers } from "./utils";
 
 describe("blocks", () => {
   let token: string | null;
@@ -14,7 +14,7 @@ describe("blocks", () => {
     await setupTestUsers();
     const loginRes = await supertest(app)
       .post("/login")
-      .send({ profile: "blueberry", password: "blueberry" });
+      .send({ username: "blueberry", password: "blueberry" });
     expect(loginRes.statusCode).toBe(200);
     token = loginRes.body.token;
   });
@@ -23,8 +23,12 @@ describe("blocks", () => {
     await db.delete(blockUsers);
   });
 
+  afterAll(async () => {
+    await clearDatabase();
+  });
+
   async function getUser(username: string) {
-    return (await findUser({ username }))![0];
+    return (await findUser(username))![0];
   }
 
   it("should throw 400 if bad blocklist", async () => {

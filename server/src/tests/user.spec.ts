@@ -20,7 +20,6 @@ describe("users", () => {
     const res = await supertest(app).post("/register").send({
       name: "luna",
       username: "luna@$",
-      email: "luna@example",
       password: "1234",
     });
     expect(res.statusCode).toBe(400);
@@ -29,14 +28,12 @@ describe("users", () => {
   it("should fail register if already did", async () => {
     await db.insert(users).values({
       username: "luna",
-      email: "luna@example.com",
       password: hashSync("1234", 12),
       role: "user",
     });
 
     const res = await supertest(app).post("/register").send({
       username: "luna",
-      email: "luna@example.co",
       password: "1234",
     });
     expect(res.statusCode).toBe(409);
@@ -45,7 +42,6 @@ describe("users", () => {
   it("should succeed register if everything correct", async () => {
     const res = await supertest(app).post("/register").send({
       username: "luna",
-      email: "luna@example.co",
       password: "1234",
     });
 
@@ -55,7 +51,7 @@ describe("users", () => {
 
   it("should deny login if bad request", async () => {
     const res = await supertest(app).post("/login").send({
-      profile: "@@@$$$",
+      username: "@@@$$$",
       password: "1234",
     });
     expect(res.statusCode).toBe(400);
@@ -63,7 +59,7 @@ describe("users", () => {
 
   it("should deny login if account doesn't exist", async () => {
     const res = await supertest(app).post("/login").send({
-      profile: "luna",
+      username: "luna",
       password: "1234",
     });
     expect(res.statusCode).toBe(404);
@@ -72,13 +68,12 @@ describe("users", () => {
   it("should deny login if passwords don't match", async () => {
     await db.insert(users).values({
       username: "luna",
-      email: "luna@example.com",
       password: hashSync("1234", 12),
       role: "user",
     });
 
     const res = await supertest(app).post("/login").send({
-      profile: "luna",
+      username: "luna",
       password: "12345",
     });
     expect(res.statusCode).toBe(401);
@@ -87,13 +82,12 @@ describe("users", () => {
   it("should accept login if credentials correct", async () => {
     await db.insert(users).values({
       username: "luna",
-      email: "luna@example.com",
       password: hashSync("1234", 12),
       role: "user",
     });
 
     const res = await supertest(app).post("/login").send({
-      profile: "luna",
+      username: "luna",
       password: "1234",
     });
     expect(res.statusCode).toBe(200);
@@ -105,13 +99,12 @@ describe("users", () => {
 
     await db.insert(users).values({
       username: "luna",
-      email: "luna@example.com",
       password: hashSync("1234", 12),
       role: "user",
     });
 
     const res = await supertest(app).post("/login").send({
-      profile: "luna",
+      username: "luna",
       password: "1234",
     });
     expect(res.statusCode).toBe(200);

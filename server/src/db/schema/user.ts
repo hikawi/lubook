@@ -8,13 +8,12 @@ export const users = pg.pgTable(
   {
     id: pg.serial().primaryKey(),
     username: pg.varchar({ length: 32 }).notNull().unique(),
-    email: pg.text().notNull().unique(),
     password: pg.char({ length: 60 }).notNull(),
     role: roles().notNull(),
+    verified: pg.boolean().default(false),
     joined: pg.timestamp().defaultNow().notNull(),
   },
   (self) => ({
     usernameIndex: pg.uniqueIndex("user_username_idx").on(lower(self.username)),
-    emailIndex: pg.uniqueIndex("user_email_idx").on(lower(self.email)),
   })
 );
