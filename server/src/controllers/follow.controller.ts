@@ -1,7 +1,6 @@
 import { RequestHandler } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { z } from "zod";
-import { findUser } from "../db/queries/user.query";
 import { AuthorizedRequest } from "../middlewares";
 
 /**
@@ -27,9 +26,4 @@ export const follow: RequestHandler = expressAsyncHandler(async (req, res) => {
     throw new Error("Username is invalid");
   }
 
-  const followed = await findUser({ username: body.data.username });
-  if (followed.length == 0) {
-    res.status(404);
-    throw new Error("That user does not exist");
-  }
 });

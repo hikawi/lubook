@@ -28,7 +28,9 @@ const { title, description } = Astro.props;
     />
   </head>
 
-  <body class="bg-dark-navy font-nunito text-white">
-    <slot />
+  <body class="bg-darker-navy font-nunito text-white lg:px-16 xl:px-32">
+    <main class="h-fit min-h-screen w-full bg-dark-navy p-8 lg:p-16 xl:px-32">
+      <slot />
+    </main>
   </body>
 </html>

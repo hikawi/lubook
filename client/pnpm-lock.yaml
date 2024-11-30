@@ -20,12 +20,21 @@ importers:
       '@astrojs/vue':
         specifier: ^4.5.3
         version: 4.5.3(@types/node@22.9.3)(astro@4.16.14(@types/node@22.9.3)(rollup@4.27.3)(typescript@5.7.2))(rollup@4.27.3)(vue@3.5.13(typescript@5.7.2))
+      '@nanostores/persistent':
+        specifier: ^0.10.2
+        version: 0.10.2(nanostores@0.11.3)
+      '@nanostores/vue':
+        specifier: ^0.11.0
+        version: 0.11.0(nanostores@0.11.3)(vue@3.5.13(typescript@5.7.2))
       astro:
         specifier: ^4.16.13
         version: 4.16.14(@types/node@22.9.3)(rollup@4.27.3)(typescript@5.7.2)
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
+      nanostores:
+        specifier: ^0.11.3
+        version: 0.11.3
       tailwindcss:
         specifier: ^3.4.15
         version: 3.4.15
@@ -42,6 +51,9 @@ importers:
       '@testing-library/vue':
         specifier: ^8.1.0
         version: 8.1.0(@vue/compiler-sfc@3.5.13)(vue@3.5.13(typescript@5.7.2))
+      '@vitejs/plugin-vue':
+        specifier: ^5.2.1
+        version: 5.2.1(vite@5.4.11(@types/node@22.9.3))(vue@3.5.13(typescript@5.7.2))
       '@vitest/browser':
         specifier: ^2.1.5
         version: 2.1.5(@types/node@22.9.3)(playwright@1.49.0)(typescript@5.7.2)(vite@5.4.11(@types/node@22.9.3))(vitest@2.1.5)
@@ -63,6 +75,9 @@ importers:
       vitest:
         specifier: ^2.1.5
         version: 2.1.5(@types/node@22.9.3)(@vitest/browser@2.1.5)(msw@2.6.6(@types/node@22.9.3)(typescript@5.7.2))
+      vitest-browser-vue:
+        specifier: ^0.0.1
+        version: 0.0.1(@vitest/browser@2.1.5)(vitest@2.1.5)(vue@3.5.13(typescript@5.7.2))
 
 packages:
 
@@ -612,6 +627,26 @@ packages:
     resolution: {integrity: sha512-SvE+tSpcX884RJrPCskXxoS965Ky/pYABDEhWW6oeSRhpUDLrS5nTvT5n1LLSDVDYvty4imVmXsy+3/ROVuknA==}
     engines: {node: '>=18'}
 
+  '@nanostores/persistent@0.10.2':
+    resolution: {integrity: sha512-BEndnLhRC+yP7gXTESepBbSj8XNl8OXK9hu4xAgKC7MWJHKXnEqJMqY47LUyHxK6vYgFnisyHmqq+vq8AUFyIg==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    peerDependencies:
+      nanostores: ^0.9.0 || ^0.10.0 || ^0.11.0
+
+  '@nanostores/vue@0.11.0':
+    resolution: {integrity: sha512-4ndyLhwVFl1xhOnvWuMvYiG4K2rYvkaQWP3nJC1/RwK/dvpDgLPywwv6MnBdFydqbOGuXNaXOEwa3HsG9CujmA==}
+    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
+    peerDependencies:
+      '@nanostores/logger': '>=0.4.0'
+      '@vue/devtools-api': '>=7.6.2'
+      nanostores: '>=0.11.3'
+      vue: '>=3.3.1'
+    peerDependenciesMeta:
+      '@nanostores/logger':
+        optional: true
+      '@vue/devtools-api':
+        optional: true
+
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -884,11 +919,11 @@ packages:
       vite: ^5.0.0
       vue: ^3.0.0
 
-  '@vitejs/plugin-vue@5.2.0':
-    resolution: {integrity: sha512-7n7KdUEtx/7Yl7I/WVAMZ1bEb0eVvXF3ummWTeLcs/9gvo9pJhuLdouSXGjdZ/MKD1acf1I272+X0RMua4/R3g==}
+  '@vitejs/plugin-vue@5.2.1':
+    resolution: {integrity: sha512-cxh314tzaWwOLqVes2gnnCtvBDcM1UMdn+iFR+UjAn411dPT3tOmqrJjbMd7koZpMAmBM/GqeV4n9ge7JSiJJQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
-      vite: ^5.0.0
+      vite: ^5.0.0 || ^6.0.0
       vue: ^3.2.25
 
   '@vitest/browser@2.1.5':
@@ -2255,6 +2290,10 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
+  nanostores@0.11.3:
+    resolution: {integrity: sha512-TUes3xKIX33re4QzdxwZ6tdbodjmn3tWXCEc1uokiEmo14sI1EaGYNs2k3bU2pyyGNmBqFGAVl6jAGWd06AVIg==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+
   neotraverse@0.6.18:
     resolution: {integrity: sha512-Z4SmBUweYa09+o6pG+eASabEpP6QkQ70yHj351pQoEXIs8uHbaU2DWVmzBANKgflPa47A50PtB2+NgRpQvr7vA==}
     engines: {node: '>= 10'}
@@ -3140,6 +3179,14 @@ packages:
       vite:
         optional: true
 
+  vitest-browser-vue@0.0.1:
+    resolution: {integrity: sha512-r4UoOR2zFg0p5FFmYhcdIp6gFVXcQrVr5+zpm4h+1uAD1V+x7WUWrVzkFAFzeXVU2DfjhHMGxIvEBQT2HOw4Ew==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    peerDependencies:
+      '@vitest/browser': ^2.1.0-beta.4
+      vitest: ^2.1.0-beta.4
+      vue: ^3.0.0
+
   vitest@2.1.5:
     resolution: {integrity: sha512-P4ljsdpuzRTPI/kbND2sDZ4VmieerR2c9szEZpjc+98Z9ebvnXmM5+0tHEKqYZumXqlvnmfWsjeFOjXVriDG7A==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -3546,7 +3593,7 @@ snapshots:
 
   '@astrojs/vue@4.5.3(@types/node@22.9.3)(astro@4.16.14(@types/node@22.9.3)(rollup@4.27.3)(typescript@5.7.2))(rollup@4.27.3)(vue@3.5.13(typescript@5.7.2))':
     dependencies:
-      '@vitejs/plugin-vue': 5.2.0(vite@5.4.11(@types/node@22.9.3))(vue@3.5.13(typescript@5.7.2))
+      '@vitejs/plugin-vue': 5.2.1(vite@5.4.11(@types/node@22.9.3))(vue@3.5.13(typescript@5.7.2))
       '@vitejs/plugin-vue-jsx': 4.1.0(vite@5.4.11(@types/node@22.9.3))(vue@3.5.13(typescript@5.7.2))
       '@vue/compiler-sfc': 3.5.13
       astro: 4.16.14(@types/node@22.9.3)(rollup@4.27.3)(typescript@5.7.2)
@@ -4037,6 +4084,15 @@ snapshots:
       outvariant: 1.4.3
       strict-event-emitter: 0.5.1
 
+  '@nanostores/persistent@0.10.2(nanostores@0.11.3)':
+    dependencies:
+      nanostores: 0.11.3
+
+  '@nanostores/vue@0.11.0(nanostores@0.11.3)(vue@3.5.13(typescript@5.7.2))':
+    dependencies:
+      nanostores: 0.11.3
+      vue: 3.5.13(typescript@5.7.2)
+
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -4297,7 +4353,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-vue@5.2.0(vite@5.4.11(@types/node@22.9.3))(vue@3.5.13(typescript@5.7.2))':
+  '@vitejs/plugin-vue@5.2.1(vite@5.4.11(@types/node@22.9.3))(vue@3.5.13(typescript@5.7.2))':
     dependencies:
       vite: 5.4.11(@types/node@22.9.3)
       vue: 3.5.13(typescript@5.7.2)
@@ -6043,6 +6099,8 @@ snapshots:
 
   nanoid@3.3.7: {}
 
+  nanostores@0.11.3: {}
+
   neotraverse@0.6.18: {}
 
   nlcst-to-string@4.0.0:
@@ -6970,6 +7028,13 @@ snapshots:
   vitefu@1.0.3(vite@5.4.11(@types/node@22.9.3)):
     optionalDependencies:
       vite: 5.4.11(@types/node@22.9.3)
+
+  vitest-browser-vue@0.0.1(@vitest/browser@2.1.5)(vitest@2.1.5)(vue@3.5.13(typescript@5.7.2)):
+    dependencies:
+      '@vitest/browser': 2.1.5(@types/node@22.9.3)(playwright@1.49.0)(typescript@5.7.2)(vite@5.4.11(@types/node@22.9.3))(vitest@2.1.5)
+      '@vue/test-utils': 2.4.6
+      vitest: 2.1.5(@types/node@22.9.3)(@vitest/browser@2.1.5)(msw@2.6.6(@types/node@22.9.3)(typescript@5.7.2))
+      vue: 3.5.13(typescript@5.7.2)
 
   vitest@2.1.5(@types/node@22.9.3)(@vitest/browser@2.1.5)(msw@2.6.6(@types/node@22.9.3)(typescript@5.7.2)):
     dependencies:
