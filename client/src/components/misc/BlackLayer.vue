@@ -6,5 +6,9 @@ const blackLayer = useStore($blackLayer);
 </script>
 
 <template>
-  <div class="fixed inset-0 z-30 size-full bg-black/50" v-if="blackLayer"></div>
+  <div
+    class="fixed inset-0 z-30 size-full bg-black/50"
+    v-if="blackLayer"
+    data-testid="black-layer"
+  ></div>
 </template>

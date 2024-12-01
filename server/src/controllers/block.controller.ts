@@ -106,7 +106,6 @@ export const blockHandler: RequestHandler = expressAsyncHandler(
     }
 
     const rowCount = await blockUser(bearer.id, blocked[0].id);
-    console.log(rowCount);
     if (rowCount == 0) {
       res.status(200);
       res.json({ message: "Double-blocking isn't necessary." });

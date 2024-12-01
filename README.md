@@ -4,9 +4,9 @@
 
 ### A simple free-to-use manga sharing full stack application
 
-![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/hikawi/openbook)
-![Backend](https://img.shields.io/github/actions/workflow/status/hikawi/openbook/backend.yml)
-![Backend Coverage](https://img.shields.io/codecov/c/github/hikawi/lubook?label=backend%20coverage)
+![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/hikawi/lubook)
+![Backend](https://img.shields.io/github/actions/workflow/status/hikawi/lubook/backend.yml)
+![Frontend](https://img.shields.io/github/actions/workflow/status/hikawi/lubook/frontend.yml)
 
 </div>
 

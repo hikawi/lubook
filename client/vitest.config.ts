@@ -1,10 +1,11 @@
 /// <reference types="vitest/config" />
 import { getViteConfig } from "astro/config";
 import "dotenv/config";
-import { coverageConfigDefaults } from "vitest/config.js";
+import { coverageConfigDefaults } from "vitest/config";
 
 export default getViteConfig({
   test: {
+    css: true,
     reporters: process.env.MODE == "CI" ? ["github-actions", "verbose"] : "verbose",
     setupFiles: ["./src/tests/vitest-setup.ts"],
     coverage: {
@@ -14,5 +15,12 @@ export default getViteConfig({
       reportsDirectory: "coverage",
       exclude: [...coverageConfigDefaults.exclude, "./src/pages/**/*", "./src/layouts/**/*"],
     },
+    browser: {
+      enabled: true,
+      headless: true,
+      provider: "playwright",
+      name: "chromium",
+      screenshotFailures: false,
+    }
   },
 });

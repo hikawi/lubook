@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { postJson } from "@/utils/fetcher";
+import { postJson, redirect } from "@/utils/fetcher";
 import { z } from "astro/zod";
 import { ref } from "vue";
 import ValidatedField from "../misc/ValidatedField.vue";
@@ -50,7 +50,8 @@ function checkPassword() {
  * Checks the confirm field. It must match the password field to be valid.
  */
 function checkConfirm() {
-  if (password.value != confirm.value) confirmError.value = "Passwords don't match";
+  if (password.value != confirm.value)
+    confirmError.value = "Passwords don't match";
   else confirmError.value = "";
 }
 
@@ -64,7 +65,11 @@ function register() {
   if (usernameError.value || confirmError.value || passwordError.value) return;
 
   processing.value = true;
-  postJson("register", { name: name.value, username: username.value, password: password.value }).then((res) => {
+  postJson("register", {
+    name: name.value,
+    username: username.value,
+    password: password.value,
+  }).then((res) => {
     processing.value = false;
     switch (res.status) {
       case 400:
@@ -76,7 +81,7 @@ function register() {
         usernameError.value = "Username already taken";
         return;
       case 201:
-        window.location.href = "/login";
+        redirect("/login");
         return;
     }
   });
@@ -84,14 +89,37 @@ function register() {
 </script>
 
 <template>
-  <form class="flex w-full max-w-[40rem] flex-col gap-8 rounded-xl bg-medium-navy px-6 py-8" novalidate>
+  <form
+    class="flex w-full max-w-[40rem] flex-col gap-8 rounded-xl bg-medium-navy px-6 py-8"
+    novalidate
+  >
     <h2 class="text-2xl font-bold">Register</h2>
 
     <div class="flex w-full flex-col gap-4">
-      <ValidatedField label="Pen Name" placeholder="Luna (optional)" v-model="name" />
-      <ValidatedField label="Username" placeholder="luna" v-model="username" prefix="@" :error="usernameError" />
-      <ValidatedField label="Password" v-model="password" type="password" :error="passwordError" />
-      <ValidatedField label="Confirm Password" v-model="confirm" type="password" :error="confirmError" />
+      <ValidatedField
+        label="Pen Name"
+        placeholder="Luna (optional)"
+        v-model="name"
+      />
+      <ValidatedField
+        label="Username"
+        placeholder="luna"
+        v-model="username"
+        prefix="@"
+        :error="usernameError"
+      />
+      <ValidatedField
+        label="Password"
+        v-model="password"
+        type="password"
+        :error="passwordError"
+      />
+      <ValidatedField
+        label="Confirm Password"
+        v-model="confirm"
+        type="password"
+        :error="confirmError"
+      />
     </div>
 
     <button

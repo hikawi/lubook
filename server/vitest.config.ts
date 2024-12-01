@@ -8,6 +8,7 @@ export default defineConfig({
       reporter: process.env.CI ? ["lcovonly", "text"] : "text",
       reportOnFailure: Boolean(process.env.CI),
     },
+    setupFiles: ["./src/tests/vitest-setup.ts"],
     fileParallelism: false,
     reporters: process.env.CI ? "github-actions" : "verbose",
   },

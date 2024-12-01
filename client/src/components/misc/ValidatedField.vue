@@ -40,6 +40,11 @@ watchEffect(() => {
       />
       <IconInvalid class="size-6 fill-red" v-if="error" />
     </div>
-    <span id="username-error" class="text-right text-sm font-semibold text-red" v-if="error">{{ error }}</span>
+    <span
+      :id="`${name}-error`"
+      class="text-right text-sm font-semibold text-red"
+      v-if="error"
+      >{{ error }}</span
+    >
   </div>
 </template>
