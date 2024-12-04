@@ -20,6 +20,7 @@ describe("users", () => {
     const res = await supertest(app).post("/register").send({
       name: "luna",
       username: "luna@$",
+      email: "luna@example",
       password: "1234",
     });
     expect(res.statusCode).toBe(400);
@@ -35,6 +36,7 @@ describe("users", () => {
 
     const res = await supertest(app).post("/register").send({
       username: "luna",
+      email: "luna@example.com",
       password: "1234",
     });
     expect(res.statusCode).toBe(409);
@@ -43,6 +45,7 @@ describe("users", () => {
   it("should succeed register if everything correct", async () => {
     const res = await supertest(app).post("/register").send({
       username: "luna",
+      email: "luna@example.com",
       password: "1234",
     });
 
@@ -52,7 +55,7 @@ describe("users", () => {
 
   it("should deny login if bad request", async () => {
     const res = await supertest(app).post("/login").send({
-      username: "@@@$$$",
+      profile: "@@@$$$",
       password: "1234",
     });
     expect(res.statusCode).toBe(400);
@@ -60,7 +63,7 @@ describe("users", () => {
 
   it("should deny login if account doesn't exist", async () => {
     const res = await supertest(app).post("/login").send({
-      username: "luna",
+      profile: "luna",
       password: "1234",
     });
     expect(res.statusCode).toBe(404);
@@ -75,7 +78,7 @@ describe("users", () => {
     });
 
     const res = await supertest(app).post("/login").send({
-      username: "luna",
+      profile: "luna",
       password: "12345",
     });
     expect(res.statusCode).toBe(401);
@@ -87,14 +90,15 @@ describe("users", () => {
       password: hashSync("1234", 12),
       email: "luna@example.com",
       role: "user",
-    });
+    }).returning();
 
     const res = await supertest(app).post("/login").send({
-      username: "luna",
+      profile: "luna",
       password: "1234",
     });
     expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty("token");
+    expect(res.headers["set-cookie"]).toBeDefined();
+    expect(res.headers["set-cookie"][0]).toMatch(/^authorization=/);
   });
 
   it("should deny auth after token expired", async () => {
@@ -108,20 +112,44 @@ describe("users", () => {
     });
 
     const res = await supertest(app).post("/login").send({
-      username: "luna",
+      profile: "luna",
       password: "1234",
     });
+    const token = res.headers["set-cookie"][0];
     expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty("token");
-    const token = res.body.token;
+    expect(token).toBeDefined();
 
-    vi.advanceTimersByTime(24 * 60 * 61 * 1000); // The default is 24h key.
-    const res2 = await supertest(app)
-      .head("/auth")
-      .set("Authentication", `Bearer ${token}`)
-      .send();
+    vi.setSystemTime(new Date().getTime() + 7 * 24 * 60 * 61 * 1000);
+    const res2 = await supertest(app).head("/auth").set("Cookie", token).send();
     expect(res2.statusCode).toBe(401);
 
     vi.useRealTimers();
+  });
+
+  it("invalidates auth cookie on logout", async () => {
+    await db.insert(users).values({
+      username: "luna",
+      password: hashSync("1234", 12),
+      email: "luna@example.com",
+      role: "user",
+    });
+
+    // Login and retrieve first token.
+    const res = await supertest(app).post("/login").send({
+      profile: "luna",
+      password: "1234",
+    });
+    const token = res.headers["set-cookie"][0];
+    expect(res.statusCode).toBe(200);
+    expect(token).toBeDefined();
+
+    // Invalidates such token. Retrieves new cookie
+    const res2 = await supertest(app).post("/logout").set("Cookie", token).send();
+    expect(res2.statusCode).toBe(204);
+    const newCookie = res2.headers["set-cookie"][0];
+
+    // Check if authenticated?
+    const res3 = await supertest(app).head("/auth").set("Cookie", newCookie).send();
+    expect(res3.statusCode).toBe(401);
   });
 });

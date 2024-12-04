@@ -49,7 +49,15 @@ export const loginHandler: RequestHandler = expressAsyncHandler(
     const token = sign({ id: user[0].id }, process.env.JWT_SECRET!, {
       expiresIn: "24h",
     });
-    res.status(200).json({ token });
+
+    // Sets the cookie with the token.
+    res.status(200).cookie("authorization", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      domain: ".lubook.club",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    }).json({ success: true });
   }
 );
 
@@ -96,3 +104,17 @@ export const registerHandler: RequestHandler = expressAsyncHandler(
     res.status(201).json(user);
   }
 );
+
+/**
+ * POST /api/logout: Logout and invalidate the cookie token.
+ * 
+ * - Clearance Level: 0 (Unclassified)
+ * - Object Class: Safe
+ * - Accepts: none
+ * - Returns:
+ *   - 204 (No Content): The cookie was cleared.
+ */
+export const logoutHandler: RequestHandler = expressAsyncHandler(async (req, res) => {
+  res.clearCookie("authorization");
+  res.status(204).send();
+});

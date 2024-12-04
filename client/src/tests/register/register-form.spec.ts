@@ -19,6 +19,7 @@ describe("register form", () => {
     await expect
       .element(page.getByRole("textbox", { name: "Username" }))
       .toBeVisible();
+    await expect.element(page.getByRole("textbox", { name: "Email" })).toBeVisible();
     await expect
       .element(page.getByRole("textbox", { name: "Password", exact: true }))
       .toBeVisible();
@@ -75,6 +76,7 @@ describe("register form", () => {
 
     const name = page.getByRole("textbox", { name: "Pen Name" });
     const username = page.getByRole("textbox", { name: "Username" });
+    const email = page.getByRole("textbox", { name: "Email" });
     const password = page.getByRole("textbox", {
       name: "Password",
       exact: true,
@@ -84,6 +86,7 @@ describe("register form", () => {
 
     await userEvent.type(name, "Luna");
     await userEvent.type(username, "luna");
+    await userEvent.type(email, "luna@example.com");
     await userEvent.type(password, "12345");
     await userEvent.type(confirm, "12345");
     await submit.click();
@@ -98,6 +101,7 @@ describe("register form", () => {
         body: JSON.stringify({
           name: "Luna",
           username: "luna",
+          email: "luna@example.com",
           password: "12345",
         }),
       }
@@ -116,6 +120,7 @@ describe("register form", () => {
 
     const name = page.getByRole("textbox", { name: "Pen Name" });
     const username = page.getByRole("textbox", { name: "Username" });
+    const email = page.getByRole("textbox", { name: "Email" });
     const password = page.getByRole("textbox", {
       name: "Password",
       exact: true,
@@ -124,6 +129,7 @@ describe("register form", () => {
     const submit = page.getByRole("button", { name: "Register" });
 
     await userEvent.type(name, "Luna");
+    await userEvent.type(email, "luna@example.com");
     await userEvent.type(username, "luna");
     await userEvent.type(password, "12345");
     await userEvent.type(confirm, "12345");
@@ -153,6 +159,7 @@ describe("register form", () => {
 
     const name = page.getByRole("textbox", { name: "Pen Name" });
     const username = page.getByRole("textbox", { name: "Username" });
+    const email = page.getByRole("textbox", { name: "Email" });
     const password = page.getByRole("textbox", {
       name: "Password",
       exact: true,
@@ -162,13 +169,15 @@ describe("register form", () => {
 
     await userEvent.type(name, "Luna");
     await userEvent.type(username, "luna");
+    await userEvent.type(email, "luna@example.com");
     await userEvent.type(password, "12345");
     await userEvent.type(confirm, "12345");
     await submit.click();
 
     await expect
       .element(username)
-      .toHaveAccessibleErrorMessage("Username already taken");
+      .toHaveAccessibleErrorMessage("Username might be taken");
+    await expect.element(email).toHaveAccessibleErrorMessage("Email might be taken");
     await expect.element(password).not.toHaveAccessibleErrorMessage();
     await expect.element(confirm).not.toHaveAccessibleErrorMessage();
 

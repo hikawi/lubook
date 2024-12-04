@@ -5,7 +5,7 @@ import { beforeAll, describe, expect, it, vi } from "vitest";
 
 describe("register success redirects", () => {
   const { redirectMock, postJsonMock } = vi.hoisted(() => ({
-    redirectMock: vi.fn((url) => {}),
+    redirectMock: vi.fn((url) => { }),
     postJsonMock: vi.fn(
       async (url, body) => new Response(null, { status: 201 })
     ),
@@ -23,6 +23,7 @@ describe("register success redirects", () => {
 
     const name = page.getByRole("textbox", { name: "Pen Name" });
     const username = page.getByRole("textbox", { name: "Username" });
+    const email = page.getByRole("textbox", { name: "Email" });
     const password = page.getByRole("textbox", {
       name: "Password",
       exact: true,
@@ -32,6 +33,7 @@ describe("register success redirects", () => {
 
     await userEvent.type(name, "Luna");
     await userEvent.type(username, "luna");
+    await userEvent.type(email, "luna@example.com");
     await userEvent.type(password, "12345");
     await userEvent.type(confirm, "12345");
     await submit.click();
