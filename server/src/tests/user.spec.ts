@@ -29,6 +29,7 @@ describe("users", () => {
     await db.insert(users).values({
       username: "luna",
       password: hashSync("1234", 12),
+      email: "luna@example.com",
       role: "user",
     });
 
@@ -69,6 +70,7 @@ describe("users", () => {
     await db.insert(users).values({
       username: "luna",
       password: hashSync("1234", 12),
+      email: "luna@example.com",
       role: "user",
     });
 
@@ -83,6 +85,7 @@ describe("users", () => {
     await db.insert(users).values({
       username: "luna",
       password: hashSync("1234", 12),
+      email: "luna@example.com",
       role: "user",
     });
 
@@ -100,6 +103,7 @@ describe("users", () => {
     await db.insert(users).values({
       username: "luna",
       password: hashSync("1234", 12),
+      email: "luna@example.com",
       role: "user",
     });
 

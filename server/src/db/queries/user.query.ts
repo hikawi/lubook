@@ -1,21 +1,31 @@
 import { hashSync } from "bcryptjs";
-import { eq } from "drizzle-orm";
+import { eq, or } from "drizzle-orm";
 import { db } from "..";
 import { profiles } from "../schema/profile";
 import { users } from "../schema/user";
 import { lower } from "../utils";
+import { sendVerificationEmail } from "./email.query";
 
 /**
- * Finds the user, given a username.
+ * Finds the user, given a username or an email. This matches
+ * with WHERE username = $1 OR email = $2.
  *
- * @param username The username
+ * @param query The username or an email.
  * @returns The user, if found.
  */
-export async function findUser(username: string) {
+export async function findUser(query: { username?: string; email?: string }) {
+  const { username, email } = query;
   return db
     .select()
     .from(users)
-    .where(eq(lower(users.username), username.toLowerCase()))
+    .where(
+      or(
+        username
+          ? eq(lower(users.username), username.toLowerCase())
+          : undefined,
+        email ? eq(lower(users.email), email.toLowerCase()) : undefined
+      )
+    )
     .limit(1);
 }
 
@@ -31,11 +41,12 @@ export async function findUserById(id: number) {
 
 /**
  * Checks if a user exists.
- * @param username The user's username
+ *
+ * @param query The query containing an email or a username.
  * @returns True if the user exists, false otherwise.
  */
-export async function existsUser(username: string) {
-  return (await findUser(username)).length > 0;
+export async function existsUser(query: { username?: string; email?: string }) {
+  return (await findUser(query)).length > 0;
 }
 
 /**
@@ -44,6 +55,7 @@ export async function existsUser(username: string) {
  */
 export async function createUser(query: {
   name?: string;
+  email: string;
   username: string;
   password: string;
 }) {
@@ -51,6 +63,7 @@ export async function createUser(query: {
     .insert(users)
     .values({
       username: query.username,
+      email: query.email,
       password: hashSync(query.password, 12),
       role: "user",
     })
@@ -63,8 +76,10 @@ export async function createUser(query: {
     })
     .returning();
 
+  sendVerificationEmail(user[0].id, user[0].username, user[0].email);
   return {
     name: profile[0].name,
+    email: user[0].email,
     username: user[0].username,
   };
 }

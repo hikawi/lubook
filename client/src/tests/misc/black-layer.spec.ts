@@ -17,6 +17,8 @@ describe("black layer", () => {
     render(BlackLayer);
     $blackLayer.set(false);
     await allTasks();
-    await expect.element(page.getByTestId("black-layer")).not.toBeInTheDocument();
+    await expect
+      .element(page.getByTestId("black-layer"))
+      .not.toBeInTheDocument();
   });
 });

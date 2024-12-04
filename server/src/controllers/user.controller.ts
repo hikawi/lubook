@@ -10,7 +10,7 @@ import { createUser, existsUser, findUser } from "../db/queries/user.query";
  *
  * - Clearance Level: 0 (Unclassified)
  * - Object Class: Safe
- * - Accepts: { username, password }.
+ * - Accepts: { profile, password }.
  * - Returns:
  *   + 200 (Success): Logged in was success, returns a new web token.
  *   + 400 (Bad Request): The request was bad.
@@ -20,7 +20,7 @@ import { createUser, existsUser, findUser } from "../db/queries/user.query";
 export const loginHandler: RequestHandler = expressAsyncHandler(
   async (req, res) => {
     const schema = z.object({
-      username: z.string().regex(/^[A-Za-z-_]{2,32}$/),
+      profile: z.union([z.string().regex(/^[A-Za-z-_]{2,32}$/), z.string().email()]),
       password: z.string().min(1, "Can't be empty"),
     });
     const result = schema.safeParse(req.body);
@@ -33,7 +33,7 @@ export const loginHandler: RequestHandler = expressAsyncHandler(
     }
 
     // Check if that account exists.
-    const user = await findUser(result.data.username);
+    const user = await findUser({ username: result.data.profile, email: result.data.profile });
     if (user.length == 0) {
       res.status(404);
       throw new Error("No account exists");
@@ -73,6 +73,7 @@ export const registerHandler: RequestHandler = expressAsyncHandler(
         .min(2, "Must have at least 2 characters.")
         .max(32, "Must have at most 32 characters.")
         .regex(/^[A-Za-z-_]{2,32}$/),
+      email: z.string().email("Must be a valid email"),
       password: z.string().min(1, "Password can't be empty"),
     });
 
@@ -85,7 +86,7 @@ export const registerHandler: RequestHandler = expressAsyncHandler(
     }
 
     // Checks if the user exists.
-    if (await existsUser(result.data.username)) {
+    if (await existsUser({ username: result.data.username, email: result.data.email })) {
       res.status(409);
       throw new Error("There's already a user with that email or username");
     }

@@ -30,7 +30,7 @@ export const isBlockedHandler: RequestHandler = expressAsyncHandler(
       throw new Error("The username field is invalid.");
     }
 
-    const user = await findUser(parsed.data.username);
+    const user = await findUser({ username: parsed.data.username });
     if (user.length == 0) {
       res.status(404);
       throw new Error(parsed.data.username + " doesn't exist.");
@@ -99,7 +99,7 @@ export const blockHandler: RequestHandler = expressAsyncHandler(
       throw new Error("Username field invalid");
     }
 
-    const blocked = await findUser(parsed.data.username);
+    const blocked = await findUser({ username: parsed.data.username });
     if (blocked.length == 0) {
       res.status(404);
       throw new Error("That username doesn't exist");

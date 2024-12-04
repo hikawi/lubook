@@ -25,5 +25,4 @@ export const follow: RequestHandler = expressAsyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Username is invalid");
   }
-
 });

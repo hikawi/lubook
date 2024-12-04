@@ -28,7 +28,7 @@ describe("blocks", () => {
   });
 
   async function getUser(username: string) {
-    return (await findUser(username))![0];
+    return (await findUser({ username }))![0];
   }
 
   it("should throw 400 if bad blocklist", async () => {

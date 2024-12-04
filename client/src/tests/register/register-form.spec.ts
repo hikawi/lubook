@@ -10,21 +10,36 @@ describe("register form", () => {
 
   it("should show", async () => {
     render(RegisterForm);
-    await expect.element(page.getByRole("heading", { name: "Register" })).toBeVisible();
-    await expect.element(page.getByRole("textbox", { name: "Pen Name" })).toBeVisible();
-    await expect.element(page.getByRole("textbox", { name: "Username" })).toBeVisible();
-    await expect.element(page.getByRole("textbox", { name: "Password", exact: true })).toBeVisible();
-    await expect.element(page.getByRole("textbox", { name: "Confirm Password" })).toBeVisible();
+    await expect
+      .element(page.getByRole("heading", { name: "Register" }))
+      .toBeVisible();
+    await expect
+      .element(page.getByRole("textbox", { name: "Pen Name" }))
+      .toBeVisible();
+    await expect
+      .element(page.getByRole("textbox", { name: "Username" }))
+      .toBeVisible();
+    await expect
+      .element(page.getByRole("textbox", { name: "Password", exact: true }))
+      .toBeVisible();
+    await expect
+      .element(page.getByRole("textbox", { name: "Confirm Password" }))
+      .toBeVisible();
   });
 
   it("should show errors if invalid fields", async () => {
-    const fetchMock = vi.fn(async (url, options) => new Response(new Blob(), { status: 200 }));
+    const fetchMock = vi.fn(
+      async (url, options) => new Response(new Blob(), { status: 200 })
+    );
     vi.stubGlobal("fetch", fetchMock);
     render(RegisterForm);
 
     const name = page.getByRole("textbox", { name: "Pen Name" });
     const username = page.getByRole("textbox", { name: "Username" });
-    const password = page.getByRole("textbox", { name: "Password", exact: true });
+    const password = page.getByRole("textbox", {
+      name: "Password",
+      exact: true,
+    });
     const confirm = page.getByRole("textbox", { name: "Confirm Password" });
     const submit = page.getByRole("button", { name: "Register" });
 
@@ -35,22 +50,35 @@ describe("register form", () => {
     await submit.click();
 
     expect(fetchMock).not.toHaveBeenCalled();
-    await expect.element(username).toHaveAccessibleErrorMessage("Username can't contain special characters");
-    await expect.element(password).toHaveAccessibleErrorMessage("Password too short");
-    await expect.element(confirm).toHaveAccessibleErrorMessage("Passwords don't match");
+    await expect
+      .element(username)
+      .toHaveAccessibleErrorMessage(
+        "Username can't contain special characters"
+      );
+    await expect
+      .element(password)
+      .toHaveAccessibleErrorMessage("Password too short");
+    await expect
+      .element(confirm)
+      .toHaveAccessibleErrorMessage("Passwords don't match");
 
     fetchMock.mockRestore();
     vi.unstubAllGlobals();
   });
 
   it("should call fetch post if valid fields", async () => {
-    const fetchMock = vi.fn(async (url, options) => new Response(null, { status: 200 }));
+    const fetchMock = vi.fn(
+      async (url, options) => new Response(null, { status: 200 })
+    );
     vi.stubGlobal("fetch", fetchMock);
     render(RegisterForm);
 
     const name = page.getByRole("textbox", { name: "Pen Name" });
     const username = page.getByRole("textbox", { name: "Username" });
-    const password = page.getByRole("textbox", { name: "Password", exact: true });
+    const password = page.getByRole("textbox", {
+      name: "Password",
+      exact: true,
+    });
     const confirm = page.getByRole("textbox", { name: "Confirm Password" });
     const submit = page.getByRole("button", { name: "Register" });
 
@@ -60,26 +88,38 @@ describe("register form", () => {
     await userEvent.type(confirm, "12345");
     await submit.click();
 
-    expect(fetchMock).toHaveBeenCalledWith(`${import.meta.env.PUBLIC_API}/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name: "Luna", username: "luna", password: "12345" }),
-    });
+    expect(fetchMock).toHaveBeenCalledWith(
+      `${import.meta.env.PUBLIC_API}/register`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: "Luna",
+          username: "luna",
+          password: "12345",
+        }),
+      }
+    );
 
     fetchMock.mockRestore();
     vi.unstubAllGlobals();
   });
 
   it("should show 'invalid' fields if error code 400", async () => {
-    const fetchMock = vi.fn(async (url, options) => new Response(null, { status: 400 }));
+    const fetchMock = vi.fn(
+      async (url, options) => new Response(null, { status: 400 })
+    );
     vi.stubGlobal("fetch", fetchMock);
     render(RegisterForm);
 
     const name = page.getByRole("textbox", { name: "Pen Name" });
     const username = page.getByRole("textbox", { name: "Username" });
-    const password = page.getByRole("textbox", { name: "Password", exact: true });
+    const password = page.getByRole("textbox", {
+      name: "Password",
+      exact: true,
+    });
     const confirm = page.getByRole("textbox", { name: "Confirm Password" });
     const submit = page.getByRole("button", { name: "Register" });
 
@@ -89,23 +129,34 @@ describe("register form", () => {
     await userEvent.type(confirm, "12345");
     await submit.click();
 
-    await expect.element(username).toHaveAccessibleErrorMessage("Username might be invalid?")
-    await expect.element(password).toHaveAccessibleErrorMessage("Password might be invalid?");
-    await expect.element(confirm).toHaveAccessibleErrorMessage("Confirm might be invalid?");
+    await expect
+      .element(username)
+      .toHaveAccessibleErrorMessage("Username might be invalid?");
+    await expect
+      .element(password)
+      .toHaveAccessibleErrorMessage("Password might be invalid?");
+    await expect
+      .element(confirm)
+      .toHaveAccessibleErrorMessage("Confirm might be invalid?");
 
     fetchMock.mockRestore();
     vi.unstubAllGlobals();
   });
 
   it("should show 'taken username' if error code 409", async () => {
-    const fetchMock = vi.fn(async (url, options) => new Response(null, { status: 409 }));
+    const fetchMock = vi.fn(
+      async (url, options) => new Response(null, { status: 409 })
+    );
     vi.stubGlobal("fetch", fetchMock);
 
     render(RegisterForm);
 
     const name = page.getByRole("textbox", { name: "Pen Name" });
     const username = page.getByRole("textbox", { name: "Username" });
-    const password = page.getByRole("textbox", { name: "Password", exact: true });
+    const password = page.getByRole("textbox", {
+      name: "Password",
+      exact: true,
+    });
     const confirm = page.getByRole("textbox", { name: "Confirm Password" });
     const submit = page.getByRole("button", { name: "Register" });
 
@@ -115,7 +166,9 @@ describe("register form", () => {
     await userEvent.type(confirm, "12345");
     await submit.click();
 
-    await expect.element(username).toHaveAccessibleErrorMessage("Username already taken")
+    await expect
+      .element(username)
+      .toHaveAccessibleErrorMessage("Username already taken");
     await expect.element(password).not.toHaveAccessibleErrorMessage();
     await expect.element(confirm).not.toHaveAccessibleErrorMessage();
 

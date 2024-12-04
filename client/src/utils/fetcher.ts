@@ -1,9 +1,9 @@
 /**
  * Redirects to a URL.
- * 
+ *
  * This is split to an independent file to let Vitest mock this module,
  * and this function along with it, instead of mocking window.location.href.
- * 
+ *
  * @param url The URL
  */
 export function redirect(url: string) {

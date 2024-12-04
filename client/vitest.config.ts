@@ -6,14 +6,19 @@ import { coverageConfigDefaults } from "vitest/config";
 export default getViteConfig({
   test: {
     css: true,
-    reporters: process.env.MODE == "CI" ? ["github-actions", "verbose"] : "verbose",
+    reporters:
+      process.env.MODE == "CI" ? ["github-actions", "verbose"] : "verbose",
     setupFiles: ["./src/tests/vitest-setup.ts"],
     coverage: {
       provider: "istanbul",
       reporter: process.env.MODE == "CI" ? ["lcovonly", "text"] : "text",
       reportOnFailure: process.env.MODE == "CI",
       reportsDirectory: "coverage",
-      exclude: [...coverageConfigDefaults.exclude, "./src/pages/**/*", "./src/layouts/**/*"],
+      exclude: [
+        ...coverageConfigDefaults.exclude,
+        "./src/pages/**/*",
+        "./src/layouts/**/*",
+      ],
     },
     browser: {
       enabled: true,
@@ -21,6 +26,6 @@ export default getViteConfig({
       provider: "playwright",
       name: "chromium",
       screenshotFailures: false,
-    }
+    },
   },
 });

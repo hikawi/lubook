@@ -6,10 +6,12 @@ import ValidatedField from "../misc/ValidatedField.vue";
 
 const name = ref("");
 const username = ref("");
+const email = ref("");
 const password = ref("");
 const confirm = ref("");
 
 const usernameError = ref("");
+const emailError = ref("");
 const passwordError = ref("");
 const confirmError = ref("");
 
@@ -33,6 +35,19 @@ function checkUsername() {
   }
 
   usernameError.value = result.error.errors[0].message;
+}
+
+/**
+ * Checks the email field.
+ */
+function checkEmail() {
+  const schema = z.string().email("Must be a valid email address");
+  const result = schema.safeParse(email.value);
+  if (result.success) {
+    emailError.value = "";
+    return;
+  }
+  emailError.value = result.error.errors[0].message;
 }
 
 /**
@@ -62,12 +77,21 @@ function register() {
   checkUsername();
   checkPassword();
   checkConfirm();
-  if (usernameError.value || confirmError.value || passwordError.value) return;
+  checkEmail();
+
+  if (
+    usernameError.value ||
+    confirmError.value ||
+    passwordError.value ||
+    emailError.value
+  )
+    return;
 
   processing.value = true;
   postJson("register", {
     name: name.value,
     username: username.value,
+    email: email.value,
     password: password.value,
   }).then((res) => {
     processing.value = false;
@@ -78,7 +102,8 @@ function register() {
         confirmError.value = "Confirm might be invalid?";
         return;
       case 409:
-        usernameError.value = "Username already taken";
+        usernameError.value = "Username might be taken";
+        emailError.value = "Email might be taken";
         return;
       case 201:
         redirect("/login");
@@ -107,6 +132,12 @@ function register() {
         v-model="username"
         prefix="@"
         :error="usernameError"
+      />
+      <ValidatedField
+        label="Email"
+        placeholder="luna@example.com"
+        v-model="email"
+        :error="emailError"
       />
       <ValidatedField
         label="Password"
