@@ -19,41 +19,46 @@ export const emailTransport = createTransport({
 });
 
 /**
- * Generates a verification code, writes it to a table, and 
- * 
+ * Generates a verification code, writes it to a table, and
+ *
  * @param id The ID for the user.
  * @param name The name of the user.
  * @param email The email of the user.
  */
-export async function sendVerificationEmail(id: number, name: string, email: string) {
+export async function sendVerificationEmail(
+  id: number,
+  name: string,
+  email: string,
+) {
   const code = randomInt(100000, 1000000);
   const hashed = hashSync(code.toString(), 12);
 
   // Insert and upsert on verifications table.
-  await db.insert(verifications).values({
-    user: id,
-    token: hashed,
-  }).onConflictDoUpdate({
-    target: [verifications.user],
-    set: {
+  await db
+    .insert(verifications)
+    .values({
       user: id,
       token: hashed,
-      expiry: new Date(new Date().getTime() + (15 * 60 * 1000)),
-    },
-  });
+    })
+    .onConflictDoUpdate({
+      target: [verifications.user],
+      set: {
+        user: id,
+        token: hashed,
+        expiry: new Date(new Date().getTime() + 15 * 60 * 1000),
+      },
+    });
 
   await emailTransport.sendMail({
     from: "Verify <verify@lubook.club>",
     to: email,
     subject: "Lubook Verification",
-    text:
-      `Dear @${name}, 
+    text: `Dear @${name}, 
       To complete your verification and join the Lubook community, please login and input the following code to verify:
       ${code}.
       
       This code will expire 15 minutes since it is sent to you.`.trim(),
-    html:
-      `
+    html: `
       <h3>Dear @${name}</h3>
 
       <p>To complete your verification and join the Lubook community, please login and input the following code to verify:</p>

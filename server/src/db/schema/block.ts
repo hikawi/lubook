@@ -12,7 +12,7 @@ export const blockTags = pg.pgTable(
   },
   (self) => ({
     pkUserBlockTag: pg.primaryKey({ columns: [self.user, self.tag] }),
-  })
+  }),
 );
 
 export const blockUsers = pg.pgTable(
@@ -27,5 +27,5 @@ export const blockUsers = pg.pgTable(
   },
   (self) => ({
     pkUserBlockUser: pg.primaryKey({ columns: [self.user, self.blocked] }),
-  })
+  }),
 );

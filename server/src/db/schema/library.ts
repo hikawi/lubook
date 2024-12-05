@@ -16,5 +16,5 @@ export const libraryEntries = pg.pgTable(
   },
   (self) => ({
     pkLibraryEntry: pg.primaryKey({ columns: [self.user, self.manga] }),
-  })
+  }),
 );

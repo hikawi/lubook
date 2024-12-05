@@ -8,18 +8,23 @@ import https from "https";
 import { auth } from "./middlewares";
 import { accountsRouter } from "./routes/accounts.route";
 import { blocksRouter } from "./routes/blocks.route";
+import { profilesRouter } from "./routes/profiles.route";
 
 // The server-side entrypoint.
 const app: express.Express = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors({
-  origin: "https://www.lubook.club",
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN,
+    credentials: true,
+  }),
+);
 
+app.options("*", cors());
 app.use("/", accountsRouter);
+app.use("/profile", profilesRouter);
 app.use("/block", blocksRouter);
 app.use("/auth", auth);
 

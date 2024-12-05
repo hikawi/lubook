@@ -7,7 +7,7 @@ import { users } from "../db/schema/user";
 export async function clearDatabase() {
   const tables = ["user", "profile"];
   const promises = tables.map((t) =>
-    db.execute(sql.raw(`truncate table \"${t}\" restart identity cascade;`))
+    db.execute(sql.raw(`truncate table \"${t}\" restart identity cascade;`)),
   );
   await Promise.all(promises);
 }
@@ -57,7 +57,7 @@ export async function setupTestUsers() {
           name: `${node.username} profile`,
           bio: "I love fruits",
         };
-      })
+      }),
     );
   });
 }

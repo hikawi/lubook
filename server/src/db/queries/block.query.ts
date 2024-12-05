@@ -28,7 +28,7 @@ export async function isUserBlocked(blocker: number, blocked: number) {
 export async function getBlockList(
   user: number,
   page: number,
-  per_page: number
+  per_page: number,
 ) {
   const res = await db
     .select({

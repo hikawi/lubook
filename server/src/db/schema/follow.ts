@@ -9,5 +9,5 @@ export const follows = pg.pgTable(
   },
   (self) => ({
     pkFollow: pg.primaryKey({ columns: [self.following, self.followedBy] }),
-  })
+  }),
 );

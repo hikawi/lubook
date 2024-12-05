@@ -38,7 +38,7 @@ export const isBlockedHandler: RequestHandler = expressAsyncHandler(
 
     const result = await isUserBlocked(user[0].id, bearer.id);
     res.status(200).json({ blocked: result });
-  }
+  },
 );
 
 /**
@@ -70,10 +70,10 @@ export const blocklistHandler: RequestHandler = expressAsyncHandler(
     const queryResult = getBlockList(
       bearer.id,
       parsed.data.page,
-      parsed.data.per_page
+      parsed.data.per_page,
     );
     res.status(200).json({ result: queryResult });
-  }
+  },
 );
 
 /**
@@ -113,5 +113,5 @@ export const blockHandler: RequestHandler = expressAsyncHandler(
       res.status(201);
       res.json({ blocked: blocked[0].username });
     }
-  }
+  },
 );

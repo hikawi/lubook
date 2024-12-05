@@ -17,5 +17,5 @@ export const users = pg.pgTable(
   (self) => ({
     usernameIndex: pg.uniqueIndex("user_username_idx").on(lower(self.username)),
     emailIndex: pg.uniqueIndex("user_email_idx").on(lower(self.email)),
-  })
+  }),
 );

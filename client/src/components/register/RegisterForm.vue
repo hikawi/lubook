@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { postJson, redirect } from "@/utils/fetcher";
+import { authenticate, postJson, redirect } from "@/utils/fetcher";
 import { z } from "astro/zod";
 import { ref } from "vue";
 import ValidatedField from "../misc/ValidatedField.vue";
@@ -73,43 +73,50 @@ function checkConfirm() {
 /**
  * Checks the credentials and sends to the server.
  */
-function register() {
+async function register() {
   checkUsername();
   checkPassword();
   checkConfirm();
   checkEmail();
 
   if (
-    usernameError.value ||
-    confirmError.value ||
-    passwordError.value ||
-    emailError.value
+    [usernameError, confirmError, passwordError, emailError]
+      .map((it) => it.value)
+      .some(Boolean)
   )
     return;
 
+  const [vName, vUsername, vEmail, vPassword] = [
+    name.value,
+    username.value,
+    email.value,
+    password.value,
+  ];
+
   processing.value = true;
-  postJson("register", {
-    name: name.value,
-    username: username.value,
-    email: email.value,
-    password: password.value,
-  }).then((res) => {
-    processing.value = false;
-    switch (res.status) {
-      case 400:
-        usernameError.value = "Username might be invalid?";
-        passwordError.value = "Password might be invalid?";
-        confirmError.value = "Confirm might be invalid?";
-        return;
-      case 409:
-        usernameError.value = "Username might be taken";
-        emailError.value = "Email might be taken";
-        return;
-      case 201:
-        redirect("/login");
-        return;
-    }
+  const res = await postJson("register", {
+    name: vName,
+    username: vUsername,
+    email: vEmail,
+    password: vPassword,
   });
+
+  processing.value = false;
+  switch (res.status) {
+    case 400:
+      usernameError.value = "Username might be invalid?";
+      passwordError.value = "Password might be invalid?";
+      confirmError.value = "Confirm might be invalid?";
+      return;
+    case 409:
+      usernameError.value = "Username might be taken";
+      emailError.value = "Email might be taken";
+      return;
+    case 201:
+      await authenticate(vUsername, vPassword);
+      redirect("/");
+      return;
+  }
 }
 </script>
 

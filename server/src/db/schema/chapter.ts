@@ -17,5 +17,5 @@ export const chapters = pg.pgTable(
   },
   (self) => ({
     pkChapter: pg.primaryKey({ columns: [self.manga, self.number] }),
-  })
+  }),
 );

@@ -85,12 +85,15 @@ describe("users", () => {
   });
 
   it("should accept login if credentials correct", async () => {
-    await db.insert(users).values({
-      username: "luna",
-      password: hashSync("1234", 12),
-      email: "luna@example.com",
-      role: "user",
-    }).returning();
+    await db
+      .insert(users)
+      .values({
+        username: "luna",
+        password: hashSync("1234", 12),
+        email: "luna@example.com",
+        role: "user",
+      })
+      .returning();
 
     const res = await supertest(app).post("/login").send({
       profile: "luna",
@@ -144,12 +147,18 @@ describe("users", () => {
     expect(token).toBeDefined();
 
     // Invalidates such token. Retrieves new cookie
-    const res2 = await supertest(app).post("/logout").set("Cookie", token).send();
+    const res2 = await supertest(app)
+      .post("/logout")
+      .set("Cookie", token)
+      .send();
     expect(res2.statusCode).toBe(204);
     const newCookie = res2.headers["set-cookie"][0];
 
     // Check if authenticated?
-    const res3 = await supertest(app).head("/auth").set("Cookie", newCookie).send();
+    const res3 = await supertest(app)
+      .head("/auth")
+      .set("Cookie", newCookie)
+      .send();
     expect(res3.statusCode).toBe(401);
   });
 });

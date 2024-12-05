@@ -23,8 +23,8 @@ export async function findUser(query: { username?: string; email?: string }) {
         username
           ? eq(lower(users.username), username.toLowerCase())
           : undefined,
-        email ? eq(lower(users.email), email.toLowerCase()) : undefined
-      )
+        email ? eq(lower(users.email), email.toLowerCase()) : undefined,
+      ),
     )
     .limit(1);
 }

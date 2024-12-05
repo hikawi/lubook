@@ -20,7 +20,10 @@ import { createUser, existsUser, findUser } from "../db/queries/user.query";
 export const loginHandler: RequestHandler = expressAsyncHandler(
   async (req, res) => {
     const schema = z.object({
-      profile: z.union([z.string().regex(/^[A-Za-z-_]{2,32}$/), z.string().email()]),
+      profile: z.union([
+        z.string().regex(/^[A-Za-z-_]{2,32}$/),
+        z.string().email(),
+      ]),
       password: z.string().min(1, "Can't be empty"),
     });
     const result = schema.safeParse(req.body);
@@ -33,7 +36,10 @@ export const loginHandler: RequestHandler = expressAsyncHandler(
     }
 
     // Check if that account exists.
-    const user = await findUser({ username: result.data.profile, email: result.data.profile });
+    const user = await findUser({
+      username: result.data.profile,
+      email: result.data.profile,
+    });
     if (user.length == 0) {
       res.status(404);
       throw new Error("No account exists");
@@ -51,14 +57,17 @@ export const loginHandler: RequestHandler = expressAsyncHandler(
     });
 
     // Sets the cookie with the token.
-    res.status(200).cookie("authorization", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "lax",
-      domain: ".lubook.club",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    }).json({ success: true });
-  }
+    res
+      .status(200)
+      .cookie("authorization", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+        domain: ".lubook.club",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      })
+      .json({ success: true });
+  },
 );
 
 /**
@@ -94,7 +103,12 @@ export const registerHandler: RequestHandler = expressAsyncHandler(
     }
 
     // Checks if the user exists.
-    if (await existsUser({ username: result.data.username, email: result.data.email })) {
+    if (
+      await existsUser({
+        username: result.data.username,
+        email: result.data.email,
+      })
+    ) {
       res.status(409);
       throw new Error("There's already a user with that email or username");
     }
@@ -102,19 +116,21 @@ export const registerHandler: RequestHandler = expressAsyncHandler(
     // Create the user.
     const user = await createUser({ ...result.data });
     res.status(201).json(user);
-  }
+  },
 );
 
 /**
  * POST /api/logout: Logout and invalidate the cookie token.
- * 
+ *
  * - Clearance Level: 0 (Unclassified)
  * - Object Class: Safe
  * - Accepts: none
  * - Returns:
  *   - 204 (No Content): The cookie was cleared.
  */
-export const logoutHandler: RequestHandler = expressAsyncHandler(async (req, res) => {
-  res.clearCookie("authorization");
-  res.status(204).send();
-});
+export const logoutHandler: RequestHandler = expressAsyncHandler(
+  async (req, res) => {
+    res.clearCookie("authorization");
+    res.status(204).send();
+  },
+);
