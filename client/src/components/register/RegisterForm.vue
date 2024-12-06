@@ -114,7 +114,7 @@ async function register() {
       return;
     case 201:
       await authenticate(vUsername, vPassword);
-      redirect("/");
+      redirect("/register/success");
       return;
   }
 }

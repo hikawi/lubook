@@ -98,12 +98,14 @@ describe("register form", () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           name: "Luna",
           username: "luna",
           email: "luna@example.com",
           password: "12345",
         }),
+        mode: "cors",
       }
     );
 

@@ -4,17 +4,19 @@ import { page, userEvent } from "@vitest/browser/context";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
 describe("register success redirects", () => {
-  const { redirectMock, postJsonMock } = vi.hoisted(() => ({
+  const { redirectMock, postJsonMock, authMock } = vi.hoisted(() => ({
     redirectMock: vi.fn((url) => { }),
     postJsonMock: vi.fn(
       async (url, body) => new Response(null, { status: 201 })
     ),
+    authMock: vi.fn(async (prof, pass) => new Response(null, { status: 200 })),
   }));
 
   beforeAll(() => {
     vi.mock("../../utils/fetcher.ts", () => ({
       redirect: redirectMock,
       postJson: postJsonMock,
+      authenticate: authMock,
     }));
   });
 
@@ -38,6 +40,6 @@ describe("register success redirects", () => {
     await userEvent.type(confirm, "12345");
     await submit.click();
 
-    expect(redirectMock).toHaveBeenCalledWith("/login");
+    expect(redirectMock).toHaveBeenCalledWith("/register/success");
   });
 });

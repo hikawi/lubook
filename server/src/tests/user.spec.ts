@@ -3,19 +3,20 @@ import supertest from "supertest";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import app from "../app";
 import { db, disconnect } from "../db";
+import { emailTransport } from "../db/queries/email.query";
 import { users } from "../db/schema/user";
 import { clearDatabase } from "./utils";
 
-describe("users", () => {
-  afterEach(async () => {
-    await clearDatabase();
-    expect(await db.$count(users)).toBe(0);
-  });
+afterEach(async () => {
+  await clearDatabase();
+  expect(await db.$count(users)).toBe(0);
+});
 
-  afterAll(async () => {
-    await disconnect();
-  });
+afterAll(async () => {
+  await disconnect();
+});
 
+describe("registration", () => {
   it("should fail register if bad input", async () => {
     const res = await supertest(app).post("/register").send({
       name: "luna",
@@ -49,10 +50,16 @@ describe("users", () => {
       password: "1234",
     });
 
+    const sendMailMock = vi.fn();
+    vi.spyOn(emailTransport, "sendMail").mockImplementationOnce(sendMailMock);
+
     expect(res.statusCode).toBe(201);
     await expect(db.$count(users)).resolves.toBe(1);
+    expect(sendMailMock).toHaveBeenCalled();
   });
+});
 
+describe("logging in", () => {
   it("should deny login if bad request", async () => {
     const res = await supertest(app).post("/login").send({
       profile: "@@@$$$",
@@ -103,7 +110,9 @@ describe("users", () => {
     expect(res.headers["set-cookie"]).toBeDefined();
     expect(res.headers["set-cookie"][0]).toMatch(/^authorization=/);
   });
+});
 
+describe("logging out", () => {
   it("should deny auth after token expired", async () => {
     vi.useFakeTimers();
 

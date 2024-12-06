@@ -18,6 +18,7 @@ export default getViteConfig({
         ...coverageConfigDefaults.exclude,
         "./src/pages/**/*",
         "./src/layouts/**/*",
+        "**/*.astro",
       ],
     },
     browser: {

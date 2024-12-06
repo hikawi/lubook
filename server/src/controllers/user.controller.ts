@@ -62,8 +62,7 @@ export const loginHandler: RequestHandler = expressAsyncHandler(
       .cookie("authorization", token, {
         httpOnly: true,
         secure: true,
-        sameSite: "lax",
-        domain: ".lubook.club",
+        sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .json({ success: true });

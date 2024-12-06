@@ -24,11 +24,10 @@ export async function authenticate(profile: string, password: string) {
     headers: {
       "Content-Type": "application/json",
     },
+    redirect: "follow",
     body: JSON.stringify({ profile, password }),
     credentials: "include",
-  }).then(res => {
-    console.log(res);
-  })
+  });
 }
 
 /**
@@ -42,7 +41,7 @@ export async function getJson(path: string) {
     method: "GET",
     mode: "cors",
     headers: {
-      "Accepts": "application/json",
+      "Accept": "application/json",
     },
     credentials: "include",
   });
