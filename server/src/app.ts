@@ -9,6 +9,7 @@ import { auth } from "./middlewares";
 import { accountsRouter } from "./routes/accounts.route";
 import { blocksRouter } from "./routes/blocks.route";
 import { profilesRouter } from "./routes/profiles.route";
+import verificationsRouter from "./routes/verifications.route";
 
 // The server-side entrypoint.
 const app: express.Express = express();
@@ -28,6 +29,7 @@ app.use("/", accountsRouter);
 app.use("/profile", profilesRouter);
 app.use("/block", blocksRouter);
 app.use("/auth", auth);
+app.use("/verify", verificationsRouter);
 
 // Error handling
 app.use((err: Error, req: any, res: any, next: any) => {

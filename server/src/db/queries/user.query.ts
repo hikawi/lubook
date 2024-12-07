@@ -1,10 +1,10 @@
 import { hashSync } from "bcryptjs";
 import { eq, or } from "drizzle-orm";
 import { db } from "..";
+import { sendVerificationEmail } from "../../misc/email-sender";
 import { profiles } from "../schema/profile";
 import { users } from "../schema/user";
 import { lower } from "../utils";
-import { sendVerificationEmail } from "./email.query";
 
 /**
  * Finds the user, given a username or an email. This matches

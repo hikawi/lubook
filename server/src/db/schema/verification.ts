@@ -1,15 +1,12 @@
 import * as pg from "drizzle-orm/pg-core";
 import { users } from "./user";
 
-const FIFTEEN_MINS = 15 * 60 * 1000;
-
 export const verifications = pg.pgTable("verification", {
   user: pg
     .serial()
     .primaryKey()
     .references(() => users.id),
-  token: pg.text(),
-  expiry: pg
-    .timestamp()
-    .$defaultFn(() => new Date(new Date().getTime() + FIFTEEN_MINS)),
+  token: pg.text().notNull(), // The 6-digit code hashed with bcrypt to compare if they choose this route.
+  urlToken: pg.text("url_token").notNull(), // The URL version of the token generated differently.
+  created: pg.timestamp().notNull().defaultNow(),
 });
