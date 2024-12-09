@@ -1,5 +1,4 @@
 import * as pg from "drizzle-orm/pg-core";
-import { users } from "./user";
 
 export const mangaStatuses = pg.pgEnum("mangastatus", [
   "ongoing",
@@ -14,8 +13,4 @@ export const mangas = pg.pgTable("manga", {
   status: mangaStatuses().default("ongoing").notNull(),
   uploadDate: pg.timestamp("upload_date").notNull(),
   lastUpdatedDate: pg.timestamp("last_updated").notNull(),
-  publisher: pg
-    .serial()
-    .references(() => users.id)
-    .notNull(),
 });

@@ -12,12 +12,16 @@
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.705.0",
+    "@aws-sdk/s3-request-presigner": "^3.705.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-async-handler": "^1.2.0",
+    "route-cache": "^0.7.0",
+    "sharp": "^0.33.5",
     "typescript": "^5.7.2"
   },
   "devDependencies": {
-    "@types/express": "^5.0.0"
+    "@types/express": "^5.0.0",
+    "@types/route-cache": "^0.5.5"
   }
 }
