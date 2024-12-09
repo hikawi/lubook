@@ -1,9 +1,0 @@
-Hello, fellow artist or art enjoyer %%username%%!
-
-This is an email for verification, requested by you for logging in to https://lubook.club. When logging in, you will be asked of this 6-digit code:
-
-%%code%%
-
-You can also copy and paste this link %%link%% to verify instead.
-
-Best regards, Luna.

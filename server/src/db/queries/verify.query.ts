@@ -56,6 +56,7 @@ export async function generateVerification(profile: string) {
         user: user[0].id,
         token: hashedCode,
         urlToken: hashedToken,
+        created: new Date(),
       },
     });
 

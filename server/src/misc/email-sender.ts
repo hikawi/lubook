@@ -2,7 +2,6 @@
 Lmao I don't even know if this is the appropriate place to put email credentials here, but here goes.
 */
 
-import { readFileSync } from "fs";
 import { createTransport } from "nodemailer";
 
 export const emailTransport = createTransport({
@@ -15,8 +14,48 @@ export const emailTransport = createTransport({
   },
 });
 
-const textEmail = readFileSync("./email-sender.txt", "utf8");
-const htmlEmail = readFileSync("./email-sender.html", "utf8");
+// I have no clue what I'm doing, I can't get it to read the file dynamically.
+// So I embedded the email templates here until I find a better way to do so.
+const textEmail = `
+  Hello, fellow artist or art enjoyer %%username%%!
+
+  This is an email for verification, requested by you for logging in to https://lubook.club. When logging in, you will be asked of this 6-digit code:
+
+  %%code%%
+
+  You can also copy and paste this link %%link%% to verify instead.
+
+  Best regards, Luna.
+  `.trim();
+
+const htmlEmail = `
+  <h1>hello, there!</h1>
+
+  <p>
+    dear fellow artist, art enjoyer or tourist alike,
+    <strong>@%%username%%</strong>
+    .
+  </p>
+
+  <p>
+    this is an email, requested by you (<em>maybe?</em>) for verification to join
+    the <a href="https://lubook.club">lubook</a> community. you received this
+    email because you register <strong>%%email%%</strong> as your email address.
+    anyway, if you try logging in, you will be requested to input a 6-digit code:
+  </p>
+
+  <h3>%%code%%</h3>
+
+  <p style="font-size: 0.875rem">
+    psst, you can also just click this <a href="%%link%%">link</a> to verify
+    instead, whatever works for you!
+  </p>
+
+  <p>
+    the verification code will expire <strong>15 minutes</strong> from when this
+    email is sent. so hurry up!
+  </p>
+  `.trim();
 
 function fillPlaceholders(
   text: string,

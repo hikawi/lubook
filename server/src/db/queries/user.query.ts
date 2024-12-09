@@ -1,7 +1,6 @@
 import { hashSync } from "bcryptjs";
 import { eq, or } from "drizzle-orm";
 import { db } from "..";
-import { sendVerificationEmail } from "../../misc/email-sender";
 import { profiles } from "../schema/profile";
 import { users } from "../schema/user";
 import { lower } from "../utils";
@@ -76,7 +75,7 @@ export async function createUser(query: {
     })
     .returning();
 
-  sendVerificationEmail(user[0].id, user[0].username, user[0].email);
+  // sendVerificationEmail(user[0].id, user[0].username, user[0].email);
   return {
     name: profile[0].name,
     email: user[0].email,
