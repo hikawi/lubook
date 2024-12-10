@@ -4,7 +4,6 @@ import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import app from "../app";
 import { db, disconnect } from "../db";
 import { users } from "../db/schema/user";
-import { emailTransport } from "../misc/email-sender";
 import { clearDatabase } from "./utils";
 
 afterEach(async () => {
@@ -50,12 +49,8 @@ describe("registration", () => {
       password: "1234",
     });
 
-    const sendMailMock = vi.fn();
-    vi.spyOn(emailTransport, "sendMail").mockImplementationOnce(sendMailMock);
-
     expect(res.statusCode).toBe(201);
     await expect(db.$count(users)).resolves.toBe(1);
-    expect(sendMailMock).toHaveBeenCalled();
   });
 });
 

@@ -4,6 +4,7 @@ import expressAsyncHandler from "express-async-handler";
 import { sign } from "jsonwebtoken";
 import { z } from "zod";
 import { createUser, existsUser, findUser } from "../db/queries/user.query";
+import { generateVerification } from "../db/queries/verify.query";
 
 /**
  * POST /login: Attempts to login a user.
@@ -114,6 +115,7 @@ export const registerHandler: RequestHandler = expressAsyncHandler(
 
     // Create the user.
     const user = await createUser({ ...result.data });
+    generateVerification(user.username);
     res.status(201).json(user);
   },
 );

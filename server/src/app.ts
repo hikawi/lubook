@@ -33,10 +33,4 @@ app.use((err: Error, req: any, res: any, next: any) => {
   return res.json({ status: res.statusCode, message: err.message });
 });
 
-// Start listening. If it's on VPS prod, it should run on HTTPS.
-// Otherwise, just whip up a server for testing.
-app.listen(3000, () => {
-  console.log("API Server started on port 3000");
-});
-
 export default app;

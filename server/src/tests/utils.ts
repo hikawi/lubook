@@ -6,10 +6,11 @@ import { users } from "../db/schema/user";
 
 export async function clearDatabase() {
   const tables = ["user", "profile"];
-  const promises = tables.map((t) =>
-    db.execute(sql.raw(`truncate table \"${t}\" restart identity cascade;`)),
-  );
-  await Promise.all(promises);
+  for (const table of tables) {
+    await db.execute(
+      sql.raw(`truncate table \"${table}\" restart identity cascade;`),
+    );
+  }
 }
 
 export async function setupTestUsers() {

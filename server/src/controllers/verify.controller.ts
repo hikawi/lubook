@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { z } from "zod";
-import { isVerified } from "../db/queries/verify.query";
+import { isVerified, verifyCode } from "../db/queries/verify.query";
 
 /**
  * GET /verify/check: Checks if the username or email is verified yet.
@@ -53,7 +53,16 @@ export const verifyUrlHandler: RequestHandler = expressAsyncHandler(
       return;
     }
 
-    // await verifyToken(result.data.username, result.data.token);
+    const verifyResult = await verifyCode(
+      result.data.username,
+      result.data.token,
+      true,
+    );
+    if (verifyResult) {
+      res.redirect(`${process.env.CORS_ORIGIN}/verify/success`);
+    } else {
+      res.redirect(`${process.env.CORS_ORIGIN}/verify/failed`);
+    }
   },
 );
 
@@ -91,7 +100,11 @@ export const verifyTokenHandler: RequestHandler = expressAsyncHandler(
       return;
     }
 
-    // const verifyResult = await verify(result.data.profile, result.data.code);
-    // res.status(200).json({ success: verifyResult });
+    const verifyResult = await verifyCode(
+      result.data.profile,
+      result.data.code,
+      false,
+    );
+    res.status(200).json({ success: verifyResult });
   },
 );
