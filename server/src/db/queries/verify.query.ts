@@ -1,6 +1,6 @@
 import { compareSync, hashSync } from "bcryptjs";
 import { randomBytes, randomInt } from "crypto";
-import { eq, or } from "drizzle-orm";
+import { and, eq, gte, or } from "drizzle-orm";
 import { db } from "..";
 import { sendVerificationEmail } from "../../misc/email-sender";
 import { users } from "../schema/user";
@@ -34,7 +34,7 @@ export async function generateVerification(profile: string) {
   // Find the user ID.
   const user = await findUser({ username: profile, email: profile });
   if (user.length == 0) {
-    return;
+    return false;
   }
 
   const code = randomInt(100000, 1000000);
@@ -68,6 +68,7 @@ export async function generateVerification(profile: string) {
     email: user[0].email,
     link: encodeURI(link),
   });
+  return true;
 }
 
 /**
@@ -105,4 +106,35 @@ export async function verifyCode(profile: string, code: string, url: boolean) {
     .delete(verifications)
     .where(eq(verifications.user, result[0].id));
   return delResult.rowCount != null && delResult.rowCount > 0;
+}
+
+/**
+ * Checks if a new verification email should be sent. It should not be sent
+ * if there's a token created within the last 5 minutes to prevent spamming.
+ *
+ * This also excludes those who have already verified.
+ *
+ * @param profile the username/email
+ */
+export async function shouldGenerate(profile: string) {
+  if (await isVerified(profile)) {
+    return false;
+  }
+
+  const cur = new Date();
+  const fiveMinsAgo = new Date(cur.getTime() - 5 * 60 * 1000);
+  const query = await db
+    .select()
+    .from(verifications)
+    .innerJoin(users, eq(verifications.user, users.id))
+    .where(
+      and(
+        or(eq(users.username, profile), eq(users.email, profile)),
+        gte(verifications.created, fiveMinsAgo),
+      ),
+    )
+    .limit(1);
+
+  // What do I do here?
+  return query.length == 0;
 }

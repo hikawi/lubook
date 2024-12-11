@@ -1,4 +1,5 @@
-import { afterAll, describe, expect, it } from "vitest";
+import { afterAll, describe, expect, it, vi } from "vitest";
+import app from "../app";
 import { db, disconnect } from "../db";
 
 describe("database", () => {
@@ -10,5 +11,17 @@ describe("database", () => {
     const result = await db.execute("select 1;");
     expect(result.rowCount).toBe(1);
     expect(result.rows[0]).toMatchObject({ "?column?": 1 });
+  });
+
+  it("should start listening", async () => {
+    const mockListen = vi.fn((port, callback) => {
+      callback();
+      return null as any;
+    });
+    vi.spyOn(app, "listen").mockImplementation(mockListen);
+
+    await import("../index");
+    expect(mockListen).toHaveBeenCalledOnce();
+    mockListen.mockRestore();
   });
 });
