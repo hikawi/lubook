@@ -4,7 +4,7 @@
 
 ### A simple free-to-use manga sharing full stack application
 
-![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/hikawi/lubook)
+[![wakatime](https://wakatime.com/badge/user/16f7181f-8df5-44c7-b2b4-4fa68b0c2dfe/project/9d95cd65-844f-43c9-a4f1-8bd49984be71.svg)](https://wakatime.com/badge/user/16f7181f-8df5-44c7-b2b4-4fa68b0c2dfe/project/9d95cd65-844f-43c9-a4f1-8bd49984be71)
 ![Backend](https://img.shields.io/github/actions/workflow/status/hikawi/lubook/backend.yml?label=backend)
 ![Frontend](https://img.shields.io/github/actions/workflow/status/hikawi/lubook/frontend.yml?label=frontend)
 

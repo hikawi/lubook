@@ -97,7 +97,7 @@ export async function verifyCode(profile: string, code: string, url: boolean) {
   const hashToCompare = url ? result[0].token : result[0].code;
   if (
     result.length == 0 ||
-    result[0].created.getTime() + 15 * 60 * 1000 > cur ||
+    result[0].created.getTime() + 15 * 60 * 1000 < cur ||
     !compareSync(code, hashToCompare)
   )
     return false;
@@ -105,7 +105,17 @@ export async function verifyCode(profile: string, code: string, url: boolean) {
   const delResult = await db
     .delete(verifications)
     .where(eq(verifications.user, result[0].id));
-  return delResult.rowCount != null && delResult.rowCount > 0;
+
+  if (delResult.rowCount != null && delResult.rowCount > 0) {
+    // Verify success, update the db with "verified"
+    await db
+      .update(users)
+      .set({ verified: true })
+      .where(eq(users.id, result[0].id));
+    return true;
+  }
+
+  return false;
 }
 
 /**

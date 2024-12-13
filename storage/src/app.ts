@@ -1,9 +1,8 @@
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import "dotenv/config";
 import express, { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
-import { cacheSeconds } from "route-cache";
+import sharp from "sharp";
 
 const s3 = new S3Client({
   region: "eu2",
@@ -19,7 +18,6 @@ const app = express();
 
 app.get(
   "/covers/*",
-  cacheSeconds(30),
   expressAsyncHandler(async (req: Request, res: Response) => {
     const key = req.params[0];
     const width = req.query.width ? Number(req.query.width) : 2550;
@@ -30,7 +28,13 @@ app.get(
     });
 
     try {
-      res.redirect(await getSignedUrl(s3, getObject, { expiresIn: 30 }));
+      const obj = await s3.send(getObject);
+      const resizer = sharp().resize({ width }).webp();
+      res.header({
+        "Content-Type": "image/webp",
+        "Content-Disposition": "inline",
+      });
+      (obj.Body as NodeJS.ReadableStream).pipe(resizer).pipe(res);
     } catch (e) {
       console.log(e);
       res.status(404).json({ message: "Can't find cover", key });

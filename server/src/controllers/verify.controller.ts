@@ -2,20 +2,22 @@ import { RequestHandler } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { z } from "zod";
 import {
-  generateVerification,
-  isVerified,
-  shouldGenerate,
-  verifyCode,
+    generateVerification,
+    isVerified,
+    shouldGenerate,
+    verifyCode,
 } from "../db/queries/verify.query";
+import { Status } from "../misc/status";
 
 /**
  * GET /verify/check: Checks if the username or email is verified yet.
  *
  * - Clearance Level: 0
  * - Object Class: Safe
- * - Accepts queries: { profile }.
- * - Returns:
- *   - 200 (Success): Returns an object { verified: boolean }.
+ * - Special Containment Procedures:
+ *   + { profile: string }.
+ * - Addendum:
+ *   - 200/OK: Returns an object { verified: boolean }.
  *   - 400 (Bad request): The profile doesn't match the schema.
  */
 export const isVerifiedHandler: RequestHandler = expressAsyncHandler(
@@ -28,12 +30,14 @@ export const isVerifiedHandler: RequestHandler = expressAsyncHandler(
     });
     const result = schema.safeParse(req.query);
     if (result.error) {
-      res.status(400).json({ message: result.error.issues[0].message });
+      res
+        .status(Status.BAD_REQUEST)
+        .json({ message: result.error.issues[0].message });
       return;
     }
 
     const verified = await isVerified(result.data.profile);
-    res.status(200).json({ verified });
+    res.status(Status.OK).json({ verified });
   },
 );
 
@@ -42,9 +46,11 @@ export const isVerifiedHandler: RequestHandler = expressAsyncHandler(
  *
  * - Clearance Level: 0
  * - Object Class: Euclid
- * - Accepts queries: { username, token }.
- * - Returns:
- *   - 302/Redirect: Whether it was successful or not, it returns to the web app.
+ * - Special Containment Procedures:
+ *   + Accepts: Query { username: string, token: string }.
+ *   + Mutates: "verification" table.
+ * - Addendum:
+ *   - 302/Found: Whether it was successful or not, it returns to the web app.
  */
 export const verifyUrlHandler: RequestHandler = expressAsyncHandler(
   async (req, res) => {
@@ -78,13 +84,14 @@ export const verifyUrlHandler: RequestHandler = expressAsyncHandler(
  * - Object Class: Euclid
  * - Special Containment Procedures:
  *   + Accepts body: { profile: string }
+ *   + Mutates: "verification" table
  * - Addendum:
- *   + 201/ResourceCreated: A new verification code and url token has been created.
+ *   + 201/Created: A new verification code and url token has been created.
  *   + 304/NotModified: A code has not been created. Either on cooldown or user is verified.
  *   + 400/BadRequest: The body is malformed.
  *   + 404/NotFound: Generation failed because no profile.
  */
-export const requestCode: RequestHandler = expressAsyncHandler(
+export const requestCodeHandler: RequestHandler = expressAsyncHandler(
   async (req, res) => {
     const schema = z.object({
       profile: z.union([
@@ -94,12 +101,14 @@ export const requestCode: RequestHandler = expressAsyncHandler(
     });
     const body = schema.safeParse(req.body);
     if (body.error) {
-      res.status(400).json({ message: body.error.issues[0].message });
+      res
+        .status(Status.BAD_REQUEST)
+        .json({ message: body.error.issues[0].message });
       return;
     }
 
     if (!(await shouldGenerate(body.data.profile))) {
-      res.status(304).json({
+      res.status(Status.NOT_MODIFIED).json({
         message: "User is already verified or email service is on cooldown.",
       });
       return;
@@ -108,10 +117,12 @@ export const requestCode: RequestHandler = expressAsyncHandler(
     const sent = await generateVerification(body.data.profile);
     if (sent) {
       res
-        .status(201)
+        .status(Status.CREATED)
         .json({ message: "Successfully generated a new verification email" });
     } else {
-      res.status(404).json({ message: "Does that profile exist?" });
+      res
+        .status(Status.NOT_FOUND)
+        .json({ message: "Does that profile exist?" });
     }
   },
 );
@@ -121,7 +132,9 @@ export const requestCode: RequestHandler = expressAsyncHandler(
  *
  * - Clearance Level: 0
  * - Object Class: Euclid
- * - Accepts: { profile: string, code: string }.
+ * - Special Containment Procedures:
+ *   + Accepts body { profile: string, code: string }.
+ *   +
  * - Returns:
  *   - 200 (OK): Returns an object { success: boolean }.
  *   - 400 (Bad Request): The body doesn't match the schema
