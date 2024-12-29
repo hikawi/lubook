@@ -2,10 +2,10 @@ import { RequestHandler } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { z } from "zod";
 import {
-    generateVerification,
-    isVerified,
-    shouldGenerate,
-    verifyCode,
+  generateVerification,
+  isVerified,
+  shouldGenerate,
+  verifyCode,
 } from "../db/queries/verify.query";
 import { Status } from "../misc/status";
 
@@ -134,7 +134,6 @@ export const requestCodeHandler: RequestHandler = expressAsyncHandler(
  * - Object Class: Euclid
  * - Special Containment Procedures:
  *   + Accepts body { profile: string, code: string }.
- *   +
  * - Returns:
  *   - 200 (OK): Returns an object { success: boolean }.
  *   - 400 (Bad Request): The body doesn't match the schema
@@ -150,7 +149,7 @@ export const verifyTokenHandler: RequestHandler = expressAsyncHandler(
     });
     const result = schema.safeParse(req.body);
     if (result.error) {
-      res.status(400).json({ message: result.error.message });
+      res.status(Status.BAD_REQUEST).json({ message: result.error.issues[0].message });
       return;
     }
 
@@ -159,6 +158,6 @@ export const verifyTokenHandler: RequestHandler = expressAsyncHandler(
       result.data.code,
       false,
     );
-    res.status(200).json({ success: verifyResult });
+    res.status(Status.OK).json({ success: verifyResult });
   },
 );

@@ -29,30 +29,30 @@ const textEmail = `
   `.trim();
 
 const htmlEmail = `
-  <h1>hello, there!</h1>
+  <h1>Hello, there!</h1>
 
   <p>
-    dear fellow artist, art enjoyer or tourist alike,
+    Dear fellow artist, art enjoyer or tourist alike,
     <strong>@%%username%%</strong>
     .
   </p>
 
   <p>
-    this is an email, requested by you (<em>maybe?</em>) for verification to join
-    the <a href="https://lubook.club">lubook</a> community. you received this
+    This is an email, requested by you (<em>maybe?</em>) for verification to join
+    the <a href="https://lubook.club">Lubook</a> community. you received this
     email because you register <strong>%%email%%</strong> as your email address.
-    anyway, if you try logging in, you will be requested to input a 6-digit code:
+    Anyway, if you try logging in, you will be requested to input a 6-digit code:
   </p>
 
   <h3>%%code%%</h3>
 
   <p style="font-size: 0.875rem">
-    psst, you can also just click this <a href="%%link%%">link</a> to verify
+    Psst, you can also just click this <a href="%%link%%">link</a> to verify
     instead, whatever works for you!
   </p>
 
   <p>
-    the verification code will expire <strong>15 minutes</strong> from when this
+    The verification code will expire <strong>15 minutes</strong> from when this
     email is sent. so hurry up!
   </p>
   `.trim();

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { authenticate, postJson, redirect } from "@/utils/fetcher";
+import { postJson, redirect } from "@/utils/fetcher";
 import { z } from "astro/zod";
 import { ref } from "vue";
 import ValidatedField from "../misc/ValidatedField.vue";
@@ -26,7 +26,7 @@ function checkUsername() {
     .string()
     .min(2, "Username must be from 2 characters")
     .max(32, "Username must be below 32 characters")
-    .regex(/^[\w\d-_]+$/, "Username can't contain special characters");
+    .regex(/^[\w-_][\w\d-_]+$/, "Username can't contain special characters");
   const result = schema.safeParse(username.value);
 
   if (result.success) {
@@ -113,7 +113,6 @@ async function register() {
       emailError.value = "Email might be taken";
       return;
     case 201:
-      await authenticate(vUsername, vPassword);
       redirect("/register/success");
       return;
   }

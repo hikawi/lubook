@@ -4,7 +4,8 @@ import expressAsyncHandler from "express-async-handler";
 import { sign } from "jsonwebtoken";
 import { z } from "zod";
 import { createUser, existsUser, findUser } from "../db/queries/user.query";
-import { generateVerification } from "../db/queries/verify.query";
+import { generateVerification, isVerified } from "../db/queries/verify.query";
+import { Status } from "../misc/status";
 
 /**
  * POST /login: Attempts to login a user.
@@ -31,9 +32,10 @@ export const loginHandler: RequestHandler = expressAsyncHandler(
 
     // Throw errors.
     if (result.error) {
-      res.status(400);
+      res.status(Status.BAD_REQUEST);
       const err = result.error.errors[0];
-      throw new Error(`${err.path}: ${err.message}`);
+      res.json({ message: `${err.path}: ${err.message}` });
+      return;
     }
 
     // Check if that account exists.
@@ -42,14 +44,20 @@ export const loginHandler: RequestHandler = expressAsyncHandler(
       email: result.data.profile,
     });
     if (user.length == 0) {
-      res.status(404);
-      throw new Error("No account exists");
+      res.status(Status.NOT_FOUND).json({ message: "No account exists" });
+      return;
     }
 
     // Check if passwords match.
     if (!compareSync(result.data.password, user[0].password)) {
-      res.status(401);
-      throw new Error("Incorrect password");
+      res.status(Status.UNAUTHORIZED).json({ message: "Incorrect password" });
+      return;
+    }
+
+    // Check if they are verified.
+    if (!(await isVerified(result.data.profile))) {
+      res.status(Status.FORBIDDEN).json({ message: "User isn't verified" });
+      return;
     }
 
     // Login success. Sign with the static data id.
@@ -97,9 +105,9 @@ export const registerHandler: RequestHandler = expressAsyncHandler(
     // Make sure request body is in the correct format.
     const result = schema.safeParse(req.body);
     if (!result.success) {
-      res.status(400);
       const err = result.error.errors[0];
-      throw new Error(`${err.path}: ${err.message}`);
+      res.status(Status.BAD_REQUEST).json({ message: `${err.path}: ${err.message}` });
+      return;
     }
 
     // Checks if the user exists.
@@ -109,8 +117,8 @@ export const registerHandler: RequestHandler = expressAsyncHandler(
         email: result.data.email,
       })
     ) {
-      res.status(409);
-      throw new Error("There's already a user with that email or username");
+      res.status(409).json({ message: "That user already exists." });
+      return;
     }
 
     // Create the user.

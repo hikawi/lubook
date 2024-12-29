@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import express from "express";
 import { auth } from "./middlewares";
+import { Status } from "./misc/status";
 import { accountsRouter } from "./routes/accounts.route";
 import { blocksRouter } from "./routes/blocks.route";
 import { profilesRouter } from "./routes/profiles.route";
@@ -29,7 +30,9 @@ app.use("/auth", auth);
 app.use("/verify", verificationsRouter);
 
 // Error handling
-app.use((err: Error, req: any, res: any, next: any) => {
+app.use(async (err: Error, req: any, res: any, next: any) => {
+  if (res.statusCode == Status.OK)
+    res.status(Status.INTERNAL_SERVER_ERROR);
   return res.json({ status: res.statusCode, message: err.message });
 });
 

@@ -1,9 +1,15 @@
-/// <reference types="vitest/config" />
-import { getViteConfig } from "astro/config";
+import tailwind from "@astrojs/tailwind";
+import vuePlugin from "@vitejs/plugin-vue";
 import "dotenv/config";
-import { coverageConfigDefaults } from "vitest/config";
+import { coverageConfigDefaults, defineConfig } from "vitest/config";
 
-export default getViteConfig({
+export default defineConfig({
+  plugins: [vuePlugin(), tailwind()],
+  resolve: {
+    alias: {
+      "@": "/src", // Map `@` to the `src` directory
+    },
+  },
   test: {
     css: true,
     reporters:

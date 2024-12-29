@@ -1,0 +1,20 @@
+{
+  "loginPage": {
+    "tagline": "Hãy đăng nhập vào kho truyện và bắt đầu đọc!",
+    "newUser": "Tôi chưa có tài khoản",
+    "logIn": "Đăng nhập",
+    "forgotPassword": "Quên mật khẩu?",
+    "profileField": "Tên đăng nhập hoặc Email",
+    "passwordField": "Mật khẩu",
+    "verifyField": "Mã xác thực",
+    "getCode": "Gửi mã",
+    "accountDoesNotExist": "Tài khoản này không tồn tại",
+    "wrongPassword": "Sai mật khẩu",
+    "unverified": "Tài khoản này chưa xác thực",
+    "codeInvalid": "Mã xác thực không đúng",
+    "codeSent": "Đã gửi!",
+    "requestTooRecently": "Bạn đã yêu cầu gửi mã gần đây",
+    "invalidProfile": "Tên hoặc email không hợp lệ",
+    "unknownError": "Lỗi gì đó đã xảy ra??"
+  }
+}

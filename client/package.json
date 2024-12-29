@@ -1,5 +1,5 @@
 {
-  "name": "Frontend Openbook",
+  "name": "frontend-lubook",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -12,30 +12,31 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
-    "@astrojs/tailwind": "^5.1.2",
-    "@astrojs/vercel": "^7.8.2",
-    "@astrojs/vue": "^4.5.3",
+    "@astrojs/tailwind": "^5.1.4",
+    "@astrojs/vercel": "^8.0.1",
+    "@astrojs/vue": "^5.0.3",
     "@nanostores/i18n": "^0.12.2",
     "@nanostores/persistent": "^0.10.2",
     "@nanostores/vue": "^0.11.0",
-    "astro": "4.16.16",
+    "astro": "5.1.1",
     "dotenv": "^16.4.5",
     "nanostores": "^0.11.3",
     "tailwindcss": "^3.4.15",
     "typescript": "^5.7.2",
+    "vite-tsconfig-paths": "^5.1.4",
     "vue": "^3.5.13"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/vue": "^8.1.0",
     "@vitejs/plugin-vue": "^5.2.1",
-    "@vitest/browser": "2.1.6",
-    "@vitest/coverage-istanbul": "2.1.6",
+    "@vitest/browser": "2.1.8",
+    "@vitest/coverage-istanbul": "2.1.8",
     "playwright": "^1.49.0",
     "prettier": "^3.4.1",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.6.9",
-    "vitest": "2.1.6",
+    "vitest": "2.1.8",
     "vitest-browser-vue": "^0.0.1"
   }
 }

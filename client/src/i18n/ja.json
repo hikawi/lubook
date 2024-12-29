@@ -1,0 +1,20 @@
+{
+  "loginPage": {
+    "tagline": "あなたの謙虚な居城にログインしてあらゆる読みましょう!",
+    "newUser": "私アカウントがないです！",
+    "logIn": "ログイン",
+    "forgotPassword": "パスワードをお忘れ場合",
+    "profileField": "ユーザーネームとかメールアドレス",
+    "passwordField": "パスワード",
+    "verifyField": "確認コード",
+    "getCode": "コードを送る",
+    "accountDoesNotExist": "このアカウントは存在しません",
+    "wrongPassword": "パスワードは一致しません",
+    "unverified": "このアカウントはまだ確認していません",
+    "codeInvalid": "確認コードは不規則です",
+    "codeSent": "送れた！",
+    "requestTooRecently": "コードはもう送れました",
+    "invalidProfile": "ユーザーとかメールは不規則です",
+    "unknownError": "不明エラーが発生してしまいました"
+  }
+}

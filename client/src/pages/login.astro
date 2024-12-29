@@ -7,8 +7,6 @@ import MainLayout from "@/layouts/MainLayout.astro";
 <MainLayout title="Lubook | Login" description="Login to the manga sharing community to start reading, publishing and socializing.">
   <section class="flex h-full flex-col items-center gap-8 py-20">
     <Logo />
-    <p class="text-balance text-center text-xl lg:text-[2rem] font-semibold">Sign in to your humble abode and continue reading!</p>
-    <LoginForm />
-    <a href="/register" class="text-sm underline underline-offset-2 lg:text-lg">I'm a new user!</a>
+    <LoginForm client:load />
   </section>
 </MainLayout>
