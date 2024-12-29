@@ -23,30 +23,35 @@ export async function setupTestUsers() {
           password: hashSync("strawberry", 12),
           email: "strawberry@fruits.com",
           role: "user",
+          verified: true,
         },
         {
           username: "blackberry",
           password: hashSync("blackberry", 12),
           email: "blackberry@fruits.com",
           role: "user",
+          verified: true,
         },
         {
           username: "blueberry",
           password: hashSync("blueberry", 12),
           email: "blueberry@fruits.com",
           role: "user",
+          verified: true,
         },
         {
           username: "kiwi",
           password: hashSync("kiwi", 12),
           email: "kiwi@fruits.com",
           role: "moderator",
+          verified: true,
         },
         {
           username: "watermelon",
           password: hashSync("watermelon", 12),
           email: "watermelon@fruits.com",
           role: "admin",
+          verified: true,
         },
       ])
       .returning();

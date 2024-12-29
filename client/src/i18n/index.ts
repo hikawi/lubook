@@ -19,5 +19,5 @@ export const $loginPage = $i18n("loginPage", {
   codeSent: "Sent!",
   requestTooRecently: "You have already requested a code",
   invalidProfile: "Username or email address is invalid",
-  unknownError: "An unknown error has happened.",
+  unknownError: "An unknown error has happened",
 });

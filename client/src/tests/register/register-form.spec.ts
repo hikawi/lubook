@@ -91,23 +91,22 @@ describe("register form", () => {
     await userEvent.type(confirm, "12345");
     await submit.click();
 
-    expect(fetchMock).toHaveBeenCalledWith(
-      `${import.meta.env.PUBLIC_API}/register`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          name: "Luna",
-          username: "luna",
-          email: "luna@example.com",
-          password: "12345",
-        }),
-        mode: "cors",
-      }
-    );
+    expect(fetchMock.mock.lastCall?.[0]).toEqual(`${import.meta.env.PUBLIC_API}/register`);
+    expect(fetchMock.mock.lastCall?.[1]).toEqual({
+      method: "POST",
+      mode: "cors",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+      body: JSON.stringify({
+        name: "Luna",
+        username: "luna",
+        email: "luna@example.com",
+        password: "12345",
+      }),
+    });
 
     fetchMock.mockRestore();
     vi.unstubAllGlobals();

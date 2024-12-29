@@ -86,6 +86,21 @@ describe("logging in", () => {
     expect(res.statusCode).toBe(401);
   });
 
+  it("should deny login if not verified", async () => {
+    await db.insert(users).values({
+      username: "luna",
+      password: hashSync("1234", 12),
+      email: "luna@example.com",
+      role: "user",
+    });
+
+    const res = await supertest(app).post("/login").send({
+      profile: "luna",
+      password: "1234",
+    });
+    expect(res.statusCode).toBe(403);
+  });
+
   it("should accept login if credentials correct", async () => {
     await db
       .insert(users)
@@ -94,6 +109,7 @@ describe("logging in", () => {
         password: hashSync("1234", 12),
         email: "luna@example.com",
         role: "user",
+        verified: true,
       })
       .returning();
 
@@ -116,6 +132,7 @@ describe("logging out", () => {
       password: hashSync("1234", 12),
       email: "luna@example.com",
       role: "user",
+      verified: true,
     });
 
     const res = await supertest(app).post("/login").send({
@@ -139,6 +156,7 @@ describe("logging out", () => {
       password: hashSync("1234", 12),
       email: "luna@example.com",
       role: "user",
+      verified: true,
     });
 
     // Login and retrieve first token.

@@ -20,7 +20,6 @@ const verifyElement = useTemplateRef("verifyRef");
 
 const btnDisabled = ref(false);
 const showVerify = ref(false);
-const showGetCode = ref(false);
 const getCodeText = ref("");
 const getCodeDisabled = ref(false);
 
@@ -49,7 +48,6 @@ async function logIn() {
     });
     if (res.status != 200) {
       verifyError.value = tl.value.codeInvalid;
-      showGetCode.value = true;
       btnDisabled.value = false;
       return;
     }
@@ -57,7 +55,6 @@ async function logIn() {
     const json = await res.json();
     if (!json.success) {
       verifyError.value = tl.value.codeInvalid;
-      showGetCode.value = true;
       btnDisabled.value = false;
       return;
     }
@@ -174,7 +171,6 @@ async function requestCode() {
 
           <button
             class="flex shrink-0 items-center justify-center rounded-lg bg-very-light-blue from-white/50 to-white/50 p-2 px-4 font-semibold text-black hover:bg-gradient-to-r"
-            v-if="showGetCode"
             :disabled="getCodeDisabled"
             @click.prevent="requestCode"
           >

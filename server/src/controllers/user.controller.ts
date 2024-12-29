@@ -70,7 +70,7 @@ export const loginHandler: RequestHandler = expressAsyncHandler(
       .status(200)
       .cookie("authorization", token, {
         httpOnly: true,
-        secure: true,
+        secure: req.secure,
         sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })

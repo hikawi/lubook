@@ -12,25 +12,6 @@ export function redirect(url: string) {
 }
 
 /**
- * Sends an authentication request to the server, and save as a cookie.
- * 
- * @param profile Profile to send
- * @param password Password to send
- */
-export async function authenticate(profile: string, password: string) {
-  return await fetch(`${import.meta.env.PUBLIC_API}/login`, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    redirect: "follow",
-    body: JSON.stringify({ profile, password }),
-    credentials: "include",
-  });
-}
-
-/**
  * Sends a GET fetch request with credentials.
  * 
  * @param path The path of the API
@@ -59,6 +40,7 @@ export async function postJson(path: string, body: any) {
     headers: {
       "Content-Type": "application/json",
     },
+    redirect: "follow",
     body: JSON.stringify(body),
     credentials: "include",
   });
