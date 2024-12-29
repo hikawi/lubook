@@ -68,3 +68,4 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DATABASE: vitest
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_SECRET }}

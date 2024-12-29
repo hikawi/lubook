@@ -19,7 +19,7 @@ describe("fetcher utils", () => {
   it("should correct format fetch GET", async () => {
     fetchMock.mockImplementationOnce(async (url, opts) => {
       expect(opts).toHaveProperty("mode", "cors");
-      expect(url).toContainEqual("test");
+      expect(url).toEqual(`${import.meta.env.PUBLIC_API}/test`);
     });
 
     getJson("test");
