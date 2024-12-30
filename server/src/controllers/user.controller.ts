@@ -106,7 +106,9 @@ export const registerHandler: RequestHandler = expressAsyncHandler(
     const result = schema.safeParse(req.body);
     if (!result.success) {
       const err = result.error.errors[0];
-      res.status(Status.BAD_REQUEST).json({ message: `${err.path}: ${err.message}` });
+      res
+        .status(Status.BAD_REQUEST)
+        .json({ message: `${err.path}: ${err.message}` });
       return;
     }
 

@@ -1,13 +1,13 @@
-import { eq } from "drizzle-orm";
+import { eq, or } from "drizzle-orm";
 import { db } from "..";
 import { profiles, users } from "../schema";
 
 /**
  * Retrieve the user's profile
  *
- * @param id The user's ID
+ * @param data The user's data
  */
-export async function getProfile(id: number) {
+export async function getProfile(data: { id?: number; username?: string }) {
   return await db
     .select({
       username: users.username,
@@ -20,6 +20,11 @@ export async function getProfile(id: number) {
     })
     .from(users)
     .innerJoin(profiles, eq(users.id, profiles.user))
-    .where(eq(users.id, id))
+    .where(
+      or(
+        data.id ? eq(users.id, data.id) : undefined,
+        data.username ? eq(users.username, data.username) : undefined,
+      ),
+    )
     .limit(1);
 }

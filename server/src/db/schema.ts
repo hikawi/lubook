@@ -14,10 +14,14 @@ export const users = pg.pgTable(
     joined: pg.timestamp().defaultNow().notNull(),
     verified: pg.boolean().notNull().default(false),
   },
-  (self) => [{
-    usernameIndex: pg.uniqueIndex("user_username_idx").on(lower(self.username)),
-    emailIndex: pg.uniqueIndex("user_email_idx").on(lower(self.email)),
-  }],
+  (self) => [
+    {
+      usernameIndex: pg
+        .uniqueIndex("user_username_idx")
+        .on(lower(self.username)),
+      emailIndex: pg.uniqueIndex("user_email_idx").on(lower(self.email)),
+    },
+  ],
 );
 
 export const verifications = pg.pgTable("verification", {
@@ -41,9 +45,11 @@ export const follows = pg.pgTable(
     following: pg.serial().references(() => users.id, { onDelete: "cascade" }),
     followedBy: pg.serial().references(() => users.id, { onDelete: "cascade" }),
   },
-  (self) => [{
-    pkFollow: pg.primaryKey({ columns: [self.following, self.followedBy] }),
-  }],
+  (self) => [
+    {
+      pkFollow: pg.primaryKey({ columns: [self.following, self.followedBy] }),
+    },
+  ],
 );
 
 export const blockTags = pg.pgTable(
@@ -54,9 +60,11 @@ export const blockTags = pg.pgTable(
       .references(() => users.id, { onDelete: "cascade" }),
     tag: pg.serial("tag_id").references(() => tags.id, { onDelete: "cascade" }),
   },
-  (self) => [{
-    pkUserBlockTag: pg.primaryKey({ columns: [self.user, self.tag] }),
-  }],
+  (self) => [
+    {
+      pkUserBlockTag: pg.primaryKey({ columns: [self.user, self.tag] }),
+    },
+  ],
 );
 
 export const blockUsers = pg.pgTable(
@@ -69,9 +77,11 @@ export const blockUsers = pg.pgTable(
       .serial("blocked_id")
       .references(() => users.id, { onDelete: "cascade" }),
   },
-  (self) => [{
-    pkUserBlockUser: pg.primaryKey({ columns: [self.user, self.blocked] }),
-  }],
+  (self) => [
+    {
+      pkUserBlockUser: pg.primaryKey({ columns: [self.user, self.blocked] }),
+    },
+  ],
 );
 
 export const profiles = pg.pgTable("profile", {
@@ -125,9 +135,11 @@ export const chapters = pg.pgTable(
     lastModifiedDate: pg.timestamp("last_modified_date").notNull().defaultNow(),
     disableComments: pg.boolean().notNull().default(true),
   },
-  (self) => [{
-    pkChapter: pg.primaryKey({ columns: [self.manga, self.number] }),
-  }],
+  (self) => [
+    {
+      pkChapter: pg.primaryKey({ columns: [self.manga, self.number] }),
+    },
+  ],
 );
 
 export const chapterCovers = pg.pgTable(
@@ -137,13 +149,15 @@ export const chapterCovers = pg.pgTable(
     chapter: pg.integer(),
     fileName: pg.text("file_name"),
   },
-  (table) => [{
-    chapterCoverPk: pg.primaryKey({ columns: [table.manga, table.chapter] }),
-    chapterCoverFk: pg.foreignKey({
-      columns: [table.manga, table.chapter],
-      foreignColumns: [chapters.manga, chapters.number],
-    }),
-  }],
+  (table) => [
+    {
+      chapterCoverPk: pg.primaryKey({ columns: [table.manga, table.chapter] }),
+      chapterCoverFk: pg.foreignKey({
+        columns: [table.manga, table.chapter],
+        foreignColumns: [chapters.manga, chapters.number],
+      }),
+    },
+  ],
 );
 
 export const pages = pg.pgTable(
@@ -153,9 +167,11 @@ export const pages = pg.pgTable(
     order: pg.integer(),
     fileName: pg.text("file_name").notNull(),
   },
-  (self) => [{
-    pagePk: pg.primaryKey({ columns: [self.manga, self.order] }),
-  }],
+  (self) => [
+    {
+      pagePk: pg.primaryKey({ columns: [self.manga, self.order] }),
+    },
+  ],
 );
 
 export const authors = pg.pgTable(
@@ -170,9 +186,11 @@ export const authors = pg.pgTable(
       .references(() => mangas.id)
       .notNull(),
   },
-  (self) => [{
-    userMangaPk: pg.primaryKey({ columns: [self.user, self.manga] }),
-  }],
+  (self) => [
+    {
+      userMangaPk: pg.primaryKey({ columns: [self.user, self.manga] }),
+    },
+  ],
 );
 
 export const ratings = pg.pgTable("rating", {

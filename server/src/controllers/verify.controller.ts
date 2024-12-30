@@ -149,7 +149,9 @@ export const verifyTokenHandler: RequestHandler = expressAsyncHandler(
     });
     const result = schema.safeParse(req.body);
     if (result.error) {
-      res.status(Status.BAD_REQUEST).json({ message: result.error.issues[0].message });
+      res
+        .status(Status.BAD_REQUEST)
+        .json({ message: result.error.issues[0].message });
       return;
     }
 

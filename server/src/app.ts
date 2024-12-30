@@ -31,8 +31,7 @@ app.use("/verify", verificationsRouter);
 
 // Error handling
 app.use(async (err: Error, req: any, res: any, next: any) => {
-  if (res.statusCode == Status.OK)
-    res.status(Status.INTERNAL_SERVER_ERROR);
+  if (res.statusCode == Status.OK) res.status(Status.INTERNAL_SERVER_ERROR);
   return res.json({ status: res.statusCode, message: err.message });
 });
 
