@@ -5,13 +5,11 @@ import MainLayout from "@/layouts/MainLayout.astro";
 ---
 
 <MainLayout
-  title="Lubook | Register"
+  title="Register"
   description="Register to join a community of manga enjoyers and talented manga artists."
 >
   <section class="flex h-full flex-col items-center gap-8 py-20">
     <Logo />
-    <p class="text-balance text-center text-xl lg:text-[2rem] font-semibold">Join a community of manga enjoyers and writers.</p>
     <RegisterForm client:load />
-    <a href="/login" class="text-sm underline underline-offset-2 lg:text-lg">I already have an account!</a>
   </section>
 </MainLayout>

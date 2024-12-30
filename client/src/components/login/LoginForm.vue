@@ -23,9 +23,7 @@ const showVerify = ref(false);
 const getCodeText = ref("");
 const getCodeDisabled = ref(false);
 
-// Setup the document's title to be in line with the user's locale settings.
 onMounted(() => {
-  document.title = tl.value.logIn;
   getCodeText.value = tl.value.getCode;
 });
 
@@ -136,7 +134,7 @@ async function requestCode() {
         v-model="profile"
         :label="tl.profileField"
         :error="profileError"
-        placeholder="luna OR luna@example.com"
+        :placeholder="tl.profilePlaceholder"
       />
       <ValidatedField
         type="password"

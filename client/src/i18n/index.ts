@@ -9,6 +9,7 @@ export const $loginPage = $i18n("loginPage", {
   logIn: "Login",
   forgotPassword: "I forgot my password",
   profileField: "Username or Email Address",
+  profilePlaceholder: "luna OR luna@example.com",
   passwordField: "Password",
   verifyField: "Verification Code",
   getCode: "Get Code",
@@ -20,6 +21,35 @@ export const $loginPage = $i18n("loginPage", {
   requestTooRecently: "You have already requested a code",
   invalidProfile: "Username or email address is invalid",
   unknownError: "An unknown error has happened",
+});
+
+/**
+ * The translation component for use in registration pages. Including
+ * register/success.
+ */
+export const $registerPage = $i18n("registerPage", {
+  register: "Register",
+  tagline: "Join a community of manga enjoyers and writers.",
+  nameField: "Pen Name",
+  namePlaceholder: "Luna (optional)",
+  usernameField: "Username",
+  usernamePlaceholder: "luna",
+  emailField: "Email Address",
+  emailPlaceholder: "luna@example.com",
+  passwordField: "Password",
+  confirmField: "Confirm Password",
+  usernameMin2: "Username must be from 2 characters",
+  usernameMax32: "Username must be below 32 characters",
+  usernameNoSpecial: "Username can't contain special characters",
+  emailInvalid: "Must be a valid email address",
+  passwordTooShort: "Password is too short",
+  passwordsDontMatch: "Passwords don't match",
+  badUsername: "Username might be invalid?",
+  badPassword: "Password might be invalid?",
+  badConfirm: "Password confirmation might be invalid?",
+  usernameTaken: "Username might be taken",
+  emailTaken: "Email might be taken",
+  alreadyHasAccount: "I already have an account!",
 });
 
 /**

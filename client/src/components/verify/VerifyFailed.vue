@@ -59,7 +59,7 @@ async function requestVerification() {
       <p class="text-balance text-center">{{ tl.verifyFailedMessage }}</p>
 
       <div
-        class="flex w-full flex-row items-end justify-center gap-2 overflow-y-hidden duration-200"
+        class="flex w-full flex-row items-end justify-center gap-2 duration-200"
         :class="{
           'invisible m-0 max-h-0': !showProfile,
           'visible mt-4 max-h-32': showProfile,
@@ -68,11 +68,11 @@ async function requestVerification() {
         <label class="flex w-full flex-col gap-2 text-sm font-semibold">
           {{ tl.profileField }}
           <div
-            class="flex flex-row items-center gap-2 rounded-lg border-2 border-transparent bg-darker-navy p-2 text-base font-normal placeholder:text-white/50 has-[:invalid]:ring-2 has-[:invalid]:ring-red"
+            class="flex flex-row items-center gap-2 rounded-lg bg-darker-navy p-2 text-base font-normal placeholder:text-white/50 has-[:invalid]:ring-2 has-[:invalid]:ring-red"
           >
             <input
               type="text"
-              class="w-full bg-transparent outline-none"
+              class="w-full border-2 border-transparent bg-transparent outline-none"
               ref="profileRef"
               v-model="profile"
               :aria-invalid="profileError != ''"

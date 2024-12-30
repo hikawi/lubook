@@ -30,7 +30,6 @@ describe("login form", () => {
     render(LoginForm);
 
     await expect.element(page.getByRole("heading", { name: "Login" })).toBeVisible();
-    expect(document.title).toEqual("Login");
   });
 
   it("should show profile not exists", async () => {

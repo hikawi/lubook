@@ -58,7 +58,7 @@ describe("register form", () => {
       );
     await expect
       .element(password)
-      .toHaveAccessibleErrorMessage("Password too short");
+      .toHaveAccessibleErrorMessage("Password is too short");
     await expect
       .element(confirm)
       .toHaveAccessibleErrorMessage("Passwords don't match");
@@ -144,7 +144,7 @@ describe("register form", () => {
       .toHaveAccessibleErrorMessage("Password might be invalid?");
     await expect
       .element(confirm)
-      .toHaveAccessibleErrorMessage("Confirm might be invalid?");
+      .toHaveAccessibleErrorMessage("Password confirmation might be invalid?");
 
     fetchMock.mockRestore();
     vi.unstubAllGlobals();

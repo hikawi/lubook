@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { $registerPage } from "@/i18n";
 import { postJson, redirect } from "@/utils/fetcher";
+import { useStore } from "@nanostores/vue";
 import { z } from "astro/zod";
 import { ref } from "vue";
 import ValidatedField from "../misc/ValidatedField.vue";
@@ -16,6 +18,7 @@ const passwordError = ref("");
 const confirmError = ref("");
 
 const processing = ref(false);
+const tl = useStore($registerPage);
 
 /**
  * Checks the username. A valid username is between 2-32 characters,
@@ -24,9 +27,9 @@ const processing = ref(false);
 function checkUsername() {
   const schema = z
     .string()
-    .min(2, "Username must be from 2 characters")
-    .max(32, "Username must be below 32 characters")
-    .regex(/^[\w-_][\w\d-_]+$/, "Username can't contain special characters");
+    .min(2, tl.value.usernameMin2)
+    .max(32, tl.value.usernameMax32)
+    .regex(/^[\w-_][\w\d-_]+$/, tl.value.usernameNoSpecial);
   const result = schema.safeParse(username.value);
 
   if (result.success) {
@@ -41,7 +44,7 @@ function checkUsername() {
  * Checks the email field.
  */
 function checkEmail() {
-  const schema = z.string().email("Must be a valid email address");
+  const schema = z.string().email(tl.value.emailInvalid);
   const result = schema.safeParse(email.value);
   if (result.success) {
     emailError.value = "";
@@ -55,7 +58,7 @@ function checkEmail() {
  */
 function checkPassword() {
   if (password.value.length <= 1) {
-    passwordError.value = "Password too short";
+    passwordError.value = tl.value.passwordTooShort;
   } else {
     passwordError.value = "";
   }
@@ -66,7 +69,7 @@ function checkPassword() {
  */
 function checkConfirm() {
   if (password.value != confirm.value)
-    confirmError.value = "Passwords don't match";
+    confirmError.value = tl.value.passwordsDontMatch;
   else confirmError.value = "";
 }
 
@@ -104,13 +107,13 @@ async function register() {
   processing.value = false;
   switch (res.status) {
     case 400:
-      usernameError.value = "Username might be invalid?";
-      passwordError.value = "Password might be invalid?";
-      confirmError.value = "Confirm might be invalid?";
+      usernameError.value = tl.value.badUsername;
+      passwordError.value = tl.value.badPassword;
+      confirmError.value = tl.value.badConfirm;
       return;
     case 409:
-      usernameError.value = "Username might be taken";
-      emailError.value = "Email might be taken";
+      usernameError.value = tl.value.usernameTaken;
+      emailError.value = tl.value.emailTaken;
       return;
     case 201:
       redirect("/register/success");
@@ -120,39 +123,43 @@ async function register() {
 </script>
 
 <template>
+  <p class="text-balance text-center text-xl font-semibold lg:text-[2rem]">
+    {{ tl.tagline }}
+  </p>
+
   <form
     class="flex w-full max-w-[40rem] flex-col gap-8 rounded-xl bg-medium-navy px-6 py-8"
     novalidate
   >
-    <h2 class="text-2xl font-bold">Register</h2>
+    <h2 class="text-2xl font-bold">{{ tl.register }}</h2>
 
     <div class="flex w-full flex-col gap-4">
       <ValidatedField
-        label="Pen Name"
-        placeholder="Luna (optional)"
+        :label="tl.nameField"
+        :placeholder="tl.namePlaceholder"
         v-model="name"
       />
       <ValidatedField
-        label="Username"
-        placeholder="luna"
+        :label="tl.usernameField"
+        :placeholder="tl.usernamePlaceholder"
         v-model="username"
         prefix="@"
         :error="usernameError"
       />
       <ValidatedField
-        label="Email"
-        placeholder="luna@example.com"
+        :label="tl.emailField"
+        :placeholder="tl.emailPlaceholder"
         v-model="email"
         :error="emailError"
       />
       <ValidatedField
-        label="Password"
+        :label="tl.passwordField"
         v-model="password"
         type="password"
         :error="passwordError"
       />
       <ValidatedField
-        label="Confirm Password"
+        :label="tl.confirmField"
         v-model="confirm"
         type="password"
         :error="confirmError"
@@ -165,17 +172,11 @@ async function register() {
       @click.prevent="register"
       class="w-fit rounded-full bg-sky-blue px-4 py-2 font-semibold text-black disabled:cursor-progress disabled:opacity-50"
     >
-      Register
+      {{ tl.register }}
     </button>
   </form>
+
+  <a href="/login" class="text-sm underline underline-offset-2 lg:text-lg">{{
+    tl.alreadyHasAccount
+  }}</a>
 </template>
-
-<style scoped>
-label {
-  @apply text-sm font-semibold lg:text-lg;
-}
-
-input {
-  @apply rounded-lg bg-darker-navy p-2 placeholder:text-white/50;
-}
-</style>
