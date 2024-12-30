@@ -7,7 +7,12 @@ import vue from "@astrojs/vue";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [vue(), tailwind()],
+  integrations: [
+    vue(),
+    tailwind({
+      applyBaseStyles: false,
+    }),
+  ],
   output: "server",
   adapter: vercel({
     imageService: true,

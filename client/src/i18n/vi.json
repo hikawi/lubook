@@ -16,5 +16,18 @@
     "requestTooRecently": "Bạn đã yêu cầu gửi mã gần đây",
     "invalidProfile": "Tên hoặc email không hợp lệ",
     "unknownError": "Lỗi gì đó đã xảy ra??"
+  },
+  "verifyPage": {
+    "verifySuccess": "Xác thực thành công",
+    "verifySuccessMessage": "Bạn đã xác thực tài khoản của bạn thành công. Bạn có thể đăng nhập bây giờ.",
+    "logIn": "Đăng Nhập",
+    "verifyFailed": "Xác thực thất bại...",
+    "verifyFailedMessage": "Đã có lỗi phát sinh lúc xác thực tài khoản của bạn. Đường dẫn đó có hết hạn không?",
+    "profileField": "Tên đăng nhập hoặc Email",
+    "profilePlaceholder": "luna hoặc luna@example.com",
+    "requestVerify": "Gửi mail xác thực",
+    "profileInvalid": "Tên hoặc email không hợp lệ",
+    "requestTooRecent": "Mail đã được gửi hoặc bạn đã xác thực rồi",
+    "profileNotExist": "Tài khoản này không tồn tại"
   }
 }

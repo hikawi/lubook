@@ -19,15 +19,3 @@ import IconEmailNotification from "../icons/IconEmailNotification.vue";
     >
   </div>
 </template>
-
-<style lang="css" scoped>
-input {
-  appearance: none;
-  -moz-appearance: textfield;
-}
-
-input::-webkit-inner-spin-button,
-input::-webkit-outer-spin-button {
-  appearance: none;
-}
-</style>

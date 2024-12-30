@@ -48,6 +48,7 @@ export default defineConfig({
     css: true,
     reporters:
       process.env.MODE == "CI" ? ["github-actions", "verbose"] : "verbose",
+    clearMocks: true,
     setupFiles: ["./src/tests/vitest-setup.ts"],
     coverage: {
       provider: "istanbul",

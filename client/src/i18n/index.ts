@@ -21,3 +21,20 @@ export const $loginPage = $i18n("loginPage", {
   invalidProfile: "Username or email address is invalid",
   unknownError: "An unknown error has happened",
 });
+
+/**
+ * Translation component for verify failed/success pages.
+ */
+export const $verifyPage = $i18n("verifyPage", {
+  verifySuccess: "Verify Success!",
+  verifySuccessMessage: "You have verified your account. You may now log in!",
+  logIn: "Login",
+  verifyFailed: "Verify Failed...",
+  verifyFailedMessage: "An error has occurred while verifying your account. Did the link expire?",
+  profileField: "Username or Email Address",
+  profilePlaceholder: "luna or luna@example.com",
+  requestVerify: "Send Verification Email",
+  profileInvalid: "Username or Email is invalid",
+  requestTooRecent: "You already got a code, or you're already verified",
+  profileNotExist: "This profile does not exist",
+});

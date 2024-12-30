@@ -16,5 +16,18 @@
     "requestTooRecently": "コードはもう送れました",
     "invalidProfile": "ユーザーとかメールは不規則です",
     "unknownError": "不明エラーが発生してしまいました"
+  },
+  "verifyPage": {
+    "verifySuccess": "確認成功！",
+    "verifySuccessMessage": "あなたのアカウントが確認されました。ログインしてすぐに読みましょう。",
+    "logIn": "ログイン",
+    "verifyFailed": "確認失敗、、、",
+    "verifyFailedMessage": "確認経過でエラーが発生してしまいました。あのリンクもう切れますかな。",
+    "profileField": "ユーザーネームとかメールアドレス",
+    "profilePlaceholder": "lunaとかluna@example.com",
+    "requestVerify": "確認メールを送る",
+    "profileInvalid": "ユーザーとかメールが不規則です",
+    "requestTooRecent": "コードもう送られたかもう確認しましたか",
+    "profileNotExist": "このアカウントは存在していません"
   }
 }

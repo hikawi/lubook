@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .lighten {
+    @apply from-white/50 to-white/50 duration-200 hover:bg-gradient-to-r;
+  }
+}
