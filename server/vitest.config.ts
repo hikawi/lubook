@@ -1,4 +1,3 @@
-import "dotenv/config";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -10,7 +9,7 @@ export default defineConfig({
         : "text",
       reportOnFailure: Boolean(process.env.CI),
     },
-    setupFiles: ["./src/tests/vitest-setup.ts"],
+    setupFiles: ["dotenv/config", "./src/tests/vitest-setup.ts"],
     fileParallelism: false,
     reporters: process.env.CI ? ["github-actions", "verbose"] : "verbose",
   },
