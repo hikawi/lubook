@@ -1,10 +1,7 @@
 import { S3Client } from "@aws-sdk/client-s3";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import { blockTags } from "./schema/block";
-import { follows } from "./schema/follow";
-import { tags } from "./schema/tag";
-import { roles, users } from "./schema/user";
+import { blockTags, follows, roles, tags, users } from "./schema";
 
 const pool = new Pool({
   max: 5,
@@ -33,7 +30,7 @@ const s3 = new S3Client({
 async function disconnect() {
   try {
     await pool.end();
-  } catch (ignored) {}
+  } catch (ignored) { }
 }
 
 export { db, disconnect, pool, s3 };

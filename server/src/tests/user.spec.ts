@@ -3,7 +3,7 @@ import supertest from "supertest";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import app from "../app";
 import { db, disconnect } from "../db";
-import { users } from "../db/schema/user";
+import { users } from "../db/schema";
 import { clearDatabase } from "./utils";
 
 afterEach(async () => {

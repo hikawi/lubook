@@ -1,8 +1,7 @@
 import { hashSync } from "bcryptjs";
 import { eq, or } from "drizzle-orm";
 import { db } from "..";
-import { profiles } from "../schema/profile";
-import { users } from "../schema/user";
+import { profiles, users } from "../schema";
 import { lower } from "../utils";
 
 /**

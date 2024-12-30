@@ -4,7 +4,7 @@ import app from "../app";
 import { db } from "../db";
 import { blockUser } from "../db/queries/block.query";
 import { findUser } from "../db/queries/user.query";
-import { blockUsers } from "../db/schema/block";
+import { blockUsers } from "../db/schema";
 import { clearDatabase, setupTestUsers } from "./utils";
 
 describe("blocks", () => {

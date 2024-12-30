@@ -1,8 +1,7 @@
 import { hashSync } from "bcryptjs";
 import { sql } from "drizzle-orm";
 import { db } from "../db";
-import { profiles } from "../db/schema/profile";
-import { users } from "../db/schema/user";
+import { profiles, users } from "../db/schema";
 
 export async function clearDatabase() {
   const tables = ["user", "profile"];

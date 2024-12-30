@@ -3,8 +3,7 @@ import { randomBytes, randomInt } from "crypto";
 import { and, eq, gte, or } from "drizzle-orm";
 import { db } from "..";
 import { sendVerificationEmail } from "../../misc/email-sender";
-import { users } from "../schema/user";
-import { verifications } from "../schema/verification";
+import { users, verifications } from "../schema";
 import { findUser } from "./user.query";
 
 /**

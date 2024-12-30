@@ -1,7 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "..";
-import { blockUsers } from "../schema/block";
-import { users } from "../schema/user";
+import { blockUsers, users } from "../schema";
 
 /**
  * Checks if the {blocker} has blocked the {blocked}.
