@@ -1,6 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "..";
-import { blockUsers, users } from "../schema";
+import { blockUsers, profiles, users } from "../schema";
 
 /**
  * Checks if the {blocker} has blocked the {blocked}.
@@ -24,21 +24,32 @@ export async function isUserBlocked(blocker: number, blocked: number) {
  * @param page The page (indexed from 1)
  * @param per_page The number per pages
  */
-export async function getBlockList(
-  user: number,
-  page: number,
-  per_page: number,
-) {
-  const res = await db
+export async function getBlockList(query: {
+  user: number;
+  page: number;
+  per_page: number;
+}) {
+  const results = await db
     .select({
       username: users.username,
+      name: profiles.name,
+      email: users.email,
+      avatar: profiles.avatar,
     })
     .from(users)
     .innerJoin(blockUsers, eq(users.id, blockUsers.blocked))
-    .where(eq(blockUsers.user, user))
-    .offset((page - 1) * per_page)
-    .limit(per_page);
-  return res.map((row) => row.username);
+    .innerJoin(profiles, eq(users.id, profiles.id))
+    .where(eq(blockUsers.user, query.user))
+    .offset((query.page - 1) * query.per_page)
+    .limit(query.per_page);
+  const total = await db.$count(
+    db.select().from(blockUsers).where(eq(blockUsers.user, query.user)),
+  );
+
+  return {
+    total,
+    results,
+  };
 }
 
 /**

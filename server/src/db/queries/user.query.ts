@@ -80,3 +80,19 @@ export async function createUser(query: {
     username: user[0].username,
   };
 }
+
+/**
+ * Updates a user account.
+ *
+ * @param id The user's ID
+ * @param data the data to update
+ */
+export async function updateUserAccount(
+  id: number,
+  data: { username: string; email: string },
+) {
+  return await db
+    .update(users)
+    .set({ username: data.username, email: data.email })
+    .where(eq(users.id, id));
+}

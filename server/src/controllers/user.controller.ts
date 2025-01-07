@@ -3,8 +3,14 @@ import { RequestHandler } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { sign } from "jsonwebtoken";
 import { z } from "zod";
-import { createUser, existsUser, findUser } from "../db/queries/user.query";
+import {
+  createUser,
+  existsUser,
+  findUser,
+  updateUserAccount,
+} from "../db/queries/user.query";
 import { generateVerification, isVerified } from "../db/queries/verify.query";
+import { AuthorizedRequest } from "../middlewares";
 import { Status } from "../misc/status";
 
 /**
@@ -127,6 +133,66 @@ export const registerHandler: RequestHandler = expressAsyncHandler(
     const user = await createUser({ ...result.data });
     generateVerification(user.username);
     res.status(201).json(user);
+  },
+);
+
+/**
+ * POST /users: Update a user account from the user's POV.
+ *
+ * - Clearance Level: 1 (Confidential)
+ * - Object Class: Euclid
+ * - Special Containment Procedures:
+ *   + Body { username: string, email: string, password: string }.
+ *   + This is a request from the user to update, not an admin updating an account.
+ * - Addendum:
+ *   + 200 (OK)
+ *   + 400 (Bad Request): Did not fit schema
+ *   + 403 (Forbidden): Wrong password
+ *   + 409 (Conflict): Username or email is taken. See "path" property on return object.
+ */
+export const updateUserHandler: RequestHandler = expressAsyncHandler(
+  async (req, res) => {
+    const schema = z.object({
+      username: z.string(),
+      email: z.string(),
+      password: z.string(),
+    });
+    const bearer = (req as AuthorizedRequest).bearer;
+    const body = schema.safeParse(req.body);
+
+    if (body.error) {
+      res.status(Status.BAD_REQUEST).json({
+        message: body.error.issues[0].message,
+        path: body.error.issues[0].path,
+      });
+      return;
+    }
+
+    // Attempting to find by username.
+    const usernameQuery = await findUser({ username: body.data.username });
+    if (usernameQuery.length > 0 && usernameQuery[0].id != bearer.id) {
+      res
+        .status(Status.CONFLICT)
+        .json({ message: "Conflict", path: "username" });
+      return;
+    }
+
+    // Attempting to find by email.
+    const emailQuery = await findUser({ email: body.data.email });
+    if (emailQuery.length > 0 && emailQuery[0].id != bearer.id) {
+      res.status(Status.CONFLICT).json({ message: "Conflict", path: "email" });
+      return;
+    }
+
+    // Check the password
+    const user = usernameQuery[0];
+    if (!compareSync(body.data.password, user.password)) {
+      res.status(Status.FORBIDDEN).json({ message: "Wrong password" });
+      return;
+    }
+
+    const result = await updateUserAccount(bearer.id, body.data);
+    res.status(Status.OK).json(result);
   },
 );
 

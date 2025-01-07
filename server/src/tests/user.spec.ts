@@ -1,6 +1,15 @@
 import { hashSync } from "bcryptjs";
+import { eq } from "drizzle-orm";
 import supertest from "supertest";
-import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
+import {
+  afterAll,
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import app from "../app";
 import { db, disconnect } from "../db";
 import { users } from "../db/schema";
@@ -182,5 +191,94 @@ describe("logging out", () => {
       .set("Cookie", newCookie)
       .send();
     expect(res3.statusCode).toBe(401);
+  });
+});
+
+describe("updating account", () => {
+  let token: string;
+
+  beforeEach(async () => {
+    await db.insert(users).values([
+      {
+        username: "luna",
+        email: "luna@example.com",
+        password: hashSync("1234", 12),
+        role: "user",
+        verified: true,
+      },
+      {
+        username: "louie",
+        email: "louie@example.com",
+        password: hashSync("1234", 12),
+        role: "user",
+        verified: true,
+      },
+    ]);
+
+    // Login and retrieve first token.
+    const res = await supertest(app).post("/login").send({
+      profile: "luna",
+      password: "1234",
+    });
+    token = res.headers["set-cookie"][0];
+    expect(res.statusCode).toBe(200);
+    expect(token).toBeDefined();
+  });
+
+  it("should reject update without auth", async () => {
+    const res = await supertest(app).post("/users").send({});
+    expect(res.statusCode).toBe(401);
+  });
+
+  it("should return 400 if invalid body", async () => {
+    const res = await supertest(app)
+      .post("/users")
+      .set("Cookie", token)
+      .send({ username: "a" });
+    expect(res.statusCode).toBe(400);
+    expect(res.body).toHaveProperty("message");
+    expect(res.body).toHaveProperty("path");
+  });
+
+  it("should return 409 if conflict username", async () => {
+    const res = await supertest(app)
+      .post("/users")
+      .set("Cookie", token)
+      .send({ username: "louie", email: "luna@example.com", password: "1234" });
+    expect(res.statusCode).toBe(409);
+    expect(res.body).toHaveProperty("message");
+    expect(res.body).toHaveProperty("path", "username");
+  });
+
+  it("should return 409 if conflict email", async () => {
+    const res = await supertest(app)
+      .post("/users")
+      .set("Cookie", token)
+      .send({ username: "LUNA", email: "louie@example.com", password: "1234" });
+    expect(res.statusCode).toBe(409);
+    expect(res.body).toHaveProperty("message");
+    expect(res.body).toHaveProperty("path", "email");
+  });
+
+  it("should return 403 if wrong password", async () => {
+    const res = await supertest(app)
+      .post("/users")
+      .set("Cookie", token)
+      .send({ username: "LUNA", email: "luna@example.com", password: "12345" });
+    expect(res.statusCode).toBe(403);
+  });
+
+  it("should return 200 if correct", async () => {
+    const res = await supertest(app)
+      .post("/users")
+      .set("Cookie", token)
+      .send({ username: "LUNA", email: "luna@example.com", password: "1234" });
+    expect(res.statusCode).toBe(200);
+
+    const user = await db
+      .select()
+      .from(users)
+      .where(eq(users.username, "LUNA"));
+    expect(user).toHaveLength(1);
   });
 });

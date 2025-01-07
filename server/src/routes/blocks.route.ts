@@ -3,12 +3,17 @@ import {
   blockHandler,
   blocklistHandler,
   isBlockedHandler,
+  unblockHandler,
 } from "../controllers/block.controller";
 import { auth } from "../middlewares";
 
 const blocksRouter: Router = express.Router();
-blocksRouter.get("/list", auth, blocklistHandler);
-blocksRouter.get("/check/:username", auth, isBlockedHandler);
-blocksRouter.post("/", auth, blockHandler);
+
+blocksRouter.route("/list").get(auth, blocklistHandler);
+blocksRouter
+  .route("/")
+  .get(auth, isBlockedHandler)
+  .post(auth, blockHandler)
+  .delete(auth, unblockHandler);
 
 export { blocksRouter };

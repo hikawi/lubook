@@ -105,16 +105,12 @@ export async function verifyCode(profile: string, code: string, url: boolean) {
     .delete(verifications)
     .where(eq(verifications.user, result[0].id));
 
-  if (delResult.rowCount != null && delResult.rowCount > 0) {
-    // Verify success, update the db with "verified"
-    await db
-      .update(users)
-      .set({ verified: true })
-      .where(eq(users.id, result[0].id));
-    return true;
-  }
-
-  return false;
+  // Verify success, update the db with "verified"
+  await db
+    .update(users)
+    .set({ verified: true })
+    .where(eq(users.id, result[0].id));
+  return true;
 }
 
 /**
