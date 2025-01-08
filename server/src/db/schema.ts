@@ -75,7 +75,7 @@ export const profiles = pg.pgTable("profile", {
     .unique()
     .references(() => users.id),
   name: pg.text(),
-  avatar: pg.text().default(""),
+  avatar: pg.text().default("https://s3.lubook.club/avatars/default.png"),
   bio: pg.text(),
   followers: pg.integer().notNull().default(0),
   followings: pg.integer().notNull().default(0),

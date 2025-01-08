@@ -1,9 +1,16 @@
 import express, { Router } from "express";
-import { getMeHandler, getProfileHandler } from "../controllers/profile.controller";
-import { auth } from "../middlewares";
+import {
+  deleteAvatarHandler,
+  getProfileHandler,
+  updateAvatarHandler,
+} from "../controllers/profile.controller";
+import { auth, imageUpload, softAuth } from "../middlewares";
 
 const router: Router = express.Router();
-router.route("/").get(auth, getMeHandler);
-router.route("/:username").get(getProfileHandler);
+router.route("/").get(softAuth, getProfileHandler);
+router
+  .route("/avatar")
+  .post(auth, imageUpload, updateAvatarHandler)
+  .delete(auth, deleteAvatarHandler);
 
 export { router as profilesRouter };

@@ -1,10 +1,12 @@
 import { Request, RequestHandler } from "express";
 import expressAsyncHandler from "express-async-handler";
+import fileUpload from "express-fileupload";
 import { verify } from "jsonwebtoken";
 import { findUserById } from "./db/queries/user.query";
 import { Status } from "./misc/status";
 
 export type BearerAuth = { id: number; iat: number; exp: number };
+export type SoftAuthorizedRequest = Request & { bearer?: BearerAuth };
 export type AuthorizedRequest = Request & { bearer: BearerAuth };
 export type RequestedUser = {
   id: number;
@@ -55,6 +57,7 @@ export const auth: RequestHandler = expressAsyncHandler(
       res
         .status(Status.UNPROCESSABLE_ENTITY)
         .json({ message: "You shouldn't exist?" });
+      res.clearCookie("authorization");
       return;
     }
 
@@ -62,3 +65,13 @@ export const auth: RequestHandler = expressAsyncHandler(
     next();
   },
 );
+
+/**
+ * The image upload middleware. Accepts up to 20MB of an image.
+ */
+export const imageUpload: RequestHandler = fileUpload({
+  abortOnLimit: true,
+  limits: {
+    fileSize: 20 * 1024 * 1024,
+  },
+});

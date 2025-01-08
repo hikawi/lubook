@@ -29,3 +29,29 @@ export async function getProfile(data: { id?: number; username?: string }) {
     )
     .limit(1);
 }
+
+/**
+ * Updates an avatar to a URL.
+ *
+ * @param data The data to update
+ * @returns The query result
+ */
+export async function updateAvatar(data: { id: number; url: string }) {
+  return await db
+    .update(profiles)
+    .set({ avatar: data.url })
+    .where(eq(profiles.user, data.id));
+}
+
+/**
+ * Delete an avatar from a profile.
+ *
+ * @param id The User ID
+ * @returns The query result
+ */
+export async function deleteAvatar(id: number) {
+  return await db
+    .update(profiles)
+    .set({ avatar: `${process.env.S3_BASE}/avatars/default.png` })
+    .where(eq(profiles.user, id));
+}

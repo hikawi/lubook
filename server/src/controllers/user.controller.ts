@@ -125,14 +125,16 @@ export const registerHandler: RequestHandler = expressAsyncHandler(
         email: result.data.email,
       })
     ) {
-      res.status(409).json({ message: "That user already exists." });
+      res
+        .status(Status.CONFLICT)
+        .json({ message: "That user already exists." });
       return;
     }
 
     // Create the user.
     const user = await createUser({ ...result.data });
     generateVerification(user.username);
-    res.status(201).json(user);
+    res.status(Status.CREATED).json(user);
   },
 );
 
@@ -208,6 +210,6 @@ export const updateUserHandler: RequestHandler = expressAsyncHandler(
 export const logoutHandler: RequestHandler = expressAsyncHandler(
   async (req, res) => {
     res.clearCookie("authorization");
-    res.status(204).send();
+    res.status(Status.NO_CONTENT).json({});
   },
 );

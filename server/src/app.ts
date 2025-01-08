@@ -2,12 +2,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import "dotenv/config";
 import express from "express";
-import { auth } from "./middlewares";
 import { Status } from "./misc/status";
-import { accountsRouter } from "./routes/accounts.route";
-import { blocksRouter } from "./routes/blocks.route";
-import { profilesRouter } from "./routes/profiles.route";
-import verificationsRouter from "./routes/verifications.route";
+import mainRouter from "./routes/main.route";
 
 // The server-side entrypoint.
 const app: express.Express = express();
@@ -22,16 +18,12 @@ app.use(
   }),
 );
 
-app.options("*", cors());
-app.use("/", accountsRouter);
-app.use("/profile", profilesRouter);
-app.use("/block", blocksRouter);
-app.use("/auth", auth);
-app.use("/verify", verificationsRouter);
+// Routes
+app.use(mainRouter);
 
 // Error handling
 app.use(async (err: Error, req: any, res: any, next: any) => {
-  if (res.statusCode == Status.OK) res.status(Status.INTERNAL_SERVER_ERROR);
+  res.status(Status.INTERNAL_SERVER_ERROR);
   return res.json({ status: res.statusCode, message: err.message });
 });
 
