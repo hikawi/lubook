@@ -56,8 +56,8 @@ export const auth: RequestHandler = expressAsyncHandler(
     if (user.length == 0) {
       res
         .status(Status.UNPROCESSABLE_ENTITY)
+        .clearCookie("authorization")
         .json({ message: "You shouldn't exist?" });
-      res.clearCookie("authorization");
       return;
     }
 

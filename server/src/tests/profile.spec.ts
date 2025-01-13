@@ -35,19 +35,20 @@ describe("profile controller", () => {
 
   describe("get others", () => {
     it("should return nothing if not found", async () => {
-      const res = await supertest(app).get("/profile?username=banana").send();
+      const res = await supertest(app).get("/profile").query({ "username": "banana" }).send();
       expect(res.statusCode).toBe(404);
       expect(res.body).toHaveProperty("message");
     });
 
     it("should error 400 if username invalid", async () => {
-      const res = await supertest(app).get("/profile?username=").send();
+      const res = await supertest(app).get("/profile").query({ "username": "a" }).send();
       expect(res.statusCode).toBe(400);
     });
 
     it("should return blueberry", async () => {
       const res = await supertest(app)
-        .get("/profile?username=blueberry")
+        .get("/profile")
+        .query({ "username": "blueberry" })
         .send();
       expect(res.statusCode).toBe(200);
       expect(res.body).toHaveProperty("username", "blueberry");

@@ -56,7 +56,7 @@ export const getProfileHandler: RequestHandler = expressAsyncHandler(
 
       res
         .status(Status.OK)
-        .json({ ...profile[0], self: profile[0].id == bearer!.id });
+        .json({ ...profile[0], self: profile[0].id == bearer?.id });
       return;
     }
 
