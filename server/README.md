@@ -40,7 +40,7 @@ Object Class (how contained is the action? is it within small regions of collect
 
 ## API Routes
 
-All API requests on production server should go to `https://api.lubook.club/`. On your local development server, start both the server and client separately, and let client read from `localhost`. Or, that's what I do.
+All API requests on production server should go to `https://api.lubook.club/`. On your local development server, start both the server and client separately, and let client read from `localhost`. Or, that's what I do. For me, it would be Astro client running on port `4321`, and the Express server running on port `3000`. You can modify this however you like and setup environment variables accordingly.
 
 ### User Routes (`user.controller.ts`)
 

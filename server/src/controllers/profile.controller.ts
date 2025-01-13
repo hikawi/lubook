@@ -54,13 +54,15 @@ export const getProfileHandler: RequestHandler = expressAsyncHandler(
         return;
       }
 
-      res.status(Status.OK).json(profile[0]);
+      res
+        .status(Status.OK)
+        .json({ ...profile[0], self: profile[0].id == bearer!.id });
       return;
     }
 
     // Retrieves my profile.
     const profile = await getProfile({ id: bearer!.id });
-    res.status(Status.OK).json(profile[0]);
+    res.status(Status.OK).json({ ...profile[0], self: true });
   },
 );
 

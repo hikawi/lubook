@@ -2,7 +2,6 @@
   "name": "openbook",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "vitest run --coverage",
@@ -14,8 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.717.0",
-    "@aws-sdk/s3-request-presigner": "^3.717.0",
+    "@aws-sdk/client-s3": "^3.723.0",
+    "@aws-sdk/s3-request-presigner": "^3.723.0",
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
     "bcryptjs": "^2.4.3",
@@ -33,7 +32,7 @@
     "prettier": "^3.4.2",
     "route-cache": "^0.7.0",
     "sharp": "^0.33.5",
-    "typescript": "^5.7.2",
+    "typescript": "^5.7.3",
     "zod": "^3.24.1"
   },
   "devDependencies": {
@@ -41,7 +40,7 @@
     "@types/express": "^5.0.0",
     "@types/express-fileupload": "^1.5.1",
     "@types/jsonwebtoken": "^9.0.7",
-    "@types/node": "^22.10.3",
+    "@types/node": "^22.10.5",
     "@types/nodemailer": "^6.4.17",
     "@types/pg": "^8.11.10",
     "@types/route-cache": "^0.5.5",

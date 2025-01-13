@@ -15,7 +15,7 @@ describe("middlewares", () => {
   describe("auth middleware", () => {
     it("should block unautuhorized if not auth", async () => {
       const res = await supertest(app).get("/auth").send();
-      expect(res.status).toBe(401);
+      expect(res.statusCode).toBe(401);
     });
 
     it("should block unprocessable entity if data is corrupted", async () => {

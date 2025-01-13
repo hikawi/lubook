@@ -10,14 +10,15 @@ import { profiles, users } from "../schema";
 export async function getProfile(data: { id?: number; username?: string }) {
   return await db
     .select({
+      id: users.id,
       username: users.username,
       email: users.email,
       name: profiles.name,
       bio: profiles.bio,
       avatar: profiles.avatar,
-      verified: users.verified,
       followers: profiles.followers,
       followings: profiles.followings,
+      publications: profiles.publications,
     })
     .from(users)
     .innerJoin(profiles, eq(users.id, profiles.user))
