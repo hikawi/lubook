@@ -123,7 +123,9 @@ async function register() {
 </script>
 
 <template>
-  <p class="text-balance text-center text-xl font-semibold lg:text-[2rem]">
+  <p
+    class="text-balance text-center text-xl font-semibold lg:text-[2rem] lg:leading-normal"
+  >
     {{ tl.tagline }}
   </p>
 

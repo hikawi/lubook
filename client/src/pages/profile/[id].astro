@@ -1,0 +1,12 @@
+---
+import TopNavBar from "@/components/main/TopNavBar.vue";
+import ProfileView from "@/components/profile/ProfileView.vue";
+import MainLayout from "@/layouts/MainLayout.astro";
+
+const id = Astro.params.id;
+---
+
+<MainLayout title={`@${id} Profile`} description={`Profile description for the user with the username @${id}`}>
+  <TopNavBar client:load />
+  <ProfileView username={id} client:load />
+</MainLayout>

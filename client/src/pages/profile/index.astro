@@ -1,0 +1,10 @@
+---
+import TopNavBar from "@/components/main/TopNavBar.vue";
+import ProfileView from "@/components/profile/ProfileView.vue";
+import MainLayout from "@/layouts/MainLayout.astro";
+---
+
+<MainLayout title="Your Profile" description="Your own personal profile on Lubook!">
+  <TopNavBar client:load />
+  <ProfileView client:load />
+</MainLayout>

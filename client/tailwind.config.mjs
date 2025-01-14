@@ -6,6 +6,7 @@ export default {
       fontFamily: {
         josefin: ["Josefin Sans", "sans-serif"],
         nunito: ["Nunito", "sans-serif"],
+        inter: ["Inter", "sans-serif"],
       },
       colors: {
         "dark-navy": "rgb(10, 38, 71)",

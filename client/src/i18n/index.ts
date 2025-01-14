@@ -60,11 +60,30 @@ export const $verifyPage = $i18n("verifyPage", {
   verifySuccessMessage: "You have verified your account. You may now log in!",
   logIn: "Login",
   verifyFailed: "Verify Failed...",
-  verifyFailedMessage: "An error has occurred while verifying your account. Did the link expire?",
+  verifyFailedMessage:
+    "An error has occurred while verifying your account. Did the link expire?",
   profileField: "Username or Email Address",
   profilePlaceholder: "luna or luna@example.com",
   requestVerify: "Send Verification Email",
   profileInvalid: "Username or Email is invalid",
   requestTooRecent: "You already got a code, or you're already verified",
   profileNotExist: "This profile does not exist",
+});
+
+/**
+ * Translation component for the navigation bar.
+ */
+export const $navigationBar = $i18n("navigationBar", {
+  iconAlt: "The icon of this website",
+  searchPlaceholder: "Search...",
+});
+
+export const $profile = $i18n("profile", {
+  error: "There was an error loading the profile...",
+  noBio: "No biography set",
+  follow: "Follow",
+  block: "Block",
+  edit: "Edit",
+  notFound: "That profile doesn't exist",
+  notFoundDesc: "Did you click on a broken link, or type in the incorrect username?",
 });

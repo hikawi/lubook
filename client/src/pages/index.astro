@@ -1,8 +1,10 @@
 ---
 import PlaceholderHome from "@/components/home/PlaceholderHome.vue";
+import TopNavBar from "@/components/main/TopNavBar.vue";
 import MainLayout from "@/layouts/MainLayout.astro";
 ---
 
 <MainLayout title="Lubook" description="Main homepage of the Lubook website">
+  <TopNavBar client:load />
   <PlaceholderHome client:load />
 </MainLayout>

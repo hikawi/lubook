@@ -54,5 +54,18 @@
     "profileInvalid": "Tên hoặc email không hợp lệ",
     "requestTooRecent": "Mail đã được gửi hoặc bạn đã xác thực rồi",
     "profileNotExist": "Tài khoản này không tồn tại"
+  },
+  "navigationBar": {
+    "iconAlt": "Hình ảnh của website này",
+    "searchPlaceholder": "Tìm kiếm"
+  },
+  "profile": {
+    "error": "Đã có lỗi xảy ra lúc tải tài khoản này.",
+    "noBio": "Không có bio.",
+    "follow": "Theo dõi",
+    "block": "Chặn",
+    "edit": "Thay đổi",
+    "notFound": "Tài khoản đó không tồn tại",
+    "notFoundDesc": "Có lẽ bạn đã bấm vào đường link hỏng, hoặc đã gõ sai tên người dùng?"
   }
 }

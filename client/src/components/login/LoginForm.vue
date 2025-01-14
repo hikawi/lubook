@@ -16,7 +16,7 @@ const passwordError = ref("");
 
 const verify = ref("");
 const verifyError = ref("");
-const verifyElement = useTemplateRef("verifyRef");
+const verifyElement = useTemplateRef<HTMLInputElement>("verifyRef");
 
 const btnDisabled = ref(false);
 const showVerify = ref(false);
@@ -122,7 +122,9 @@ async function requestCode() {
 </script>
 
 <template>
-  <p class="text-balance text-center text-xl font-semibold lg:text-[2rem]">
+  <p
+    class="text-balance text-center text-xl font-semibold lg:text-[2rem] lg:leading-normal"
+  >
     {{ tl.tagline }}
   </p>
   <div

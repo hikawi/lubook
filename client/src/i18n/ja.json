@@ -54,5 +54,22 @@
     "profileInvalid": "ユーザーとかメールが無効です",
     "requestTooRecent": "コードもう送られたかもう確認しましたか",
     "profileNotExist": "このアカウントは存在していません"
+  },
+  "navigationBar": {
+    "iconAlt": "このサイトのアイコン",
+    "searchPlaceholder": "探検"
+  },
+  "profile": {
+    "error": "このプロファイルをロード中にエラーが発生しちゃいます。",
+    "noBio": "バイオが無い",
+    "follow": "フォローする",
+    "block": "ブロック",
+    "edit": "編集",
+    "notFound": "あのプロファイルは存在していません",
+    "notFoundDesc": "多分あなたが壊れたリンクをフォローしましたか、ユーザー名を違えましたか？",
+    "followers": {
+      "one": "{count} フォロワー",
+      "many": "{count} フォロワー"
+    }
   }
 }

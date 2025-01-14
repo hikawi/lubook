@@ -4,6 +4,6 @@
 
 @layer utilities {
   .lighten {
-    @apply from-white/50 to-white/50 duration-200 hover:bg-gradient-to-r;
+    @apply from-white/20 to-white/20 duration-200 hover:bg-gradient-to-r focus:bg-gradient-to-r;
   }
 }
