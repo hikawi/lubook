@@ -84,6 +84,12 @@ export const $profile = $i18n("profile", {
   follow: "Follow",
   block: "Block",
   edit: "Edit",
+  myProfile: "My Profile",
+  home: "Home",
+  publish: "Publish",
+  library: "Library",
+  settings: "Settings",
   notFound: "That profile doesn't exist",
-  notFoundDesc: "Did you click on a broken link, or type in the incorrect username?",
+  notFoundDesc:
+    "Did you click on a broken link, or type in the incorrect username?",
 });

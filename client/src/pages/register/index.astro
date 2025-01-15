@@ -4,10 +4,7 @@ import RegisterForm from "@/components/register/RegisterForm.vue";
 import MainLayout from "@/layouts/MainLayout.astro";
 ---
 
-<MainLayout
-  title="Register"
-  description="Register to join a community of manga enjoyers and talented manga artists."
->
+<MainLayout title="Register" description="Register to join a community of manga enjoyers and talented manga artists.">
   <section class="flex h-full flex-col items-center gap-8 py-20">
     <Logo />
     <RegisterForm client:load />

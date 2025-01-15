@@ -5,9 +5,9 @@ import { beforeAll, describe, expect, it, vi } from "vitest";
 
 describe("register success redirects", () => {
   const { redirectMock, postJsonMock, authMock } = vi.hoisted(() => ({
-    redirectMock: vi.fn((url) => { }),
+    redirectMock: vi.fn((url) => {}),
     postJsonMock: vi.fn(
-      async (url, body) => new Response(null, { status: 201 })
+      async (url, body) => new Response(null, { status: 201 }),
     ),
     authMock: vi.fn(async (prof, pass) => new Response(null, { status: 200 })),
   }));

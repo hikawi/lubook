@@ -15,8 +15,8 @@ vi.mock(import("../utils/fetcher"), async (factory) => {
     ...original,
     postJson,
     redirect,
-  }
-})
+  };
+});
 
 describe("verify success page", () => {
   beforeEach(() => {
@@ -52,7 +52,9 @@ describe("verify failed page", () => {
   });
 
   it("should show error if profile invalid", async () => {
-    postJson.mockImplementationOnce(async () => new Response(null, { status: 400 }));
+    postJson.mockImplementationOnce(
+      async () => new Response(null, { status: 400 }),
+    );
     const button = page.getByRole("button");
     await button.click();
 
@@ -62,7 +64,9 @@ describe("verify failed page", () => {
   });
 
   it("should show error if profile doesn't exist", async () => {
-    postJson.mockImplementationOnce(async () => new Response(null, { status: 404 }));
+    postJson.mockImplementationOnce(
+      async () => new Response(null, { status: 404 }),
+    );
     const button = page.getByRole("button");
     await button.click();
 
@@ -72,7 +76,9 @@ describe("verify failed page", () => {
   });
 
   it("should show error if request too recent", async () => {
-    postJson.mockImplementationOnce(async () => new Response(null, { status: 304 }));
+    postJson.mockImplementationOnce(
+      async () => new Response(null, { status: 304 }),
+    );
     const button = page.getByRole("button");
     await button.click();
 
@@ -82,7 +88,9 @@ describe("verify failed page", () => {
   });
 
   it("should show error if correct", async () => {
-    postJson.mockImplementationOnce(async () => new Response(null, { status: 201 }));
+    postJson.mockImplementationOnce(
+      async () => new Response(null, { status: 201 }),
+    );
     const button = page.getByRole("button");
     await button.click();
 
@@ -92,4 +100,4 @@ describe("verify failed page", () => {
     await expect.element(input).not.toHaveAccessibleErrorMessage();
     expect(redirect).toHaveBeenCalledWith("/register/success");
   });
-})
+});

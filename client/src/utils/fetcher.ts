@@ -1,4 +1,3 @@
-
 /**
  * Redirects to a URL.
  *
@@ -13,7 +12,7 @@ export function redirect(url: string) {
 
 /**
  * Sends a GET fetch request with credentials.
- * 
+ *
  * @param path The path of the API
  * @returns The response
  */
@@ -22,7 +21,7 @@ export async function getJson(path: string) {
     method: "GET",
     mode: "cors",
     headers: {
-      "Accept": "application/json",
+      Accept: "application/json",
     },
     credentials: "include",
   });

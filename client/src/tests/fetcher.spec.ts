@@ -1,5 +1,13 @@
 import { getJson } from "@/utils/fetcher";
-import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import {
+  afterAll,
+  afterEach,
+  beforeAll,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 
 describe("fetcher utils", () => {
   const fetchMock = vi.fn();

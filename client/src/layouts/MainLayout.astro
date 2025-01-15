@@ -1,4 +1,5 @@
 ---
+import BlackLayer from "@/components/misc/BlackLayer.vue";
 import "./base.css";
 
 interface Props {
@@ -31,7 +32,12 @@ const { title, description, center } = Astro.props;
   </head>
 
   <body class="bg-darker-navy font-nunito text-white lg:px-16 xl:px-32">
-    <main class="h-fit min-h-screen w-full bg-dark-navy p-8 lg:p-16 xl:px-32" class:list={[{ "flex items-center justify-center": center }]}>
+    <BlackLayer client:load />
+
+    <main
+      class="h-fit min-h-screen w-full bg-dark-navy p-8 lg:p-16 xl:px-32"
+      class:list={[{ "flex items-center justify-center": center }]}
+    >
       <slot />
     </main>
   </body>

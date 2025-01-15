@@ -65,6 +65,11 @@
     "follow": "Theo dõi",
     "block": "Chặn",
     "edit": "Thay đổi",
+    "myProfile": "Profile của tôi",
+    "home": "Trang chủ",
+    "publish": "Đăng bài",
+    "library": "Thư viện",
+    "settings": "Cài đặt",
     "notFound": "Tài khoản đó không tồn tại",
     "notFoundDesc": "Có lẽ bạn đã bấm vào đường link hỏng, hoặc đã gõ sai tên người dùng?"
   }

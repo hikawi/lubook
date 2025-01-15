@@ -65,6 +65,11 @@
     "follow": "フォローする",
     "block": "ブロック",
     "edit": "編集",
+    "myProfile": "プロファイル",
+    "home": "ホーム",
+    "publish": "投稿",
+    "library": "ライブラリー",
+    "settings": "設定",
     "notFound": "あのプロファイルは存在していません",
     "notFoundDesc": "多分あなたが壊れたリンクをフォローしましたか、ユーザー名を違えましたか？",
     "followers": {

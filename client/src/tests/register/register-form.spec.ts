@@ -19,7 +19,9 @@ describe("register form", () => {
     await expect
       .element(page.getByRole("textbox", { name: "Username" }))
       .toBeVisible();
-    await expect.element(page.getByRole("textbox", { name: "Email" })).toBeVisible();
+    await expect
+      .element(page.getByRole("textbox", { name: "Email" }))
+      .toBeVisible();
     await expect
       .element(page.getByRole("textbox", { name: "Password", exact: true }))
       .toBeVisible();
@@ -30,7 +32,7 @@ describe("register form", () => {
 
   it("should show errors if invalid fields", async () => {
     const fetchMock = vi.fn(
-      async (url, options) => new Response(new Blob(), { status: 200 })
+      async (url, options) => new Response(new Blob(), { status: 200 }),
     );
     vi.stubGlobal("fetch", fetchMock);
     render(RegisterForm);
@@ -54,7 +56,7 @@ describe("register form", () => {
     await expect
       .element(username)
       .toHaveAccessibleErrorMessage(
-        "Username can't contain special characters"
+        "Username can't contain special characters",
       );
     await expect
       .element(password)
@@ -69,7 +71,7 @@ describe("register form", () => {
 
   it("should call fetch post if valid fields", async () => {
     const fetchMock = vi.fn(
-      async (url, options) => new Response(null, { status: 200 })
+      async (url, options) => new Response(null, { status: 200 }),
     );
     vi.stubGlobal("fetch", fetchMock);
     render(RegisterForm);
@@ -91,7 +93,9 @@ describe("register form", () => {
     await userEvent.type(confirm, "12345");
     await submit.click();
 
-    expect(fetchMock.mock.lastCall?.[0]).toEqual(`${import.meta.env.PUBLIC_API}/register`);
+    expect(fetchMock.mock.lastCall?.[0]).toEqual(
+      `${import.meta.env.PUBLIC_API}/register`,
+    );
     expect(fetchMock.mock.lastCall?.[1]).toEqual({
       method: "POST",
       mode: "cors",
@@ -114,7 +118,7 @@ describe("register form", () => {
 
   it("should show 'invalid' fields if error code 400", async () => {
     const fetchMock = vi.fn(
-      async (url, options) => new Response(null, { status: 400 })
+      async (url, options) => new Response(null, { status: 400 }),
     );
     vi.stubGlobal("fetch", fetchMock);
     render(RegisterForm);
@@ -152,7 +156,7 @@ describe("register form", () => {
 
   it("should show 'taken username' if error code 409", async () => {
     const fetchMock = vi.fn(
-      async (url, options) => new Response(null, { status: 409 })
+      async (url, options) => new Response(null, { status: 409 }),
     );
     vi.stubGlobal("fetch", fetchMock);
 
@@ -178,7 +182,9 @@ describe("register form", () => {
     await expect
       .element(username)
       .toHaveAccessibleErrorMessage("Username might be taken");
-    await expect.element(email).toHaveAccessibleErrorMessage("Email might be taken");
+    await expect
+      .element(email)
+      .toHaveAccessibleErrorMessage("Email might be taken");
     await expect.element(password).not.toHaveAccessibleErrorMessage();
     await expect.element(confirm).not.toHaveAccessibleErrorMessage();
 
