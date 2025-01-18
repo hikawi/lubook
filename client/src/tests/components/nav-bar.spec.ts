@@ -48,4 +48,34 @@ describe("top nav bar", () => {
     render(TopNavBar, { props: { showSearchBar: true } });
     await expect.element(page.getByRole("textbox")).toBeVisible();
   });
+
+  it("show links when hovered", async () => {
+    getJsonMock.mockResolvedValueOnce(
+      new Response(
+        JSON.stringify({
+          avatar: "https://avatars.githubusercontent.com/hikawi",
+        }),
+        { status: 200 },
+      ),
+    );
+    render(TopNavBar);
+
+    const img = page.getByRole("img", { name: "My Profile" });
+    await expect.element(img).toBeVisible();
+
+    await img.hover();
+    await expect.element(page.getByLabelText("Home")).toBeVisible();
+
+    await img.unhover();
+    await expect.element(page.getByLabelText("Home")).not.toBeVisible();
+  });
+
+  it("show login button if unauthorized", async () => {
+    getJsonMock.mockResolvedValueOnce(new Response(null, { status: 401 }));
+    render(TopNavBar);
+
+    await expect
+      .element(page.getByRole("link", { name: "Login" }))
+      .toBeVisible();
+  });
 });

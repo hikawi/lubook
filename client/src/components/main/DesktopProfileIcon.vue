@@ -12,7 +12,6 @@ import IconSettings from "../icons/IconSettings.vue";
 const tl = useStore($profile);
 
 const avatarUrl = ref<string | null>();
-const username = ref("");
 const loading = ref(true);
 
 onMounted(async () => {
@@ -47,11 +46,11 @@ function setBlackLayer(on: boolean) {
   <div
     class="group relative z-50 flex flex-col items-center justify-center gap-10 rounded-full bg-transparent"
     v-else-if="avatarUrl"
-    @mouseenter="setBlackLayer(true)"
+    @mouseover="setBlackLayer(true)"
     @mouseleave="setBlackLayer(false)"
   >
     <a
-      :href="`/profile/${username}`"
+      :href="`/profile`"
       :aria-label="tl.myProfile"
       class="relative z-50 rounded-full"
     >

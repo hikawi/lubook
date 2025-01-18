@@ -31,7 +31,7 @@ export default getViteConfig({
       headless: true,
       provider: "playwright",
       name: "chromium",
-      screenshotFailures: false,
+      screenshotFailures: true,
     },
   },
 })
