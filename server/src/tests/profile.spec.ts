@@ -1,7 +1,9 @@
+import { eq } from "drizzle-orm";
 import supertest from "supertest";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import app from "../app";
-import { s3 } from "../db";
+import { db, s3 } from "../db";
+import { users } from "../db/schema";
 import { clearDatabase, setupTestUsers } from "./utils";
 
 describe("profile controller", () => {
@@ -35,23 +37,52 @@ describe("profile controller", () => {
 
   describe("get others", () => {
     it("should return nothing if not found", async () => {
-      const res = await supertest(app).get("/profile").query({ "username": "banana" }).send();
+      const res = await supertest(app)
+        .get("/profile")
+        .query({ username: "banana" })
+        .send();
       expect(res.statusCode).toBe(404);
       expect(res.body).toHaveProperty("message");
     });
 
     it("should error 400 if username invalid", async () => {
-      const res = await supertest(app).get("/profile").query({ "username": "a" }).send();
+      const res = await supertest(app)
+        .get("/profile")
+        .query({ username: "a" })
+        .send();
       expect(res.statusCode).toBe(400);
     });
 
     it("should return blueberry", async () => {
       const res = await supertest(app)
         .get("/profile")
-        .query({ "username": "blueberry" })
+        .query({ username: "blueberry" })
         .send();
       expect(res.statusCode).toBe(200);
       expect(res.body).toHaveProperty("username", "blueberry");
+    });
+  });
+
+  describe("update profile", () => {
+    it("should block if bad username", async () => {
+      const res = await agent.put("/profile").send({ username: "a" });
+      expect(res.statusCode).toBe(400);
+    });
+
+    it("should block if conflict username", async () => {
+      const res = await agent.put("/profile").send({ username: "bLUEberry" });
+      expect(res.statusCode).toBe(409);
+    });
+
+    it("should be ok if just different capitalization", async () => {
+      const res = await agent.put("/profile").send({ username: "strawBERRY" });
+      console.log(res.body);
+      expect(res.statusCode).toBe(200);
+
+      await db
+        .update(users)
+        .set({ username: "strawberry" })
+        .where(eq(users.username, "strawBERRY"));
     });
   });
 

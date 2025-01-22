@@ -1,3 +1,5 @@
+import expressAsyncHandler from "express-async-handler";
+import supertest from "supertest";
 import { afterAll, describe, expect, it, vi } from "vitest";
 import app from "../app";
 import { db, disconnect } from "../db";
@@ -23,5 +25,23 @@ describe("database", () => {
     await import("../index");
     expect(mockListen).toHaveBeenCalledOnce();
     mockListen.mockRestore();
+  });
+});
+
+describe("server instance", () => {
+  it("should catch / for uptime robot", async () => {
+    const res = await supertest(app).get("/").send();
+    expect(res.statusCode).toBe(200);
+  });
+
+  it("should catch errors and return 500 if anything happens", async () => {
+    app.get(
+      "/error",
+      expressAsyncHandler(async (req, res) => {
+        throw new Error();
+      }),
+    );
+    const res = await supertest(app).get("/error").send();
+    expect(res.statusCode).toBe(500);
   });
 });

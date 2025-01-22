@@ -1,6 +1,9 @@
 import { DeleteObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { s3 } from "..";
 
+// No clue what this is.
+s3.config.credentials();
+
 /**
  * Upload a user's avatar.
  *
@@ -15,6 +18,7 @@ export async function uploadAvatar(id: number, image: Buffer<ArrayBufferLike>) {
     ContentDisposition: "inline",
     Body: image,
   });
+
   await s3.send(putCommand);
 }
 

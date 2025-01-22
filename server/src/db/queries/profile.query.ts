@@ -1,6 +1,7 @@
 import { eq, or } from "drizzle-orm";
 import { db } from "..";
 import { profiles, users } from "../schema";
+import { lower } from "../utils";
 
 /**
  * Retrieve the user's profile
@@ -25,10 +26,39 @@ export async function getProfile(data: { id?: number; username?: string }) {
     .where(
       or(
         data.id ? eq(users.id, data.id) : undefined,
-        data.username ? eq(users.username, data.username) : undefined,
+        data.username
+          ? eq(lower(users.username), data.username.toLowerCase())
+          : undefined,
       ),
     )
     .limit(1);
+}
+
+/**
+ * Update a user's profile.
+ *
+ * @param data The data to update to the user with user ID.
+ */
+export async function updateProfile(data: {
+  id: number;
+  penName?: string;
+  username: string;
+  biography?: string;
+}) {
+  console.log(data);
+  await db.transaction(async (ctx) => {
+    await ctx
+      .update(users)
+      .set({ username: data.username })
+      .where(eq(users.id, data.id));
+    await ctx
+      .update(profiles)
+      .set({
+        name: data.penName || null,
+        bio: data.biography || null,
+      })
+      .where(eq(profiles.user, data.id));
+  });
 }
 
 /**

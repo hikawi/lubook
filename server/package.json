@@ -7,7 +7,7 @@
     "test": "vitest run --coverage",
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "serve": "pnpm clean; pnpm build; pnpm start;"
+    "serve": "tsx src/index.ts"
   },
   "keywords": [],
   "author": "",

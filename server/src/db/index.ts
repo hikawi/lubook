@@ -31,12 +31,13 @@ const s3 = new S3Client({
 async function disconnect() {
   try {
     await pool.end();
-  } catch (ignored) { }
+  } catch (ignored) {}
 }
 
 export { db, disconnect, pool, s3 };
 
 process.on("SIGTERM", async () => {
   await disconnect();
+  s3.destroy();
   process.exit(0);
 });
