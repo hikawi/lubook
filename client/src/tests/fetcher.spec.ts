@@ -1,4 +1,4 @@
-import { getJson } from "@/utils/fetcher";
+import { fetcher, getJson, putJson } from "@/utils/fetcher";
 import {
   afterAll,
   afterEach,
@@ -31,5 +31,27 @@ describe("fetcher utils", () => {
     });
 
     getJson("test");
+  });
+
+  it("should correct format fetch PUT", async () => {
+    fetchMock.mockImplementationOnce(async (url, opts) => {
+      expect(opts).toHaveProperty("mode", "cors");
+      expect(opts).toHaveProperty("method", "PUT");
+      expect(opts).toHaveProperty("credentials", "include");
+      expect(url).toEqual(`${import.meta.env.PUBLIC_API}/lol`);
+    });
+
+    putJson("lol", {});
+  });
+
+  it("should correct format fetcher", async () => {
+    fetchMock.mockImplementationOnce(async (url, opts) => {
+      expect(opts).toHaveProperty("mode", "cors");
+      expect(opts).toHaveProperty("method", "METHOD");
+      expect(opts).toHaveProperty("credentials", "include");
+      expect(url).toEqual(`${import.meta.env.PUBLIC_API}/lol`);
+    });
+
+    fetcher({ path: "lol", method: "METHOD" });
   });
 });

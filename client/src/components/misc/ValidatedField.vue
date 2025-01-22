@@ -23,10 +23,16 @@ watchEffect(() => {
 <template>
   <div class="flex w-full flex-col gap-2">
     <label :for="name" class="text-sm font-semibold">{{ label }}</label>
+
     <div
       class="flex flex-row items-center justify-between rounded-lg bg-darker-navy p-2 has-[:invalid]:ring-2 has-[:invalid]:ring-red"
     >
-      <div class="-my-2 -ml-2 p-2 px-3" v-if="prefix">{{ prefix }}</div>
+      <div
+        class="-my-2 -ml-2 mr-2 rounded-lg bg-medium-navy px-3 py-2"
+        v-if="prefix"
+      >
+        {{ prefix }}
+      </div>
       <input
         :type="type || 'text'"
         :id="name"
@@ -40,6 +46,7 @@ watchEffect(() => {
       />
       <IconInvalid class="size-6 fill-red" v-if="error" />
     </div>
+
     <span
       :id="`${name}-error`"
       class="text-right text-sm font-semibold text-red"

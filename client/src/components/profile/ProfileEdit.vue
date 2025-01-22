@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { $profileEdit } from "@/i18n";
-import { fetcher, getJson, redirect } from "@/utils/fetcher";
+import { fetcher, getJson, putJson, redirect } from "@/utils/fetcher";
 import { useStore } from "@nanostores/vue";
 import { onMounted, ref } from "vue";
 import IconChevronRight from "../icons/IconChevronRight.vue";
@@ -14,9 +14,12 @@ const profile = ref<any>(null);
 const loading = ref(true);
 
 // Form fields' models
-const penName = ref<string>("");
-const username = ref<string>("");
-const biography = ref<string>("");
+const penName = ref("");
+const username = ref("");
+const biography = ref("");
+
+// Form error fields
+const usernameError = ref("");
 
 // Submitting state to disabled the submit button and show a spinning cursor.
 const submitting = ref(false);
@@ -30,7 +33,7 @@ onMounted(async () => {
 
   const data = await res.json();
   profile.value = data;
-  penName.value = data.penName || "";
+  penName.value = data.name || "";
   username.value = data.username;
   biography.value = data.bio || "";
 
@@ -95,19 +98,41 @@ async function discardChanges() {
 /**
  * Submits the changes to the server.
  */
-async function submitChanges() {}
+async function submitChanges() {
+  submitting.value = true;
+  const res = await putJson("profile", {
+    penName: penName.value,
+    username: username.value,
+    biography: biography.value,
+  });
+  submitting.value = false;
+
+  usernameError.value = "";
+  switch (res.status) {
+    case 400:
+      usernameError.value = tl.value.usernameInvalid;
+      break;
+    case 409:
+      usernameError.value = tl.value.usernameConflict;
+      break;
+    case 200:
+      redirect("/profile");
+      break;
+  }
+}
 </script>
 
 <template>
   <ProfileEditLoading v-if="loading" />
 
-  <div class="flex w-full flex-col items-center gap-8" v-else-if="profile">
+  <div class="flex w-full flex-col items-center gap-8" v-else>
     <input
       type="file"
       id="image-chooser"
       @change="uploadAvatar"
       class="hidden appearance-none"
       accept="image/jpeg,image/png,image/webp,image/avif,image/heif,image/heic"
+      data-testid="image-chooser"
     />
 
     <div class="flex w-full flex-col items-center gap-4">
@@ -140,7 +165,12 @@ async function submitChanges() {}
       v-model="penName"
       :placeholder="tl.penNamePlaceholder"
     />
-    <ValidatedField :label="tl.username" v-model="username" prefix="@" />
+    <ValidatedField
+      :label="tl.username"
+      v-model="username"
+      :error="usernameError"
+      prefix="@"
+    />
 
     <label class="flex w-full flex-col gap-2 text-sm font-semibold">
       {{ tl.biography }}
@@ -187,9 +217,5 @@ async function submitChanges() {}
         {{ tl.discard }}
       </button>
     </div>
-  </div>
-
-  <div class="w-full" v-else>
-    <p class="text-2xl font-semibold">Error</p>
   </div>
 </template>

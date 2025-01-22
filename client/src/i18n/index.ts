@@ -100,6 +100,8 @@ export const $profileEdit = $i18n("profileEdit", {
   penName: "Pen Name",
   penNamePlaceholder: "Luna (optional)",
   username: "Username",
+  usernameInvalid: "Username is invalid",
+  usernameConflict: "That username is taken",
   biography: "Biography",
   biographyPlaceholder: "Tell the world about yourself",
   blockedAuthors: "Blocked Authors",
