@@ -76,5 +76,18 @@
       "one": "{count} フォロワー",
       "many": "{count} フォロワー"
     }
+  },
+  "profileEdit": {
+    "uploadAvatar": "新しいアバターアップロード",
+    "deleteAvatar": "アバター削除",
+    "penName": "名前",
+    "penNamePlaceholder": "月美 (任意)",
+    "username": "ユーザー名",
+    "biography": "自己紹介",
+    "biographyPlaceholder": "世界に何をあなたについて伝えたいか",
+    "blockedAuthors": "ブロックされた作者",
+    "blockedTags": "ブロックされたタグ",
+    "save": "変更保存",
+    "discard": "キャンセル"
   }
 }

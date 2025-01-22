@@ -93,3 +93,17 @@ export const $profile = $i18n("profile", {
   notFoundDesc:
     "Did you click on a broken link, or type in the incorrect username?",
 });
+
+export const $profileEdit = $i18n("profileEdit", {
+  uploadAvatar: "Upload a new avatar",
+  deleteAvatar: "Delete avatar",
+  penName: "Pen Name",
+  penNamePlaceholder: "Luna (optional)",
+  username: "Username",
+  biography: "Biography",
+  biographyPlaceholder: "Tell the world about yourself",
+  blockedAuthors: "Blocked Authors",
+  blockedTags: "Blocked Tags",
+  save: "Save Changes",
+  discard: "Discard Changes",
+});

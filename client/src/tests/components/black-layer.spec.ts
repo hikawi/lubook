@@ -20,4 +20,4 @@ describe("black layer", () => {
     render(BlackLayer);
     await expect.element(page.getByTestId("black-layer")).toBeVisible();
   });
-})
+});

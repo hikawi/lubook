@@ -72,5 +72,18 @@
     "settings": "Cài đặt",
     "notFound": "Tài khoản đó không tồn tại",
     "notFoundDesc": "Có lẽ bạn đã bấm vào đường link hỏng, hoặc đã gõ sai tên người dùng?"
+  },
+  "profileEdit": {
+    "uploadAvatar": "Tải hình đại diện mới",
+    "deleteAvatar": "Xoá hình đại diện",
+    "penName": "Bút danh",
+    "penNamePlaceholder": "Ánh (không bắt buộc)",
+    "username": "Tên người dùng",
+    "biography": "Giới thiệu",
+    "biographyPlaceholder": "Hãy nói với thế giới về bản thân bạn",
+    "blockedAuthors": "Người dùng đã chặn",
+    "blockedTags": "Nhãn dán đã chặn",
+    "save": "Lưu thay đổi",
+    "discard": "Xoá thay đổi"
   }
 }

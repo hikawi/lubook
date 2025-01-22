@@ -44,3 +44,25 @@ export async function postJson(path: string, body: any) {
     credentials: "include",
   });
 }
+
+/**
+ * Fetches given the data.
+ *
+ * @param path The API path
+ * @param body The body
+ */
+export async function fetcher(data: {
+  path: string;
+  body?: any;
+  method?: string;
+  headers?: any;
+}) {
+  return await fetch(`${import.meta.env.PUBLIC_API}/${data.path}`, {
+    method: data.method,
+    mode: "cors",
+    headers: data.headers,
+    redirect: "follow",
+    body: data.body,
+    credentials: "include",
+  });
+}

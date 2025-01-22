@@ -29,7 +29,7 @@ const data = ref<
 onMounted(async () => {
   const res = await getJson(
     props.username
-      ? `profile?username=${encodeURIComponent(props.username)}`
+      ? `profile?username=${encodeURIComponent(props.username.replace("@", ""))}`
       : `profile`,
   );
 
@@ -102,12 +102,13 @@ onMounted(async () => {
             {{ tl.block }}
           </button>
         </div>
-        <button
-          class="w-full rounded-full border-2 border-very-light-blue bg-transparent px-8 py-2 font-semibold duration-200 hover:bg-very-light-blue hover:text-black"
+        <a
+          href="/profile/edit"
+          class="flex w-full items-center justify-center rounded-full border-2 border-very-light-blue bg-transparent px-8 py-2 font-semibold duration-200 hover:bg-very-light-blue hover:text-black"
           v-else
         >
           {{ tl.edit }}
-        </button>
+        </a>
       </div>
     </div>
   </div>

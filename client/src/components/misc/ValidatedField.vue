@@ -22,7 +22,7 @@ watchEffect(() => {
 
 <template>
   <div class="flex w-full flex-col gap-2">
-    <label :for="name">{{ label }}</label>
+    <label :for="name" class="text-sm font-semibold">{{ label }}</label>
     <div
       class="flex flex-row items-center justify-between rounded-lg bg-darker-navy p-2 has-[:invalid]:ring-2 has-[:invalid]:ring-red"
     >

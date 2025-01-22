@@ -4,6 +4,10 @@ import ProfileView from "@/components/profile/ProfileView.vue";
 import MainLayout from "@/layouts/MainLayout.astro";
 
 const id = Astro.params.id;
+
+if (!id?.startsWith("@")) {
+  return Astro.redirect("/profile");
+}
 ---
 
 <MainLayout title={`@${id} Profile`} description={`Profile description for the user with the username @${id}`}>
