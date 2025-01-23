@@ -28,7 +28,7 @@ watchEffect(() => {
       class="flex flex-row items-center justify-between rounded-lg bg-darker-navy p-2 has-[:invalid]:ring-2 has-[:invalid]:ring-red"
     >
       <div
-        class="-my-2 -ml-2 mr-2 rounded-lg bg-medium-navy px-3 py-2"
+        class="-my-2 -ml-2 mr-2 rounded-lg bg-light-blue px-3 py-2"
         v-if="prefix"
       >
         {{ prefix }}

@@ -125,7 +125,10 @@ async function submitChanges() {
 <template>
   <ProfileEditLoading v-if="loading" />
 
-  <div class="flex w-full flex-col items-center gap-8" v-else>
+  <div
+    class="mx-auto mb-14 flex w-full max-w-screen-md flex-col items-center gap-8 lg:my-8"
+    v-else
+  >
     <input
       type="file"
       id="image-chooser"
@@ -135,7 +138,9 @@ async function submitChanges() {
       data-testid="image-chooser"
     />
 
-    <div class="flex w-full flex-col items-center gap-4">
+    <div
+      class="flex w-full flex-col items-center gap-4 lg:flex-row lg:items-end lg:justify-start"
+    >
       <button
         class="group relative size-[15rem] cursor-pointer after:absolute after:inset-0 after:size-full after:rounded-full after:bg-black/0 hover:after:bg-black/50"
         :aria-label="tl.uploadAvatar"

@@ -55,8 +55,6 @@ Object Class (how contained is the action? is it within small regions of collect
 - **Keter**: Multiple collections were affected deeply.
 - **Apollyon**: The entire database was affected deeply.
 
-## Storage (Express API Routes + S3)
-
 ## Frontend (VueJS)
 
 The frontend uses a simple Astro + Vue server, hosted on Vercel (free plan, of course) with server-side rendering features.

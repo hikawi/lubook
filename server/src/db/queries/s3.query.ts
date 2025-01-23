@@ -1,8 +1,16 @@
-import { DeleteObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
-import { s3 } from "..";
+import { DeleteObjectCommand, ListBucketsCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
-// No clue what this is.
-s3.config.credentials();
+const s3 = new S3Client({
+  region: "eu2",
+  endpoint: `https://eu2.contabostorage.com`,
+  forcePathStyle: true,
+  credentials: {
+    accessKeyId: process.env.S3_ACCESS_KEY!,
+    secretAccessKey: process.env.S3_SECRET_KEY!,
+  },
+});
+
+s3.send(new ListBucketsCommand());
 
 /**
  * Upload a user's avatar.

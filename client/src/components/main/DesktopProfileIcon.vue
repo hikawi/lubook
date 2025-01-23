@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { $profile } from "@/i18n";
 import { $blackLayer } from "@/stores/black-layer";
-import { getJson } from "@/utils/fetcher";
 import { useStore } from "@nanostores/vue";
-import { onMounted, ref } from "vue";
 import IconBookmark from "../icons/IconBookmark.vue";
 import IconCircleAdd from "../icons/IconCircleAdd.vue";
 import IconHome from "../icons/IconHome.vue";
@@ -11,21 +9,10 @@ import IconSettings from "../icons/IconSettings.vue";
 
 const tl = useStore($profile);
 
-const avatarUrl = ref<string | null>();
-const loading = ref(true);
-
-onMounted(async () => {
-  const res = await getJson("profile");
-  switch (res.status) {
-    case 401:
-      break;
-    case 200:
-      const body = await res.json();
-      avatarUrl.value = body.avatar;
-      break;
-  }
-  loading.value = false;
-});
+defineProps<{
+  loading?: boolean;
+  profile?: any;
+}>();
 
 /**
  * Toggles the state of the black layer.
@@ -45,7 +32,7 @@ function setBlackLayer(on: boolean) {
 
   <div
     class="group relative z-50 flex flex-col items-center justify-center gap-10 rounded-full bg-transparent"
-    v-else-if="avatarUrl"
+    v-else-if="profile"
     @mouseover="setBlackLayer(true)"
     @mouseleave="setBlackLayer(false)"
   >
@@ -55,7 +42,7 @@ function setBlackLayer(on: boolean) {
       class="relative z-50 rounded-full"
     >
       <img
-        :src="avatarUrl"
+        :src="profile.avatar"
         :alt="tl.myProfile"
         class="size-14 rounded-full object-contain"
       />

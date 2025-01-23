@@ -55,3 +55,4 @@ describe("fetcher utils", () => {
     fetcher({ path: "lol", method: "METHOD" });
   });
 });
+

@@ -1,4 +1,3 @@
-import { S3Client } from "@aws-sdk/client-s3";
 import { drizzle } from "drizzle-orm/node-postgres";
 import * as pg from "pg";
 import { blockTags, follows, roles, tags, users } from "./schema";
@@ -18,26 +17,15 @@ const db = drizzle({
   schema: { users, roles, follows, tags, blockTags },
 });
 
-const s3 = new S3Client({
-  region: "eu2",
-  endpoint: "https://eu2.contabostorage.com",
-  forcePathStyle: true,
-  credentials: {
-    accessKeyId: process.env.S3_ACCESS_KEY!,
-    secretAccessKey: process.env.S3_SECRET_KEY!,
-  },
-});
-
 async function disconnect() {
   try {
     await pool.end();
-  } catch (ignored) {}
+  } catch (ignored) { }
 }
 
-export { db, disconnect, pool, s3 };
+export { db, disconnect, pool };
 
 process.on("SIGTERM", async () => {
   await disconnect();
-  s3.destroy();
   process.exit(0);
 });

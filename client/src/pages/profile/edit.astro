@@ -1,10 +1,10 @@
 ---
-import TopNavBar from "@/components/main/TopNavBar.vue";
+import NavigationBar from "@/components/main/NavigationBar.vue";
 import ProfileEdit from "@/components/profile/ProfileEdit.vue";
 import MainLayout from "@/layouts/MainLayout.astro";
 ---
 
 <MainLayout title="Edit Profile" description="A form for editing your profile">
-  <TopNavBar client:load />
+  <NavigationBar client:load />
   <ProfileEdit client:load />
 </MainLayout>

@@ -1,5 +1,5 @@
 ---
-import TopNavBar from "@/components/main/TopNavBar.vue";
+import NavigationBar from "@/components/main/NavigationBar.vue";
 import ProfileView from "@/components/profile/ProfileView.vue";
 import MainLayout from "@/layouts/MainLayout.astro";
 
@@ -11,6 +11,6 @@ if (!id?.startsWith("@")) {
 ---
 
 <MainLayout title={`@${id} Profile`} description={`Profile description for the user with the username @${id}`}>
-  <TopNavBar client:load />
+  <NavigationBar client:load />
   <ProfileView username={id} client:load />
 </MainLayout>

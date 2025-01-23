@@ -24,6 +24,7 @@ app.use(mainRouter);
 // Error handling
 app.use(async (err: Error, req: any, res: any, next: any) => {
   res.status(Status.INTERNAL_SERVER_ERROR);
+  console.log(err);
   return res.json({ status: res.statusCode, message: err.message });
 });
 
