@@ -20,7 +20,7 @@ const db = drizzle({
 async function disconnect() {
   try {
     await pool.end();
-  } catch (ignored) { }
+  } catch (ignored) {}
 }
 
 export { db, disconnect, pool };

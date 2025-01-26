@@ -1,19 +1,28 @@
 import express, { Router } from "express";
 import {
-  blockHandler,
-  blocklistHandler,
-  isBlockedHandler,
-  unblockHandler,
+  blockTagHandler,
+  blockUserHandler,
+  getBlockedUsersHandler,
+  getBlockTagsHandler,
+  isUserBlockedHandler,
+  unblockTagHandler,
+  unblockUserHandler,
 } from "../controllers/block.controller";
 import { auth } from "../middlewares";
 
 const blocksRouter: Router = express.Router();
 
-blocksRouter.route("/list").get(auth, blocklistHandler);
+blocksRouter.route("/users/:username").get(auth, isUserBlockedHandler);
 blocksRouter
-  .route("/")
-  .get(auth, isBlockedHandler)
-  .post(auth, blockHandler)
-  .delete(auth, unblockHandler);
+  .route("/users")
+  .get(auth, getBlockedUsersHandler)
+  .post(auth, blockUserHandler)
+  .delete(auth, unblockUserHandler);
+
+blocksRouter
+  .route("/tags")
+  .get(auth, getBlockTagsHandler)
+  .post(auth, blockTagHandler)
+  .delete(auth, unblockTagHandler);
 
 export { blocksRouter };

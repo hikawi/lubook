@@ -1,7 +1,7 @@
 import { hashSync } from "bcryptjs";
 import { sql } from "drizzle-orm";
 import { db } from "../db";
-import { profiles, users } from "../db/schema";
+import { profiles, tags, users } from "../db/schema";
 
 export async function clearDatabase() {
   const tables = ["user", "profile"];
@@ -65,4 +65,23 @@ export async function setupTestUsers() {
       }),
     );
   });
+}
+
+/**
+ * Sets up 10 tags (also called categories or genres) for testing purposes.
+ */
+export async function setupTestTags() {
+  const names = [
+    "fantasy",
+    "action",
+    "shonen",
+    "shojo",
+    "romcom",
+    "yoshi",
+    "comedy",
+    "slice of life",
+    "education",
+    "romance",
+  ];
+  await db.insert(tags).values(names.map((name) => ({ name })));
 }

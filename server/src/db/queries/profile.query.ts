@@ -16,6 +16,7 @@ export async function getProfile(data: { id?: number; username?: string }) {
       email: users.email,
       name: profiles.name,
       bio: profiles.bio,
+      role: users.role,
       avatar: profiles.avatar,
       followers: profiles.followers,
       followings: profiles.followings,
