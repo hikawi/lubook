@@ -62,6 +62,20 @@
   "profile": {
     "error": "Đã có lỗi xảy ra lúc tải tài khoản này.",
     "noBio": "Không có bio.",
+    "moderator": "Quản lí",
+    "administrator": "Quản trị viên",
+    "follower": {
+      "one": "người theo dõi",
+      "many": "người theo dõi"
+    },
+    "following": {
+      "one": "đang theo dõi",
+      "many": "đang theo dõi"
+    },
+    "publications": {
+      "one": "tác phẩm",
+      "many": "tác phẩm"
+    },
     "follow": "Theo dõi",
     "block": "Chặn",
     "edit": "Thay đổi",

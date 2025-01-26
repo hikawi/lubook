@@ -21,25 +21,35 @@ describe("navigation bar", () => {
   });
 
   it("shows desktop navigation bar on large screens", async () => {
-    getJsonMock.mockResolvedValueOnce(new Response(JSON.stringify({}), { status: 200 }));
+    getJsonMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({}), { status: 200 }),
+    );
     await page.viewport(1280, 1080);
     render(NavigationBar);
 
     await expect.element(page.getByTestId("desktop-nav-bar")).toBeVisible();
-    await expect.element(page.getByTestId("mobile-nav-bar")).not.toBeInTheDocument();
+    await expect
+      .element(page.getByTestId("mobile-nav-bar"))
+      .not.toBeInTheDocument();
   });
 
   it("shows mobile navigation bar on small screens", async () => {
-    getJsonMock.mockResolvedValueOnce(new Response(JSON.stringify({}), { status: 200 }));
+    getJsonMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({}), { status: 200 }),
+    );
     await page.viewport(375, 800);
     render(NavigationBar);
 
     await expect.element(page.getByTestId("desktop-nav-bar")).not.toBeVisible();
-    await expect.element(page.getByTestId("mobile-nav-bar")).toBeInTheDocument();
+    await expect
+      .element(page.getByTestId("mobile-nav-bar"))
+      .toBeInTheDocument();
   });
 
   it("shows login button if not logged in", async () => {
-    getJsonMock.mockResolvedValueOnce(new Response(JSON.stringify({}), { status: 401 }));
+    getJsonMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({}), { status: 401 }),
+    );
     await page.viewport(1280, 1080);
     render(NavigationBar);
 
@@ -48,7 +58,9 @@ describe("navigation bar", () => {
   });
 
   it("shows search bar if turned on", async () => {
-    getJsonMock.mockResolvedValueOnce(new Response(JSON.stringify({}), { status: 401 }));
+    getJsonMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({}), { status: 401 }),
+    );
     await page.viewport(1280, 1080);
     render(NavigationBar, { props: { showSearchBar: true } });
 
@@ -56,7 +68,9 @@ describe("navigation bar", () => {
   });
 
   it("shows links when hovered over profile", async () => {
-    getJsonMock.mockResolvedValueOnce(new Response(JSON.stringify({}), { status: 200 }));
+    getJsonMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({}), { status: 200 }),
+    );
     await page.viewport(1280, 1080);
     render(NavigationBar);
 

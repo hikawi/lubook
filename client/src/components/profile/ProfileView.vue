@@ -3,8 +3,11 @@ import { $profile } from "@/i18n";
 import { getJson } from "@/utils/fetcher";
 import { useStore } from "@nanostores/vue";
 import { onMounted, ref } from "vue";
+import FormattedNumber from "../misc/FormattedNumber.vue";
 import ProfileLoading from "./ProfileLoading.vue";
 import ProfileNotFound from "./ProfileNotFound.vue";
+import IconVerified from "../icons/IconVerified.vue";
+import IconShieldPerson from "../icons/IconShieldPerson.vue";
 
 const props = defineProps<{
   username?: string;
@@ -18,6 +21,7 @@ const data = ref<
       name?: string;
       avatar?: string;
       bio?: string;
+      role: string;
       followers: number;
       followings: number;
       publications: number;
@@ -60,6 +64,16 @@ onMounted(async () => {
           <span class="font-semibold text-light-gray"
             >@{{ data.username }}</span
           >
+
+          <span class="font-bold text-light-green flex flex-row items-center gap-2 text-sm" v-if="data.role == 'moderator'">
+            <IconVerified class="fill-light-green size-6" />
+            {{ tl.moderator }}
+          </span>
+
+          <span class="font-bold text-light-red flex flex-row items-center gap-2 text-sm" v-else-if="data.role == 'admin'">
+            <IconShieldPerson class="fill-light-red size-6" />
+            {{ tl.administrator }}
+          </span>
         </div>
 
         <div class="flex w-full break-words" v-if="data.bio">
@@ -71,14 +85,22 @@ onMounted(async () => {
 
         <ul class="flex list-none flex-col gap-1 lg:flex-row lg:gap-8">
           <li>
-            <span class="font-semibold">{{ data.followers }}</span> followers
+            <span class="font-semibold">
+              <FormattedNumber :num="data.followers" />
+            </span>
+            {{ tl.follower(data.followers) }}
           </li>
           <li>
-            <span class="font-semibold">{{ data.followings }}</span> followings
+            <span class="font-semibold">
+              <FormattedNumber :num="data.followings" />
+            </span>
+            {{ tl.following(data.followings) }}
           </li>
           <li>
-            <span class="font-semibold">{{ data.publications }}</span>
-            publications
+            <span class="font-semibold">
+              <FormattedNumber :num="data.publications" />
+            </span>
+            {{ tl.publications(data.publications) }}
           </li>
         </ul>
       </div>
@@ -88,6 +110,10 @@ onMounted(async () => {
           :src="data.avatar"
           :alt="data.name || data.username"
           class="size-[7.5rem] shrink-0 rounded-full bg-light-blue object-contain shadow-lg lg:size-[10.25rem]"
+          :class="{
+            'ring-4 ring-light-red': data.role == 'admin',
+            'ring-4 ring-light-green': data.role == 'moderator',
+          }"
         />
 
         <div class="flex w-full flex-col gap-2" v-if="!data.self">

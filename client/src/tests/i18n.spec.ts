@@ -8,8 +8,10 @@ vi.mock(import("../utils/fetcher"), async (factory) => {
   const actual = await factory();
   return {
     ...actual,
-    getJson: vi.fn(async () => new Response(JSON.stringify({}), { status: 200 })),
-  }
+    getJson: vi.fn(
+      async () => new Response(JSON.stringify({}), { status: 200 }),
+    ),
+  };
 });
 
 describe("i18n store", () => {

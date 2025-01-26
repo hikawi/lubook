@@ -4,14 +4,16 @@ import { page, userEvent } from "@vitest/browser/context";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { nextTick } from "vue";
 
-const { getJsonMock, redirectMock, putJsonMock, fetcherMock } = vi.hoisted(() => ({
-  getJsonMock: vi.fn(),
-  redirectMock: vi.fn(),
-  putJsonMock: vi.fn(),
-  fetcherMock: vi.fn(),
-}))
+const { getJsonMock, redirectMock, putJsonMock, fetcherMock } = vi.hoisted(
+  () => ({
+    getJsonMock: vi.fn(),
+    redirectMock: vi.fn(),
+    putJsonMock: vi.fn(),
+    fetcherMock: vi.fn(),
+  }),
+);
 
-vi.mock(import("../utils/fetcher"), async factory => {
+vi.mock(import("../utils/fetcher"), async (factory) => {
   const actual = await factory();
   return {
     ...actual,
@@ -29,7 +31,9 @@ describe("profile edit", () => {
   });
 
   it("should have fields to edit", async () => {
-    getJsonMock.mockResolvedValueOnce(new Response(JSON.stringify({}), { status: 200 }))
+    getJsonMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({}), { status: 200 }),
+    );
     render(ProfileEdit);
 
     expect(getJsonMock).toHaveBeenCalledOnce();
@@ -37,7 +41,7 @@ describe("profile edit", () => {
   });
 
   it("redirects to login if not 200", async () => {
-    getJsonMock.mockResolvedValueOnce(new Response(null, { status: 400 }))
+    getJsonMock.mockResolvedValueOnce(new Response(null, { status: 400 }));
     render(ProfileEdit);
 
     await nextTick();
@@ -46,7 +50,9 @@ describe("profile edit", () => {
   });
 
   it("redirects to same page after deleting avatar", async () => {
-    getJsonMock.mockResolvedValueOnce(new Response(JSON.stringify({}), { status: 200 }));
+    getJsonMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({}), { status: 200 }),
+    );
     fetcherMock.mockResolvedValueOnce(new Response(null, { status: 200 }));
     render(ProfileEdit);
 
@@ -58,7 +64,9 @@ describe("profile edit", () => {
   });
 
   it("does nothing if deleting avatar didn't 200 OK", async () => {
-    getJsonMock.mockResolvedValueOnce(new Response(JSON.stringify({}), { status: 200 }));
+    getJsonMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({}), { status: 200 }),
+    );
     fetcherMock.mockResolvedValueOnce(new Response(null, { status: 400 }));
     render(ProfileEdit);
 
@@ -70,7 +78,9 @@ describe("profile edit", () => {
   });
 
   it("redirects to /profile clicking discard changes", async () => {
-    getJsonMock.mockResolvedValueOnce(new Response(JSON.stringify({}), { status: 200 }));
+    getJsonMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({}), { status: 200 }),
+    );
     render(ProfileEdit);
 
     const btn = page.getByRole("button", { name: "Discard Changes" });
@@ -81,8 +91,12 @@ describe("profile edit", () => {
   });
 
   it("uploads avatar on file upload", async () => {
-    getJsonMock.mockResolvedValueOnce(new Response(JSON.stringify({}), { status: 200 }));
-    fetcherMock.mockResolvedValueOnce(new Response(JSON.stringify({ location: "test" }), { status: 201 }));
+    getJsonMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({}), { status: 200 }),
+    );
+    fetcherMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({ location: "test" }), { status: 201 }),
+    );
     render(ProfileEdit);
 
     const uploadBtn = page.getByRole("button", { name: "Upload" });
@@ -94,8 +108,12 @@ describe("profile edit", () => {
   });
 
   it("changes nothing on file upload if not 201", async () => {
-    getJsonMock.mockResolvedValueOnce(new Response(JSON.stringify({}), { status: 200 }));
-    fetcherMock.mockResolvedValueOnce(new Response(JSON.stringify({ location: "test" }), { status: 200 }));
+    getJsonMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({}), { status: 200 }),
+    );
+    fetcherMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({ location: "test" }), { status: 200 }),
+    );
     render(ProfileEdit);
 
     const uploadBtn = page.getByRole("button", { name: "Upload" });
@@ -107,7 +125,9 @@ describe("profile edit", () => {
   });
 
   it("saves changes sends a PUT request", async () => {
-    getJsonMock.mockResolvedValueOnce(new Response(JSON.stringify({}), { status: 200 }));
+    getJsonMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({}), { status: 200 }),
+    );
     putJsonMock.mockResolvedValueOnce(new Response(null, { status: 200 }));
     render(ProfileEdit);
 
@@ -127,7 +147,9 @@ describe("profile edit", () => {
   });
 
   it("shows error if username is invalid", async () => {
-    getJsonMock.mockResolvedValueOnce(new Response(JSON.stringify({}), { status: 200 }));
+    getJsonMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({}), { status: 200 }),
+    );
     putJsonMock.mockResolvedValueOnce(new Response(null, { status: 400 }));
     render(ProfileEdit);
 
@@ -136,11 +158,15 @@ describe("profile edit", () => {
     await expect.element(usernameField).not.toHaveAccessibleErrorMessage();
     const btn = page.getByRole("button", { name: "Save Changes" });
     await btn.click();
-    await expect.element(usernameField).toHaveAccessibleErrorMessage("Username is invalid");
+    await expect
+      .element(usernameField)
+      .toHaveAccessibleErrorMessage("Username is invalid");
   });
 
   it("shows error if username is taken", async () => {
-    getJsonMock.mockResolvedValueOnce(new Response(JSON.stringify({}), { status: 200 }));
+    getJsonMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({}), { status: 200 }),
+    );
     putJsonMock.mockResolvedValueOnce(new Response(null, { status: 409 }));
     render(ProfileEdit);
 
@@ -149,6 +175,8 @@ describe("profile edit", () => {
     await expect.element(usernameField).not.toHaveAccessibleErrorMessage();
     const btn = page.getByRole("button", { name: "Save Changes" });
     await btn.click();
-    await expect.element(usernameField).toHaveAccessibleErrorMessage("That username is taken");
+    await expect
+      .element(usernameField)
+      .toHaveAccessibleErrorMessage("That username is taken");
   });
-})
+});

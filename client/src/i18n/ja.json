@@ -62,6 +62,20 @@
   "profile": {
     "error": "このプロファイルをロード中にエラーが発生しちゃいます。",
     "noBio": "バイオが無い",
+    "moderator": "モデレーター",
+    "administrator": "管理者",
+    "follower": {
+      "one": "フォロワー",
+      "many": "フォロワー"
+    },
+    "following": {
+      "one": "フォロー中",
+      "many": "フォロー中"
+    },
+    "publications": {
+      "one": "作成",
+      "many": "作成"
+    },
     "follow": "フォローする",
     "block": "ブロック",
     "edit": "編集",
@@ -71,11 +85,7 @@
     "library": "ライブラリー",
     "settings": "設定",
     "notFound": "あのプロファイルは存在していません",
-    "notFoundDesc": "多分あなたが壊れたリンクをフォローしましたか、ユーザー名を違えましたか？",
-    "followers": {
-      "one": "{count} フォロワー",
-      "many": "{count} フォロワー"
-    }
+    "notFoundDesc": "多分あなたが壊れたリンクをフォローしましたか、ユーザー名を違えましたか？"
   },
   "profileEdit": {
     "uploadAvatar": "新しいアバターアップロード",

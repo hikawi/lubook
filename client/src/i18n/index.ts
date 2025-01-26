@@ -1,4 +1,5 @@
 import { $i18n } from "@/stores/i18n";
+import { count } from "@nanostores/i18n";
 
 /**
  * The translation component for use in the login page.
@@ -81,6 +82,20 @@ export const $navigationBar = $i18n("navigationBar", {
 export const $profile = $i18n("profile", {
   error: "There was an error loading the profile...",
   noBio: "No biography set",
+  moderator: "Moderator",
+  administrator: "Administrator",
+  follower: count({
+    one: "follower",
+    many: "followers",
+  }),
+  following: count({
+    one: "following",
+    many: "followings",
+  }),
+  publications: count({
+    one: "publication",
+    many: "publications",
+  }),
   follow: "Follow",
   block: "Block",
   edit: "Edit",
