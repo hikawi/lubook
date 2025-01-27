@@ -18,6 +18,16 @@ export async function getTagId(tag: string) {
 }
 
 /**
+ * Check if the tag name is taken.
+ *
+ * @param tag the tag to check
+ * @returns true if taken, false if not
+ */
+export async function isTagTaken(tag: string) {
+  return (await getTagId(tag)) != -1;
+}
+
+/**
  * Retrieves a list of tags.
  *
  * @param query The query to limit the list
@@ -47,19 +57,32 @@ export async function getTags(query: { page: number; per_page: number }) {
 export async function createTag(tag: string) {
   return await db
     .insert(tags)
-    .values({ name: tag.toLowerCase() })
+    .values({ name: tag })
+    .returning()
     .onConflictDoNothing();
 }
 
 /**
  * Delete a tag
  *
- * @param tag the tag to remove
+ * @param id the tag to remove
  * @returns the query result
  */
-export async function deleteTag(tag: string) {
+export async function deleteTag(id: number) {
+  return await db.delete(tags).where(eq(tags.id, id)).returning();
+}
+
+/**
+ * Edits a tag.
+ *
+ * @param id the ID to edit
+ * @param tag the new name to edit to
+ * @returns the query result
+ */
+export async function editTag(id: number, tag: string) {
   return await db
-    .delete(tags)
-    .where(eq(lower(tags.name), tag.toLowerCase()))
+    .update(tags)
+    .set({ name: tag })
+    .where(eq(tags.id, id))
     .returning();
 }

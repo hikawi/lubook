@@ -7,10 +7,10 @@ import {
 } from "../controllers/user.controller";
 import { auth } from "../middlewares";
 
-const router: Router = express.Router();
-router.route("/register").post(registerHandler);
-router.route("/users").post(auth, updateUserHandler);
-router.route("/login").post(loginHandler);
-router.route("/logout").post(logoutHandler);
+const accountsRouter: Router = express.Router();
+accountsRouter.route("/register").post(registerHandler);
+accountsRouter.route("/users").post(auth, updateUserHandler);
+accountsRouter.route("/login").post(loginHandler);
+accountsRouter.route("/logout").post(logoutHandler);
 
-export { router as accountsRouter };
+export default accountsRouter;

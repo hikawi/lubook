@@ -25,4 +25,4 @@ blocksRouter
   .post(auth, blockTagHandler)
   .delete(auth, unblockTagHandler);
 
-export { blocksRouter };
+export default blocksRouter;

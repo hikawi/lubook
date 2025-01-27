@@ -66,6 +66,43 @@ export const auth: RequestHandler = expressAsyncHandler(
   },
 );
 
+export function authLevel(lvl: number): RequestHandler {
+  return expressAsyncHandler(async (req, res, next) => {
+    const val = await checkAuthCookie(req);
+    req["bearer"] = val;
+
+    if (val == null) {
+      res.status(Status.UNAUTHORIZED).json({ message: "Unauthorized" });
+      return;
+    }
+
+    const user = await findUserById(val.id);
+    if (user.length == 0) {
+      res
+        .status(Status.UNPROCESSABLE_ENTITY)
+        .clearCookie("authorization")
+        .json({ message: "You shouldn't exist?" });
+      return;
+    }
+
+    req["user"] = user[0];
+    if (lvl == 2 && user[0].role == "user") {
+      res
+        .status(Status.UNAUTHORIZED)
+        .json({ message: "Too low clearance level" });
+      return;
+    }
+
+    if (lvl == 3 && user[0].role != "admin") {
+      res
+        .status(Status.UNAUTHORIZED)
+        .json({ message: "Too low clearance level" });
+      return;
+    }
+    next();
+  });
+}
+
 /**
  * The image upload middleware. Accepts up to 20MB of an image.
  */

@@ -4,7 +4,7 @@ import { db } from "../db";
 import { profiles, tags, users } from "../db/schema";
 
 export async function clearDatabase() {
-  const tables = ["user", "profile"];
+  const tables = ["user", "profile", "tag"];
   for (const table of tables) {
     await db.execute(
       sql.raw(`truncate table \"${table}\" restart identity cascade;`),

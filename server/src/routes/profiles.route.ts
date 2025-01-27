@@ -7,14 +7,14 @@ import {
 } from "../controllers/profile.controller";
 import { auth, imageUpload, softAuth } from "../middlewares";
 
-const router: Router = express.Router();
-router
+const profilesRouter: Router = express.Router();
+profilesRouter
   .route("/")
   .get(softAuth, getProfileHandler)
   .put(auth, updateProfileHandler);
-router
+profilesRouter
   .route("/avatar")
   .post(auth, imageUpload, updateAvatarHandler)
   .delete(auth, deleteAvatarHandler);
 
-export { router as profilesRouter };
+export default profilesRouter;

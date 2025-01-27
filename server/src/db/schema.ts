@@ -24,16 +24,20 @@ export const verifications = pg.pgTable("verification", {
   user: pg
     .serial()
     .primaryKey()
-    .references(() => users.id),
+    .references(() => users.id, { onDelete: "cascade" }),
   token: pg.text().notNull(), // The 6-digit code hashed with bcrypt to compare if they choose this route.
   urlToken: pg.text("url_token").notNull(), // The URL version of the token generated differently.
   created: pg.timestamp().notNull().defaultNow(),
 });
 
-export const tags = pg.pgTable("tag", {
-  id: pg.serial().primaryKey(),
-  name: pg.text(),
-});
+export const tags = pg.pgTable(
+  "tag",
+  {
+    id: pg.serial().primaryKey(),
+    name: pg.text().notNull().unique(),
+  },
+  (self) => [pg.uniqueIndex("tag_name_idx").onOnly(lower(self.name))],
+);
 
 export const follows = pg.pgTable(
   "follow",
@@ -73,7 +77,7 @@ export const profiles = pg.pgTable("profile", {
   user: pg
     .serial("user_id")
     .unique()
-    .references(() => users.id),
+    .references(() => users.id, { onDelete: "cascade" }),
   name: pg.text(),
   avatar: pg.text().default("https://s3.lubook.club/avatars/default.png"),
   bio: pg.text(),
@@ -98,13 +102,25 @@ export const mangas = pg.pgTable("manga", {
   lastUpdatedDate: pg.timestamp("last_updated").notNull(),
 });
 
-export const mangaCovers = pg.pgTable("mangacover", {
-  manga: pg
-    .serial()
-    .references(() => mangas.id)
-    .primaryKey(),
-  fileName: pg.text("file_name"),
-});
+export const mangaTags = pg.pgTable(
+  "mangatags",
+  {
+    manga: pg.serial().references(() => mangas.id, { onDelete: "cascade" }),
+    tag: pg.serial().references(() => tags.id, { onDelete: "cascade" }),
+  },
+  (self) => [pg.primaryKey({ columns: [self.manga, self.tag] })],
+);
+
+export const mangaCovers = pg.pgTable(
+  "mangacover",
+  {
+    id: pg.serial().primaryKey(),
+    manga: pg.serial().references(() => mangas.id, { onDelete: "cascade" }),
+    name: pg.text().notNull(),
+    url: pg.text().notNull(),
+  },
+  (self) => [pg.index("mangacover_name_idx").on(self.name)],
+);
 
 export const chapters = pg.pgTable(
   "chapter",
@@ -112,41 +128,33 @@ export const chapters = pg.pgTable(
     manga: pg
       .serial("manga_id")
       .notNull()
-      .references(() => mangas.id),
+      .references(() => mangas.id, { onDelete: "cascade" }),
     number: pg.integer().notNull().unique(),
+    cover: pg.text(),
     name: pg.text().notNull(),
     description: pg.text(),
     uploadDate: pg.timestamp("upload_date").defaultNow().notNull(),
     lastModifiedDate: pg.timestamp("last_modified_date").notNull().defaultNow(),
-    disableComments: pg.boolean().notNull().default(true),
+    enableComments: pg.boolean().notNull().default(true),
   },
   (self) => [pg.primaryKey({ columns: [self.manga, self.number] })],
-);
-
-export const chapterCovers = pg.pgTable(
-  "chaptercover",
-  {
-    manga: pg.serial(),
-    chapter: pg.integer(),
-    fileName: pg.text("file_name"),
-  },
-  (table) => [
-    pg.primaryKey({ columns: [table.manga, table.chapter] }),
-    pg.foreignKey({
-      columns: [table.manga, table.chapter],
-      foreignColumns: [chapters.manga, chapters.number],
-    }),
-  ],
 );
 
 export const pages = pg.pgTable(
   "page",
   {
-    manga: pg.serial().references(() => mangas.id),
-    order: pg.integer(),
+    manga: pg.serial().notNull(),
+    chapter: pg.integer().notNull(),
+    order: pg.integer().notNull(),
     fileName: pg.text("file_name").notNull(),
   },
-  (self) => [pg.primaryKey({ columns: [self.manga, self.order] })],
+  (self) => [
+    pg.primaryKey({ columns: [self.manga, self.chapter, self.order] }),
+    pg.foreignKey({
+      columns: [self.manga, self.chapter],
+      foreignColumns: [chapters.manga, chapters.number],
+    }),
+  ],
 );
 
 export const authors = pg.pgTable(
@@ -154,22 +162,30 @@ export const authors = pg.pgTable(
   {
     user: pg
       .serial()
-      .references(() => users.id)
+      .references(() => users.id, { onDelete: "cascade" })
       .notNull(),
     manga: pg
       .serial()
-      .references(() => mangas.id)
+      .references(() => mangas.id, { onDelete: "cascade" })
       .notNull(),
   },
   (self) => [pg.primaryKey({ columns: [self.user, self.manga] })],
 );
 
-export const ratings = pg.pgTable("rating", {
-  user: pg.serial("user_id").references(() => users.id),
-  manga: pg.serial("manga_id").references(() => mangas.id),
-  rating: pg.real().notNull(),
-  comment: pg.text(),
-});
+export const ratings = pg.pgTable(
+  "rating",
+  {
+    user: pg
+      .serial("user_id")
+      .references(() => users.id, { onDelete: "cascade" }),
+    manga: pg
+      .serial("manga_id")
+      .references(() => mangas.id, { onDelete: "cascade" }),
+    rating: pg.real().notNull(),
+    comment: pg.text(),
+  },
+  (self) => [pg.primaryKey({ columns: [self.user, self.manga] })],
+);
 
 export const libraryEntries = pg.pgTable(
   "libraryentry",
@@ -190,14 +206,18 @@ export const comments = pg.pgTable("comment", {
   id: pg.serial().primaryKey(),
   user: pg
     .serial("user_id")
-    .references(() => users.id)
+    .references(() => users.id, { onDelete: "cascade" })
     .notNull(),
   manga: pg
     .serial("manga_id")
-    .references(() => mangas.id, { onUpdate: "cascade" }),
+    .references(() => mangas.id, { onDelete: "cascade" }),
   chapter: pg
     .integer("chapter_id")
-    .references(() => chapters.number, { onUpdate: "cascade" }),
+    .notNull()
+    .references(() => chapters.number, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
   time: pg.timestamp().notNull().defaultNow(),
   text: pg.text().notNull(),
 });
