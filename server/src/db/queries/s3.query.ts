@@ -1,6 +1,5 @@
 import {
   DeleteObjectCommand,
-  ListBucketsCommand,
   PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
@@ -14,8 +13,6 @@ const s3 = new S3Client({
     secretAccessKey: process.env.S3_SECRET_KEY!,
   },
 });
-
-s3.send(new ListBucketsCommand());
 
 /**
  * Upload a user's avatar.
@@ -47,3 +44,5 @@ export async function deleteAvatarObject(id: number) {
   });
   await s3.send(deleteCommand);
 }
+
+export { s3 };

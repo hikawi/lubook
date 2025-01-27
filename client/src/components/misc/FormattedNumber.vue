@@ -5,7 +5,7 @@ const props = defineProps<{
   num: number;
 }>();
 
-const displayed = computed(() => props.num.toLocaleString());
+const displayed = computed(() => props.num?.toLocaleString());
 </script>
 
 <template>

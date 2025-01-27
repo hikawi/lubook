@@ -2,7 +2,8 @@ import { eq } from "drizzle-orm";
 import supertest from "supertest";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import app from "../app";
-import { db, s3 } from "../db";
+import { db } from "../db";
+import { s3 } from "../db/queries/s3.query";
 import { users } from "../db/schema";
 import { clearDatabase, setupTestUsers } from "./utils";
 

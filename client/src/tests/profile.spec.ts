@@ -64,6 +64,28 @@ describe("/profile route", () => {
     await expect.element(page.getByText("No biography set")).toBeVisible();
   });
 
+  it("shows moderator tag if viewing a moderator", async () => {
+    getJsonMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({ role: "moderator", self: true }), {
+        status: 200,
+      }),
+    );
+    render(ProfileView);
+
+    await expect.element(page.getByText("Moderator")).toBeVisible();
+  });
+
+  it("shows admin tag if viewing a moderator", async () => {
+    getJsonMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({ role: "admin", self: true }), {
+        status: 200,
+      }),
+    );
+    render(ProfileView);
+
+    await expect.element(page.getByText("Administrator")).toBeVisible();
+  });
+
   it("displays correct view if viewing my profile", async () => {
     getJsonMock.mockResolvedValueOnce(
       new Response(JSON.stringify({ self: true }), { status: 200 }),
