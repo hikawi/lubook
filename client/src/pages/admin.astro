@@ -1,0 +1,26 @@
+---
+import AdminBanner from "@/components/admin/AdminBanner.vue";
+import AdminButtons from "@/components/admin/AdminButtons.vue";
+import NavigationBar from "@/components/main/NavigationBar.vue";
+import MainLayout from "@/layouts/MainLayout.astro";
+---
+
+<script>
+  import { getJson, redirect } from "@/utils/fetcher";
+
+  const res = await getJson("profile");
+  if (res.status != 200) {
+    redirect("/login");
+  }
+
+  const body = await res.json();
+  if (body.role != "admin") {
+    redirect("/login");
+  }
+</script>
+
+<MainLayout title="Administrative Tools" description="Tools for administrators of Lubook">
+  <NavigationBar client:load />
+  <AdminBanner client:load />
+  <AdminButtons client:load />
+</MainLayout>

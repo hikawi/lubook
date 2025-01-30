@@ -124,3 +124,13 @@ export const $profileEdit = $i18n("profileEdit", {
   save: "Save Changes",
   discard: "Discard Changes",
 });
+
+export const $administrator = $i18n("administrator", {
+  banner: "Administrator Tools",
+  manageAccounts: "Manage Accounts",
+  managePublications: "Manage Publications",
+  manageReports: "Manage Reports",
+  manageTags: "Manage Tags",
+  back: "Back",
+  noCategoryPicked: "Pick a category to get started",
+});

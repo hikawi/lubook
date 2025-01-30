@@ -65,13 +65,19 @@ onMounted(async () => {
             >@{{ data.username }}</span
           >
 
-          <span class="font-bold text-light-green flex flex-row items-center gap-2 text-sm" v-if="data.role == 'moderator'">
-            <IconVerified class="fill-light-green size-6" />
+          <span
+            class="flex flex-row items-center gap-2 text-sm font-bold text-light-green"
+            v-if="data.role == 'moderator'"
+          >
+            <IconVerified class="size-6 fill-light-green" />
             {{ tl.moderator }}
           </span>
 
-          <span class="font-bold text-light-red flex flex-row items-center gap-2 text-sm" v-else-if="data.role == 'admin'">
-            <IconShieldPerson class="fill-light-red size-6" />
+          <span
+            class="flex flex-row items-center gap-2 text-sm font-bold text-light-red"
+            v-else-if="data.role == 'admin'"
+          >
+            <IconShieldPerson class="size-6 fill-light-red" />
             {{ tl.administrator }}
           </span>
         </div>
