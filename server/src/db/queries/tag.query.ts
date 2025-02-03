@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { asc, countDistinct, eq } from "drizzle-orm";
 import { db } from "..";
-import { tags } from "../schema";
+import { mangaTags, tags } from "../schema";
 import { lower } from "../utils";
 
 /**
@@ -34,9 +34,15 @@ export async function isTagTaken(tag: string) {
  */
 export async function getTags(query: { page: number; per_page: number }) {
   const results = await db
-    .select({ name: tags.name })
+    .select({
+      id: tags.id,
+      name: tags.name,
+      publications: countDistinct(mangaTags.manga),
+    })
     .from(tags)
-    .orderBy(tags.name)
+    .leftJoin(mangaTags, eq(mangaTags.tag, tags.id))
+    .groupBy(tags.id, tags.name)
+    .orderBy(asc(tags.name))
     .offset((query.page - 1) * query.per_page)
     .limit(query.per_page);
   const total = await db.$count(db.select().from(tags));

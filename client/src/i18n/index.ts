@@ -1,5 +1,5 @@
 import { $i18n } from "@/stores/i18n";
-import { count } from "@nanostores/i18n";
+import { count, params } from "@nanostores/i18n";
 
 /**
  * The translation component for use in the login page.
@@ -133,4 +133,29 @@ export const $administrator = $i18n("administrator", {
   manageTags: "Manage Tags",
   back: "Back",
   noCategoryPicked: "Pick a category to get started",
+});
+
+export const $adminTags = $i18n("adminTags", {
+  title: "Tags Management",
+  search: "Search tags...",
+  noTags: "No tags yet",
+  create: "Create",
+  createTitle: "Creating tag",
+  editTitle: "Editing tag",
+  deleteTitle: "Deleting tag",
+  tag: "Tag",
+  placeholder: "Input tag here",
+  deleteConfirm: params(
+    `Are you sure you want to delete "{tag}" tagged on {publications} publications?`,
+  ),
+  confirm: "Confirm changes",
+  cancel: "Cancel changes",
+  tagExists: "That tag already exists",
+  publications: count({
+    one: "publication",
+    many: "publications",
+  }),
+  edit: "Edit",
+  delete: "Delete",
+  showMore: "Show More",
 });

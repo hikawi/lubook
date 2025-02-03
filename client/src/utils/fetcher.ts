@@ -65,6 +65,25 @@ export async function putJson(path: string, body: any) {
 }
 
 /**
+ * Sends a DELETE fetch request.
+ * @param path The path of the API
+ * @param body The body to send
+ * @returns The fetch request
+ */
+export async function deleteJson(path: string, body: any) {
+  return await fetch(`${import.meta.env.PUBLIC_API}/${path}`, {
+    method: "DELETE",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow",
+    body: JSON.stringify(body),
+    credentials: "include",
+  });
+}
+
+/**
  * Fetches given the data.
  *
  * @param path The API path

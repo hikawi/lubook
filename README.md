@@ -43,10 +43,10 @@ Clearance Level (access permissions):
 
 - **0 (Unclassified)**: Everyone can access this endpoint.
 - **1 (Confidential)**: Logged in users can access this endpoint.
-- **2 (Restricted)**: Approved users can access this endpoint. Approved users are users who have proven themselves to be good within the community.
-- **3 (Secret)**: Site moderators can access this endpoint. They are doing most of content moderation work.
-- **4 (Top Secret)**: Site administrators can access this endpoint. This involves promoting and demoting moderators.
-- **5 (Executive)**: Only those who have access to the console should have access to this endpoint. I have no clue what this is used for.
+- **2 (Restricted)**: Site moderators can access this endpoint. They are doing most of content moderation work.
+- **3 (Secret)**: Site administrators can access this endpoint. This involves promoting and demoting moderators.
+- **4 (Top Secret)**: Only those who have access to the console should have access to this endpoint. I have no clue what this is used for.
+- **5 (Executive)**: What even is this?
 
 Object Class (how contained is the action? is it within small regions of collection, or disrupt multiple at once?):
 

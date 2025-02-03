@@ -99,5 +99,36 @@
     "blockedTags": "Nhãn dán đã chặn",
     "save": "Lưu thay đổi",
     "discard": "Xoá thay đổi"
+  },
+  "administrator": {
+    "banner": "Dụng cụ quản trị viên",
+    "manageAccounts": "Quản lí tài khoản",
+    "managePublications": "Quản lí truyện",
+    "manageReports": "Quản lí báo cáo",
+    "manageTags": "Quản lí nhãn dán",
+    "back": "Quay về",
+    "noCategoryPicvềd": "Hãy chọn một loại để bắt đầu"
+  },
+  "adminTags": {
+    "title": "Quản lí nhãn dán",
+    "search": "Tìm kiếm nhãn dán...",
+    "nonhãn dáns": "Hiện giờ không có nhãn dán",
+    "create": "Tạo mới",
+    "createTitle": "Đang tạo mới nhãn dán",
+    "editTitle": "Đang chỉnh sửa nhãn dán",
+    "deleteTitle": "Đang xoá nhãn dán",
+    "nhãn dán": "Nhãn dán",
+    "placeholder": "Nhập tên nhãn dán",
+    "deleteConfirm": "Bạn đang xoá nhãn dán \"{tag}\" được gắn trên {publications} truyện.",
+    "confirm": "Lưu thay đổi",
+    "cancel": "Bỏ thay đổi",
+    "nhãn dánExists": "Nhãn dán đó đã tồn tại",
+    "publications": {
+      "one": "truyện",
+      "many": "truyện"
+    },
+    "edit": "Chỉnh sửa",
+    "delete": "Xoá",
+    "showMore": "Xem thêm"
   }
 }

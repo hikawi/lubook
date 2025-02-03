@@ -99,5 +99,36 @@
     "blockedTags": "ブロックされたタグ",
     "save": "変更保存",
     "discard": "キャンセル"
+  },
+  "administrator": {
+    "banner": "管理ツール",
+    "manageAccounts": "アカウント管理",
+    "managePublications": "漫画管理",
+    "manageReports": "リポート管理",
+    "manageTags": "タグ管理",
+    "back": "戻る",
+    "noCategoryPicked": "カテゴリ一つお選びください"
+  },
+  "adminTags": {
+    "title": "タグ管理",
+    "search": "タグ探検...",
+    "noTags": "タグがない。今はね。",
+    "create": "作成",
+    "createTitle": "タグ作成中",
+    "editTitle": "タグ編集中",
+    "deleteTitle": "タグ削除中",
+    "tag": "タグ",
+    "placeholder": "タグの名前入力",
+    "deleteConfirm": "あなたはこのタグ「{tag}」を削除しています。このタグは{publications}つの漫画をタグされました。",
+    "confirm": "変更確認",
+    "cancel": "キャンセル",
+    "tagExists": "あのタグもう存在しています",
+    "publications": {
+      "one": "漫画",
+      "many": "漫画"
+    },
+    "edit": "編集",
+    "delete": "削除",
+    "showMore": "もっと表す"
   }
 }

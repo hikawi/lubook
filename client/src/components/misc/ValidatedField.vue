@@ -9,6 +9,7 @@ const props = defineProps<{
   type?: string;
   prefix?: string;
   required?: boolean;
+  autofocus?: boolean;
 }>();
 
 const model = defineModel();
@@ -37,6 +38,7 @@ watchEffect(() => {
         :type="type || 'text'"
         :id="name"
         ref="element"
+        :autofocus
         :placeholder
         :required
         :aria-invalid="error != null"
