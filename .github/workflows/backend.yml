@@ -91,7 +91,7 @@ jobs:
 
   docker:
     name: Build Docker image
-    needs: [test]
+    needs: [test, build]
     concurrency:
       group: backend-prod
       cancel-in-progress: true
@@ -118,6 +118,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
+          context: ./server
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/hikawi/lubook:latest
