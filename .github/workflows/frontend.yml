@@ -2,11 +2,11 @@ name: Frontend
 
 on:
   push:
-    paths-ignore:
-      - "*.md"
+    paths:
+      - "client/**"
   pull_request:
-    paths-ignore:
-      - "*.md"
+    paths:
+      - "client/**"
 
 jobs:
   test:

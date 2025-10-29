@@ -31,10 +31,10 @@ export default getViteConfig({
       headless: true,
       provider: "playwright",
       name: "chromium",
-      screenshotFailures: true,
+      screenshotFailures: false,
     },
   },
-})
+});
 
 // export default defineConfig({
 //   plugins: [vue()],

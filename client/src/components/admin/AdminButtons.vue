@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { $administrator } from "@/i18n";
 import { useStore } from "@nanostores/vue";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import IconCategory from "../icons/IconCategory.vue";
 import IconChevronRight from "../icons/IconChevronRight.vue";
 import IconFolderManaged from "../icons/IconFolderManaged.vue";
@@ -10,12 +10,34 @@ import IconReport from "../icons/IconReport.vue";
 import AdminPanel from "./AdminPanel.vue";
 
 const selection = ref(-1);
+const mounted = ref(false);
 const tl = useStore($administrator);
+
+onMounted(() => (mounted.value = true));
 </script>
 
 <template>
   <div
     class="-mx-8 my-12 flex w-auto flex-row items-start lg:mx-0 lg:my-20 lg:w-full"
+    v-if="!mounted"
+  >
+    <div
+      class="flex w-full flex-col divide-y divide-blue lg:w-fit lg:min-w-fit lg:shrink-0 lg:gap-2 lg:divide-y-0"
+    >
+      <div class="h-12 w-full animate-pulse bg-light-gray"></div>
+      <div class="h-12 w-full animate-pulse bg-light-gray"></div>
+      <div class="h-12 w-full animate-pulse bg-light-gray"></div>
+      <div class="h-12 w-full animate-pulse bg-light-gray"></div>
+    </div>
+
+    <div
+      class="hidden h-[32rem] animate-pulse items-center justify-center bg-darker-navy lg:flex"
+    ></div>
+  </div>
+
+  <div
+    class="-mx-8 my-12 flex w-auto flex-row items-start lg:mx-0 lg:my-20 lg:w-full"
+    v-else
   >
     <div
       class="flex w-full flex-col divide-y divide-blue lg:w-fit lg:min-w-fit lg:shrink-0 lg:gap-2 lg:divide-y-0"

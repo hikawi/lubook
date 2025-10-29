@@ -158,7 +158,7 @@ async function ontagDeleted(id: number) {
       @click="page++"
       class="w-fit self-center rounded-full border-2 border-very-light-blue px-3 py-1 text-sm font-bold duration-200 hover:bg-very-light-blue hover:text-black"
     >
-      Show More
+      {{ tl.showMore }}
     </button>
   </div>
 

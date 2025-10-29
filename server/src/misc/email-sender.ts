@@ -9,7 +9,7 @@ export const emailTransport = createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: "verify@lubook.club",
+    user: "lubookverify@luny.dev",
     pass: process.env.EMAIL_PASSWORD,
   },
 });
@@ -39,7 +39,7 @@ const htmlEmail = `
 
   <p>
     This is an email, requested by you (<em>maybe?</em>) for verification to join
-    the <a href="https://lubook.club">Lubook</a> community. you received this
+    the <a href="https://lubook.luny.dev">Lubook</a> community. you received this
     email because you register <strong>%%email%%</strong> as your email address.
     Anyway, if you try logging in, you will be requested to input a 6-digit code:
   </p>
@@ -82,7 +82,7 @@ export async function sendVerificationEmail(data: {
 }) {
   const { name, code, email, link } = data;
   await emailTransport.sendMail({
-    from: "Verify <verify@lubook.club>",
+    from: "Verify <lubookverify@luny.dev>",
     to: email,
     subject: "Lubook Verification",
     text: fillPlaceholders(textEmail, code, name, email, link),

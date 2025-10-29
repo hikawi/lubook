@@ -1,0 +1,10 @@
+node_modules
+.astro
+dist
+.env
+.dockerignore
+.gitignore
+.DS_Store
+*.md
+Dockerfile
+
